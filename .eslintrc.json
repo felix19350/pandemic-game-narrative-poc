@@ -1,0 +1,21 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": [
+    "airbnb",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error"
+    ],
+    "max-classes-per-file": 0,
+    "func-names": 0,
+    "import/prefer-default-export": 0
+  }
+}

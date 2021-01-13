@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "es6",
+        "target": "es6",
+        "lib": [
+            "es2019",
+            "DOM",
+            "ES6",
+            "DOM.Iterable",
+            "ScriptHost"
+        ],
+        "allowJs": true,
+        "checkJs": false,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "maxNodeModuleJsDepth": 1,
+        "baseUrl": ".",
+        "paths": {
+            "@src/*": [
+                "src/*"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*",
+        "__tests__/**/*",
+        "decs.d.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+    ],
+}
