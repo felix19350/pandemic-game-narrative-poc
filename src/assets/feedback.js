@@ -36,7 +36,13 @@ const emergentFeedbackAssets = {
 function formatAssetAsMessage(asset) {
     const ele = document.createElement('P');
     ele.className = 'feedback-message';
-    ele.innerHTML = `<i class="fas fa-user"></i> ${asset}`;
+    ele.innerHTML = `
+        <i class="fas fa-user col-secondary"></i> Username <br>
+        ${asset} <br>
+        <p class='text-right'>
+            ${Math.floor(Math.random() * 100)} <i class="fas fa-heart col-primary"></i>
+        </p>
+    `;
     return ele;
 }
 function formatAssetAsNews(asset) {

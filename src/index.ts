@@ -3,33 +3,61 @@ import 'bootstrap/js/dist/modal';
 import {showFeedback} from './view/feedback';
 import {showEvent} from './view/event';
 import {compileAssets} from './assets/feedback';
+import {storyEvents} from './assets/events';
 
 $(window).on('load', () => {     
 
-    // TESTS
-    // Event screen
-    /*
-    showEvent({
-        name: 'test event',
-        description: 'testing whether this longer description is displayed correctly. This would be a longer piece of text spanning multiple lines, ideally a small paragraph. It should be both interesting and descriptive enough to tell players what to expect with each of the option; and to give context.<br><br>It can have multiple paragraphs seperated by a new line as shown here.',
-        responses: [
-            {
-                name: 'Response option 1',
-                description: ['does only one thing']
-            },
-            {
-                name: 'Response option 2 with longer name',
-                description: ['this one does multiple things', 'here is the second', 'and the third!']
-            },
-        ]
-    })*/
+    // Event screen (triggered below)
+    function exampleOfEvent(){
+
+        // Get event
+        const evt = storyEvents.evtVaccineDeployed;
+
+        // Show event
+        showEvent(evt);
+
+        // Temporary example of looping gameplay by just assigning trigger for event button here
+        $('.btn-response').click( function(){
+
+            // Show player choice
+            let h = document.createElement('H3');
+            h.innerHTML = `You made $PLAYER_CHOICE in $EVENT`;
+            h.style.color = `white`;
+            h.className = 'm-2';
+            showFeedback([h]);
+
+            // Trigger feedback
+            exampleOfFeedback();
+        })
+    }
 
     // Feedback screen
-    const feedbackAssets = compileAssets();
-    console.log(feedbackAssets)
-    showFeedback(feedbackAssets.businessSupport.low)
-    showFeedback(feedbackAssets.healthcareSupport.low)
-    showFeedback(feedbackAssets.publicSupport.low)
+    function exampleOfFeedback(){
+
+        // Compile feedback assets into usable HTML elements
+        const feedbackAssets = compileAssets(); // dictionary of arrays
+
+        // Select feedback assets to disaplay
+        const groupOfAssetsToTest = []
+        groupOfAssetsToTest.push(feedbackAssets.publicSupport.low[0])
+        groupOfAssetsToTest.push(feedbackAssets.publicSupport.low[1])
+        groupOfAssetsToTest.push(feedbackAssets.businessSupport.low[0])
+        groupOfAssetsToTest.push(feedbackAssets.healthcareSupport.low[0])
+        
+        // Add button to continue to next month
+        let btnEle = document.createElement('BUTTON');
+        btnEle.className = `btn btn-lg btn-continue`
+        btnEle.innerHTML = `Continue to next month <i class="fas fa-arrow-right"></i>`
+        btnEle.onclick = function(){ // Trigger event
+            exampleOfEvent();
+            $(btnEle).hide(); // Disable button
+        };
+        groupOfAssetsToTest.push(btnEle)
+    
+        // Show list of items as feedback
+        showFeedback(groupOfAssetsToTest)
+    }
+    exampleOfFeedback();
 
     // Splash screen (hidden for testing)
     $('#splash').hide()

@@ -13,8 +13,8 @@ export function showFeedback(assets) {
             document.getElementById('media-feed').appendChild(asset); // Append asset to feedback media feed
 
             // Animations
-            $(asset).css('opacity', 0).animate({ opacity: 1 }, 800);
-            $('#media-feed').animate({ scrollTop: $('#media-feed')[0].scrollHeight }, 600); // Scroll down to newest asset
-        }, 1000 * i);
+            $(asset).css('opacity', 0).animate({ opacity: 1 }, 500);
+            $('body, html').animate({ scrollTop: $(document).height() }, 500); // Scroll down to newest asset
+        }, 700 * i);
     });
 }

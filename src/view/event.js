@@ -9,7 +9,7 @@ function createResponse(response) {
     // Add response buttons
     const btn = document.createElement('BUTTON');
     btn.innerHTML = response.name;
-    btn.className = 'btn btn-success';
+    btn.className = 'btn btn-response';
     btn.onclick = function () {
         $('#event-modal').modal('hide');
         console.log('player choice made')
@@ -20,7 +20,7 @@ function createResponse(response) {
     // Add descriptions for the effects of this response
     const UL = document.createElement('UL');
     div.appendChild(UL);
-    response.description.forEach(function (effect) {
+    response.effects.forEach(function (effect) {
         const LI = document.createElement('LI');
         LI.innerHTML = effect;
         UL.appendChild(LI);
