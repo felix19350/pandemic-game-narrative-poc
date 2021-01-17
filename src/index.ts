@@ -9,7 +9,7 @@ $(window).on('load', () => {
     // Event screen (triggered below)
     function exampleOfEvent() {
         // Get event
-        const evt = storyEvents.evtVaccineDeployed;
+        const evt = storyEvents.evt01;
 
         // Show event
         showEvent(evt);

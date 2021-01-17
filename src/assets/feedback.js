@@ -9,26 +9,44 @@
 
 const emergentFeedbackAssets = {
     publicSupport: {
-        high: [`Don't understand the hate for our leader. They're doing ok`, `lockdown isn't too bad tbf`],
+        high: [
+            `<i class="fas fa-hand-peace"></i>`, 
+            `Finally on the right track <i class="fas fa-subway"></i>`, 
+            `We were already giving this virus too much attention anyway`, 
+            `#people #wellbeing first`
+        ],
         low: [
-            `#!*% this person.`,
-            `Ugh get me out of my house I am so bored`,
+            `<i class="fas fa-hand-middle-finger"></i>.`,
             `So sick of this.`,
-            `#sodone i mean serious`,
-            `FU.`,
-            `MORE lockdown? Well, those 'illegal raves' might keep happening... jus' sayin...`,
-            `not happy`,
-            `WHAT??! DID I JUST HEAR CORRECT`,
-            `deleting socials. final message.`
+            `<i class="fas fa-meh-rolling-eyes"></i> - me this year`,
+            `really? THAT was your response?!`
         ]
     },
     businessSupport: {
-        high: [`ECONOMY RECOVERING`],
-        low: [`CONTINUED COVID-19 MEASURES RISK BIGGEST DEPRESSION SINCE 1960`]
+        high: [
+            `ECONOMY STARTS RECOVERING`,
+            `LENDERS START TO SEE RETURNS ON PANDEMIC LOANS`,
+            `MORE PEOPLE ARE BUYING HOUSES; INDICATIVE OF FINANCIAL STABILITY`,
+            `CONFIDENCE IN ACHIEVING A STABLE ECONOMY RISES`,
+        ],
+        low: [
+            `CONTINUED COVID-19 MEASURES RISK BIGGEST DEPRESSION YET`,
+            `PANDEMIC TRIGGERS GLOBAL RECESSION`,
+            `COMPANIES REPORT 'UNPROFITABLE CONDITIONS'`,
+            `COMPANIES FACE LOGISTICAL ISSUES RELATED TO COVID-19`
+        ]
     },
     healthcareSupport: {
-        high: [`COVID-19 response gives nurses some much needed and rare downtime as cases reach all time low.`],
-        low: [`COVID-19 cases reach all time high!`, `COVID-19 cases rising sharply!`]
+        high: [
+            `COVID-19 response gives nurses some much needed and rare downtime as cases drop.`,
+            `COV-SARS-19 cases dip to all time low`,
+            `New cases drop; fewer people ill each day`
+        ],
+        low: [
+            `COVID-19 cases reach all time high!`, 
+            `COVID-19 cases rising sharply!`,
+            `'I worked 40 hours yesterday': Healthcare workers stressed by new cases`
+        ]
     }
 };
 
