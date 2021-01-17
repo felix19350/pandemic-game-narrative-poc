@@ -27,19 +27,12 @@ export const storyEvents = {
         responses: [
             {
                 name: `Great! End lockdown`,
-                effects: [
-                    `Lockdown removed`,
-                    `Gain public support`,
-                    `Gain business support`,
-                    `Lose healthcare support`
-                ]
+                effects: [`Lockdown removed`, `Gain public support`, `Gain business support`, `Lose healthcare support`]
             },
             {
                 name: `Do nothing. The vaccine will take a while to work.`,
-                effects: [
-                    `Lockdown continues`
-                ]
+                effects: [`Lockdown continues`]
             }
         ]
     }
-}
+};

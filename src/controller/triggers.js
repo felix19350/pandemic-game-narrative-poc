@@ -36,4 +36,3 @@ export const triggers = {
     businessSupportIsHigh: (worldstate) => worldstate.businessSupport > 50,
     healthcareSupportIsHigh: (worldstate) => worldstate.healthcareSupport > 50
 };
-

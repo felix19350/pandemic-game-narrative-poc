@@ -1,7 +1,6 @@
 import * as $ from 'jquery';
 
 function createResponse(response) {
-
     // Create container
     const div = document.createElement('DIV');
     document.getElementById('event-responses').appendChild(div);
@@ -12,9 +11,9 @@ function createResponse(response) {
     btn.className = 'btn btn-response';
     btn.onclick = function () {
         $('#event-modal').modal('hide');
-        console.log('player choice made')
+        console.log('player choice made');
         // THEN {make effect of chosing this response}
-    }
+    };
     div.appendChild(btn);
 
     // Add descriptions for the effects of this response
@@ -45,7 +44,6 @@ function createResponse(response) {
         }
 */
 export function showEvent(evt) {
-
     // Write content to modal
     document.getElementById('event-title').innerHTML = evt.name;
     document.getElementById('event-description').innerHTML = evt.description;
