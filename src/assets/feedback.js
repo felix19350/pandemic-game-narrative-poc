@@ -9,8 +9,18 @@
 
 const emergentFeedbackAssets = {
     publicSupport: {
-        high: [`Don't understand the hate for our leader. They're doing ok`],
-        low: [`#!*% this person.`]
+        high: [`Don't understand the hate for our leader. They're doing ok`, `lockdown isn't too bad tbf`],
+        low: [
+            `#!*% this person.`,
+            `Ugh get me out of my house I am so bored`,
+            `So sick of this.`,
+            `#sodone i mean serious`,
+            `FU.`,
+            `MORE lockdown? Well, those 'illegal raves' might keep happening... jus' sayin...`,
+            `not happy`,
+            `WHAT??! DID I JUST HEAR CORRECT`,
+            `deleting socials. final message.`
+        ]
     },
     businessSupport: {
         high: [`ECONOMY RECOVERING`],
@@ -22,21 +32,41 @@ const emergentFeedbackAssets = {
     }
 };
 
+// Turn assets into HTML elements
+function formatAssetAsMessage(asset) {
+    const ele = document.createElement('P');
+    ele.className = 'feedback-message';
+    ele.innerHTML = `<i class="fas fa-user"></i> ${asset}`;
+    return ele;
+}
+function formatAssetAsNews(asset) {
+    const ele = document.createElement('P');
+    ele.className = 'feedback-news';
+    ele.innerHTML = `<em>Financial times</em><br><hr>${asset}`;
+    return ele;
+}
+function formatAssetAsReport(asset) {
+    const ele = document.createElement('P');
+    ele.className = 'feedback-report';
+    ele.innerHTML = `<em>BMJ</em><br><hr>${asset}`;
+    return ele;
+}
+/*
+    Function to turn assets into usable HTML elements for display
+*/
 export function compileAssets() {
-    const assets = {
-        publicSupport: [],
-        businessSupport: [],
-        healthcareSupport: []
-    };
-
-    Object.entries(emergentFeedbackAssets.publicSupport).forEach(
-        (i) => function(){
-            const ele = document.createElement('P')
-            ele.innerHTML = i.
-
-            assets.push(ele)
+    return {
+        publicSupport: {
+            high: Array.from(emergentFeedbackAssets.publicSupport.high, (asset) => formatAssetAsMessage(asset)),
+            low: Array.from(emergentFeedbackAssets.publicSupport.low, (asset) => formatAssetAsMessage(asset))
+        },
+        businessSupport: {
+            high: Array.from(emergentFeedbackAssets.businessSupport.high, (asset) => formatAssetAsNews(asset)),
+            low: Array.from(emergentFeedbackAssets.businessSupport.low, (asset) => formatAssetAsNews(asset))
+        },
+        healthcareSupport: {
+            high: Array.from(emergentFeedbackAssets.healthcareSupport.high, (asset) => formatAssetAsReport(asset)),
+            low: Array.from(emergentFeedbackAssets.healthcareSupport.low, (asset) => formatAssetAsReport(asset))
         }
-    )
-
-    return assets;
+    };
 }

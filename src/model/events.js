@@ -7,10 +7,10 @@
         {
             name,
             description,
-            responses [
+            responses: [
                 {
                     name,
-                    description = [descriptions of each effect],
+                    description: [descriptions of each effect (array)],
                     effects()
                 },
             ]
