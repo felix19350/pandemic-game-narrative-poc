@@ -27,17 +27,11 @@ export const storyEvents = {
         responses: [
             {
                 name: `Great! End lockdown`,
-                effects: [
-                    `Lockdown removed`, 
-                    `Gain public support`, 
-                    `Gain business support`, 
-                    `Lose healthcare support`]
+                effects: [`Lockdown removed`, `Gain public support`, `Gain business support`, `Lose healthcare support`]
             },
             {
                 name: `Do nothing. The vaccine will take a while to work.`,
-                effects: [
-                    `Lockdown continues`
-                ]
+                effects: [`Lockdown continues`]
             }
         ]
     },
@@ -51,17 +45,11 @@ export const storyEvents = {
         responses: [
             {
                 name: `Announce digital golden age`,
-                effects: [
-                    `Gain business support`
-                ]
+                effects: [`Gain business support`]
             },
             {
                 name: `Oops...`,
-                effects: [
-                    `Lose public support`,
-                    `Lose business support`,
-                    `Lose healthcare support`
-                ]
+                effects: [`Lose public support`, `Lose business support`, `Lose healthcare support`]
             }
         ]
     },
@@ -74,7 +62,7 @@ export const storyEvents = {
         responses: [
             {
                 name: `Lift lockdown early`,
-                effects: [ 
+                effects: [
                     'Lockdowns removed',
                     'Gain public support',
                     'Gain business support',
@@ -96,17 +84,11 @@ export const storyEvents = {
         responses: [
             {
                 name: `We ended lockdown and we will stick to our decision.`,
-                effects: [
-                    `Lose healthcare support`
-                ]
+                effects: [`Lose healthcare support`]
             },
             {
                 name: `Lockdown!`,
-                effects: [
-                    `Lockdown enforced`,
-                    `Lose public support`,
-                    `Lose business support`
-                ]
+                effects: [`Lockdown enforced`, `Lose public support`, `Lose business support`]
             }
         ]
     },
@@ -119,17 +101,11 @@ export const storyEvents = {
         responses: [
             {
                 name: `Relax lockdown for individuals in crisis`,
-                effects: [
-                    `Lockdown becomes less effective`,
-                    `Gain public support`,
-                    `Gain healthcare support`
-                ]
+                effects: [`Lockdown becomes less effective`, `Gain public support`, `Gain healthcare support`]
             },
             {
                 name: `No exceptions. People will take advantage...`,
-                effects: [
-                    `Lose public support`
-                ]
+                effects: [`Lose public support`]
             }
         ]
     }
