@@ -27,23 +27,8 @@ function createResponse(response, playerResponse) {
 
 /*
     Populate event and show to player
-
-        Arguments
-        ------------
-        evt = 
-        {
-            name,
-            description,
-            responses: [
-                {
-                    name,
-                    description: [descriptions of each effect (array)]
-                },
-            ]
-        }
 */
 export function showEvent(evt, playerResponse) {
-    console.log(evt)
     // Write content to modal
     document.getElementById('event-title').innerHTML = evt.name;
     document.getElementById('event-description').innerHTML = evt.description;

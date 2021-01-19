@@ -29,7 +29,7 @@ $(window).on('load', () => {
                 feedbackAssets.healthcareSupport.low[0]
             ], 
             gameController.nextTurn // Button to call nextTurn function
-        );    
+        );
     }
     
     // Show first event

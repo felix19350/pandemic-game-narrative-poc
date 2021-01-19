@@ -99,14 +99,16 @@ export const StoryEvents = [
                     'Lockdowns removed',
                     'Gain public support',
                     'Gain business support',
-                    'Lose healthcare support'
+                    'Lose healthcare support',
+                    'You will gain a reputation'
                 ],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({ updatedIndicators: { 
                         lockdownEffectiveness: 0,
                         publicSupport: 1,
                         businessSupport: 1,
-                        healthcareSupport: -1
+                        healthcareSupport: -1,
+                        reputation: ['Flip-flopper']
                     }, 
                     feedback: 'Lifted lockdown early'
                 })
@@ -145,9 +147,12 @@ export const StoryEvents = [
                 eventId: 'open02casesPeak',
                 name: 'We ended lockdown and we will stick to our decision.',
                 label: [`Lose healthcare support`],
-                isApplicable: (gameState: GameState) => true,
+                isApplicable: (gameState: GameState) => { return (
+                    !( gameState.indicators.reputation.includes('Flip-flopper') ) // Only available if not flip flopper
+                )},
                 onSelect: (gameState: GameState) => ({ updatedIndicators: { 
-                        healthcareSupport: 0
+                        healthcareSupport: 0,
+                        reputation: ['Stubborn']
                     }, 
                     feedback: 'Stuck to the decision to end lockdown.'
                 })
@@ -156,13 +161,14 @@ export const StoryEvents = [
                 id: 'open02casesPeak.lift',
                 eventId: 'open02casesPeak',
                 name: 'Lockdown!',
-                label: [`Lockdown enforced`, `Lose public support`, `Lose business support`],
+                label: [`Lockdown enforced`, `Lose public support`, `Lose business support`, `Your may gain a reputation`],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({ updatedIndicators: { 
                         lockdownEffectiveness: 1,
                         publicSupport: -1,
                         businessSupport: -1,
-                        healthcareSupport: -1
+                        healthcareSupport: -1,
+                        reputation: ['Flip-flopper']
                     }, 
                     feedback: 'Lockdown re-enforced'
                 })
@@ -203,7 +209,8 @@ export const StoryEvents = [
                 label: [`Lose public support`],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({ updatedIndicators: { 
-                        publicSupport: -1
+                        publicSupport: -1,
+                        reputation: ['Resolved']
                     }, 
                     feedback: 'No exceptions were made for lockdown.'
                 })
