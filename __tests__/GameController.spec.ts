@@ -13,17 +13,17 @@ const simpleBinaryChoiceNarrative: Event[] = [
                 id: "start.goLeft",
                 eventId: "start",
                 name: "Go left",
-                label: "Go left",
+                label: ["Go left"],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { reputation: "Left" }, feedback: "Went left" })
+                onSelect: (gameState: GameState) => ({ updatedIndicators: { ...gameState.indicators, reputation: ["Left"] }, feedback: "Went left" })
             },
             {
                 id: "start.goRight",
                 eventId: "start",
                 name: "Go right",
-                label: "Go right",
+                label: ["Go right"],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { reputation: "Right" }, feedback: "Went right" })
+                onSelect: (gameState: GameState) => ({ updatedIndicators: { ...gameState.indicators, reputation: ["Right"] }, feedback: "Went right" })
             }
         ]
     },
@@ -45,7 +45,7 @@ const simpleBinaryChoiceNarrative: Event[] = [
                 id: "left.end",
                 eventId: "left",
                 name: "Finish",
-                label: "Narrative ended on the left branch",
+                label: ["Narrative ended on the left branch"],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({ updatedIndicators: gameState.indicators, feedback: "Done left" })
             }
@@ -68,7 +68,7 @@ const simpleBinaryChoiceNarrative: Event[] = [
                 id: "right.end",
                 eventId: "right",
                 name: "Finish",
-                label: "Narrative ended on the right branch",
+                label: ["Narrative ended on the right branch"],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({ updatedIndicators: gameState.indicators, feedback: "Done right" })
             }
@@ -125,7 +125,7 @@ describe("The operation of the game controller", () => {
 
         const nextTurn = gameController.nextTurn();
         if (isGameState(nextTurn)) {
-            expect(nextTurn.indicators.reputation).toEqual("Left") // Reputation is consistent with the narrative
+            expect(nextTurn.indicators.reputation).toEqual(["Left"]) // Reputation is consistent with the narrative
             expect(nextTurn.turnNumber).toBe(3)
             expect(nextTurn.responseHistory.length).toBe(2)
             expect(nextTurn.responseHistory[0].responses[0].response.id).toEqual("start.goLeft")
