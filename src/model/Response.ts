@@ -5,7 +5,7 @@ export interface Response {
     id: string;
     eventId: string;
     name: string;
-    label: string;
+    label: Array<string>;
     isApplicable: (gameState: GameState) => boolean;
     onSelect: (gameState: GameState) => ResponseSelectionResult;
 }

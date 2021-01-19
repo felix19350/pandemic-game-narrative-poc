@@ -7,14 +7,30 @@
 */
 import * as $ from 'jquery';
 
-export function showFeedback(assets) {
-    assets.forEach(function (asset, i) {
-        setTimeout(function () {
-            document.getElementById('media-feed').appendChild(asset); // Append asset to feedback media feed
+export function showFeedback(assets, nextTurn) {
+    // Show feedback to player
+    function addToFeed() {
+        const asset = assets.shift();
+        document.getElementById('media-feed').appendChild(asset); // Append asset to feedback media feed
+        $(asset).css('opacity', 0).animate({ opacity: 1 }, 500); // Animations
+        $('body, html').animate({ scrollTop: $(document).height() }, 500);
 
-            // Animations
-            $(asset).css('opacity', 0).animate({ opacity: 1 }, 500);
-            $('body, html').animate({ scrollTop: $(document).height() }, 500); // Scroll down to newest asset
-        }, 700 * i);
-    });
+        setTimeout(function () {
+            if (assets.length > 0) {
+                // Add feedback asset to feed
+                addToFeed();
+            } else {
+                // Add button to continue to next month
+                const btnEle = document.createElement('BUTTON');
+                btnEle.className = `btn btn-lg btn-continue`;
+                btnEle.innerHTML = `Continue to next month <i class="fas fa-arrow-right"></i>`;
+                btnEle.onclick = function () {
+                    nextTurn(); // Next turn
+                    $(btnEle).hide(); // Disable btn on click
+                };
+                document.getElementById('media-feed').appendChild(btnEle);
+            }
+        }, 700);
+    }
+    addToFeed();
 }

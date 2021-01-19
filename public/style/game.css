@@ -24,6 +24,13 @@ body{
     color: var(--col-light);
     text-shadow:rgba(248, 248, 255, 0.5);
 }
+.btn-response:hover{
+    font-weight: 500;
+    font-size: 1.1rem;
+    background-color: var(--col-light);
+    color: var(--col-secondary);
+    text-shadow:rgba(248, 248, 255, 0.5);
+}
 .btn-continue{
     font-weight: 500;
     font-size: 1.5rem;
@@ -38,6 +45,7 @@ body{
 
 /* Feedback */
 #media-feed{
+    width: 600px;
     max-width: 600px;
     padding: 2rem;
 }
