@@ -1,6 +1,8 @@
+import { Event } from '@src/model/Events';
+import { Response } from '@src/model/Response';
 import * as $ from 'jquery';
 
-function createResponse(response, playerResponse) {
+const createResponse = (response: Response, onResponse: Function) => {
     // Create container
     const div = document.createElement('DIV');
     document.getElementById('event-responses').appendChild(div);
@@ -10,7 +12,7 @@ function createResponse(response, playerResponse) {
     btn.innerHTML = response.name;
     btn.className = 'btn btn-response';
     btn.onclick = function () {
-        playerResponse(response.id);
+        onResponse(response.id);
         $('#event-modal').modal('hide');
     };
     div.appendChild(btn);
@@ -23,20 +25,20 @@ function createResponse(response, playerResponse) {
         LI.innerHTML = effect;
         UL.appendChild(LI);
     });
-}
+};
 
 /*
     Populate event and show to player
 */
-export function showEvent(evt, playerResponse) {
+export const showEvent = (evt: Event, onResponse: Function) => {
     // Write content to modal
     document.getElementById('event-title').innerHTML = evt.name;
     document.getElementById('event-description').innerHTML = evt.description;
 
     // Add responses to modal
     document.getElementById('event-responses').innerHTML = '';
-    evt.responses.forEach((response) => createResponse(response, playerResponse));
+    evt.responses.forEach((response) => createResponse(response, onResponse));
 
     // Show modal
     $('#event-modal').modal('show');
-}
+};

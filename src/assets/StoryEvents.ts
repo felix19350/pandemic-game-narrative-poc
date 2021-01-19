@@ -1,12 +1,15 @@
 import { GameState } from '../model/GameState';
+import { Event } from '../model/Events';
 
-export const StoryEvents = [
+export const StoryEvents: Event[] = [
     {
         id: 'lockdown01vaccine',
         name: 'Vaccine being deployed',
         description: `A vaccination for COVID-19 is starting to be deployed throughout the country.
         The researchers who developed it claim that it has proven effective in making patients immune to COVID-19.`,
-        canRun: (gameState: GameState) => { return gameState.turnNumber === 1 },
+        canRun: (gameState: GameState) => {
+            return gameState.turnNumber === 1;
+        },
         responses: [
             {
                 id: 'lockdown01vaccine.lift',
@@ -14,13 +17,15 @@ export const StoryEvents = [
                 name: 'Great! End lockdown',
                 label: [`Lockdown removed`, `Gain public support`, `Gain business support`, `Lose healthcare support`],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { 
+                onSelect: (gameState: GameState) => ({
+                    updatedIndicators: {
+                        ...gameState.indicators,
                         lockdownEffectiveness: 0,
                         publicSupport: 1,
                         businessSupport: 1,
                         healthcareSupport: -1
-                    }, 
-                    feedback: 'Lockdown is ended as the vaccine is deployed.' 
+                    },
+                    feedback: 'Lockdown is ended as the vaccine is deployed.'
                 })
             },
             {
@@ -29,10 +34,10 @@ export const StoryEvents = [
                 name: 'Do nothing. The vaccine will take a while to work.',
                 label: [`Lockdown continues`],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { 
-
-                    }, 
-                    feedback: 'Lockdown remains in effect as the vaccine is deployed.' })
+                onSelect: (gameState: GameState) => ({
+                    updatedIndicators: gameState.indicators,
+                    feedback: 'Lockdown remains in effect as the vaccine is deployed.'
+                })
             }
         ]
     },
@@ -44,11 +49,11 @@ export const StoryEvents = [
             Some reports suggest that lockdown would have helped end this unprofitable period during the COVID-19 pandemic. 
             However, others focus on the huge growth of digital services, particularly for teleconferencing and remote working software.
         `,
-        canRun: (gameState: GameState) => { return (
-                gameState.turnNumber === 2 
-                &&
-                gameState.indicators.lockdownEffectiveness === 0 // when lockdown not active
-        )},
+        canRun: (gameState: GameState) => {
+            return (
+                gameState.turnNumber === 2 && gameState.indicators.lockdownEffectiveness === 0 // when lockdown not active
+            );
+        },
         responses: [
             {
                 id: 'open01business.spin',
@@ -56,9 +61,11 @@ export const StoryEvents = [
                 name: 'Announce digital golden age',
                 label: [`Gain business support`],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { 
+                onSelect: (gameState: GameState) => ({
+                    updatedIndicators: {
+                        ...gameState.indicators,
                         businessSupport: 1
-                    }, 
+                    },
                     feedback: 'Announced a digital golden age'
                 })
             },
@@ -68,14 +75,16 @@ export const StoryEvents = [
                 name: 'Oops... Perhaps we should reconsider lockdown.',
                 label: [`Lose public support`, `Lose business support`, `Lose healthcare support`],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: {
+                onSelect: (gameState: GameState) => ({
+                    updatedIndicators: {
+                        ...gameState.indicators,
                         publicSupport: -1,
                         businessSupport: -1,
                         healthcareSupport: -1
-                    }, 
+                    },
                     feedback: 'Reconsidered lockdown'
                 })
-            },
+            }
         ]
     },
     {
@@ -85,11 +94,9 @@ export const StoryEvents = [
             People are getting tired of being in lockdown. Not being able to socialise, work and exercise as normal is starting to take a toll on people's wellbeing.
             There are increasing reports that people are less willing to obey lockdown rules.
         `,
-        canRun: (gameState: GameState) => { return (
-                gameState.turnNumber === 2 
-                &&
-                gameState.indicators.lockdownEffectiveness > 0
-        )},
+        canRun: (gameState: GameState) => {
+            return gameState.turnNumber === 2 && gameState.indicators.lockdownEffectiveness > 0;
+        },
         responses: [
             {
                 id: 'lockdown02fatigue.lift',
@@ -103,13 +110,15 @@ export const StoryEvents = [
                     'You will gain a reputation'
                 ],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { 
+                onSelect: (gameState: GameState) => ({
+                    updatedIndicators: {
+                        ...gameState.indicators,
                         lockdownEffectiveness: 0,
                         publicSupport: 1,
                         businessSupport: 1,
                         healthcareSupport: -1,
                         reputation: ['Flip-flopper']
-                    }, 
+                    },
                     feedback: 'Lifted lockdown early'
                 })
             },
@@ -117,13 +126,10 @@ export const StoryEvents = [
                 id: 'lockdown02fatigue.continue',
                 eventId: 'lockdown02fatigue',
                 name: 'Sympathise but we have to continue lockdown.',
-                label: [
-                    'Lockdown continues'
-                ],
+                label: ['Lockdown continues'],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { 
-
-                    }, 
+                onSelect: (gameState: GameState) => ({
+                    updatedIndicators: gameState.indicators,
                     feedback: 'Sympathised but continued lockdown.'
                 })
             }
@@ -136,24 +142,24 @@ export const StoryEvents = [
             The number of COVID-19 cases has reached an all time high.
             Some news reports claim that this was because the lockdown was lifted, others blame lockdown fatigue- or that the vaccination has made people less worried about socialising.
         `,
-        canRun: (gameState: GameState) => { return (
-                gameState.turnNumber === 3 
-                &&
-                gameState.indicators.lockdownEffectiveness === 0 
-        )},
+        canRun: (gameState: GameState) => {
+            return gameState.turnNumber === 3 && gameState.indicators.lockdownEffectiveness === 0;
+        },
         responses: [
             {
                 id: 'open02casesPeak.continue',
                 eventId: 'open02casesPeak',
                 name: 'We ended lockdown and we will stick to our decision.',
                 label: [`Lose healthcare support`],
-                isApplicable: (gameState: GameState) => { return (
-                    !( gameState.indicators.reputation.includes('Flip-flopper') ) // Only available if not flip flopper
-                )},
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { 
+                isApplicable: (gameState: GameState) => {
+                    return !gameState.indicators.reputation.includes('Flip-flopper'); // Only available if not flip flopper
+                },
+                onSelect: (gameState: GameState) => ({
+                    updatedIndicators: {
+                        ...gameState.indicators,
                         healthcareSupport: 0,
                         reputation: ['Stubborn']
-                    }, 
+                    },
                     feedback: 'Stuck to the decision to end lockdown.'
                 })
             },
@@ -161,18 +167,25 @@ export const StoryEvents = [
                 id: 'open02casesPeak.lift',
                 eventId: 'open02casesPeak',
                 name: 'Lockdown!',
-                label: [`Lockdown enforced`, `Lose public support`, `Lose business support`, `Your may gain a reputation`],
+                label: [
+                    `Lockdown enforced`,
+                    `Lose public support`,
+                    `Lose business support`,
+                    `Your may gain a reputation`
+                ],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { 
+                onSelect: (gameState: GameState) => ({
+                    updatedIndicators: {
+                        ...gameState.indicators,
                         lockdownEffectiveness: 1,
                         publicSupport: -1,
                         businessSupport: -1,
                         healthcareSupport: -1,
                         reputation: ['Flip-flopper']
-                    }, 
+                    },
                     feedback: 'Lockdown re-enforced'
                 })
-            },
+            }
         ]
     },
     {
@@ -182,11 +195,9 @@ export const StoryEvents = [
             There are increasing reports that this extended period of lockdown is having negative consequences on people's wellbeing and mental health.
             Some charities and non-government organisations have started advocating for lockdown restrictions to be relaxed for individuals in crisis.
         `,
-        canRun: (gameState: GameState) => { return (
-                gameState.turnNumber === 3 
-                &&
-                gameState.indicators.lockdownEffectiveness > 0
-        )},
+        canRun: (gameState: GameState) => {
+            return gameState.turnNumber === 3 && gameState.indicators.lockdownEffectiveness > 0;
+        },
         responses: [
             {
                 id: 'lockdown03wellbeing.relax',
@@ -194,11 +205,13 @@ export const StoryEvents = [
                 name: 'Relax lockdown for individuals in crisis',
                 label: [`Lockdown becomes less effective`, `Gain public support`, `Gain healthcare support`],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { 
+                onSelect: (gameState: GameState) => ({
+                    updatedIndicators: {
+                        ...gameState.indicators,
                         lockdownEffectiveness: 0.8,
                         publicSupport: 1,
                         healthcareSupport: 1
-                    }, 
+                    },
                     feedback: 'Relaxed lockdown for individuals in crisis'
                 })
             },
@@ -208,13 +221,15 @@ export const StoryEvents = [
                 name: 'No exceptions. People will take advantage...',
                 label: [`Lose public support`],
                 isApplicable: (gameState: GameState) => true,
-                onSelect: (gameState: GameState) => ({ updatedIndicators: { 
+                onSelect: (gameState: GameState) => ({
+                    updatedIndicators: {
+                        ...gameState.indicators,
                         publicSupport: -1,
                         reputation: ['Resolved']
-                    }, 
+                    },
                     feedback: 'No exceptions were made for lockdown.'
                 })
-            },
+            }
         ]
     }
-]
+];
