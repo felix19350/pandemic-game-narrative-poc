@@ -19,7 +19,12 @@ export class GameController {
         this.gameState = {
             turnNumber: 0,
             indicators: {
-                reputation: 'Intellectual dumpster fire'
+                reputation: [],
+                publicSupport: 0, // negative numbers indicate disapproval, positive numbers approve
+                businessSupport: 0,
+                healthcareSupport: 0,
+                lockdownEffectiveness: 1, // 0 = lockdown lifted, 1 = lockdown in effect, 0.8 = lockdown in effect but less effective
+                vaccineEffectiveness: 1
             },
             responseHistory: []
         };

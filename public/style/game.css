@@ -38,6 +38,7 @@ body{
 
 /* Feedback */
 #media-feed{
+    width: 600px;
     max-width: 600px;
     padding: 2rem;
 }
