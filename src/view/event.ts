@@ -30,8 +30,12 @@ const createResponse = (response: Response, onResponse: Function) => {
 /*
     Populate event and show to player
 */
-export const showEvent = (evt: Event, onResponse: Function) => {
+export const showEvent = (date: Date, evt: Event, onResponse: Function) => {
     // Write content to modal
+    const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
+    const month = new Intl.DateTimeFormat('en', { month: 'numeric' }).format(date);
+
+    document.getElementById('date-indicator').innerHTML = `${month}/${year}`;
     document.getElementById('event-title').innerHTML = evt.name;
     document.getElementById('event-description').innerHTML = evt.description;
 

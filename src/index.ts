@@ -12,7 +12,8 @@ $(window).on('load', () => {
 
     // Initialise game engine
     const narrative = StoryEvents;
-    const gameController = new GameController(narrative);
+    const gameStart = new Date(Date.UTC(2021, 0, 1));
+    const gameController = new GameController(gameStart, narrative);
 
     // Await player response
     const onResponse = (responseId: string) => {
@@ -35,15 +36,15 @@ $(window).on('load', () => {
     const nextTurn = () => {
         const nextTurn = gameController.nextTurn();
 
-        if (isGameState(nextTurn)) {
+        if (isGameState(nextTurn.result)) {
             // TODO: handle game end (actual ending, choices per event)
             alert('Yay! Done!');
         } else {
-            if (nextTurn.length > 1) {
-                throw new Error('Expecting a single event for now');
+            if (nextTurn.result.length > 1) {
+                console.error('Next turn returned more than one event.');
                 alert('Error, check console');
             }
-            showEvent(nextTurn[0], onResponse);
+            showEvent(nextTurn.date, nextTurn.result[0], onResponse);
         }
     };
 

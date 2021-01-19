@@ -79,7 +79,7 @@ const simpleBinaryChoiceNarrative: Event[] = [
 describe("The operation of the game controller", () => {
 
     const narrative = simpleBinaryChoiceNarrative;
-    const gameController = new GameController(narrative);
+    const gameController = new GameController(new Date(), narrative);
 
     it("Is able to start", () => {
         expect(gameController.canProceedToNextTurn()).toBe(true);
@@ -87,15 +87,16 @@ describe("The operation of the game controller", () => {
 
     it("Returns the event for the first turn", () => {
         const nextTurn = gameController.nextTurn();
+        const result = nextTurn.result
 
         // Expect the event to match the first item on the narrative
-        if (isGameState(nextTurn)) {
+        if (isGameState(result)) {
             fail("Should have returned an event.")
         } else {
             expect(gameController.canProceedToNextTurn()).toBe(false)
-            expect(nextTurn.length).toBe(1);
-            expect(nextTurn[0].id).toEqual("start");
-            expect(nextTurn[0].name).toEqual("Start of narrative");
+            expect(result.length).toBe(1);
+            expect(result[0].id).toEqual("start");
+            expect(result[0].name).toEqual("Start of narrative");
         }
     })
 
@@ -107,14 +108,15 @@ describe("The operation of the game controller", () => {
 
     it("Presents the next event", () => {
         const nextTurn = gameController.nextTurn();
+        const result = nextTurn.result
         // Expect the event to match the first item on the narrative
-        if (isGameState(nextTurn)) {
+        if (isGameState(result)) {
             fail("Should have returned an event.")
         } else {
             expect(gameController.canProceedToNextTurn()).toBe(false)
-            expect(nextTurn.length).toBe(1);
-            expect(nextTurn[0].id).toEqual("left");
-            expect(nextTurn[0].name).toEqual("Left branch");
+            expect(result.length).toBe(1);
+            expect(result[0].id).toEqual("left");
+            expect(result[0].name).toEqual("Left branch");
         }
     });
 
@@ -124,12 +126,13 @@ describe("The operation of the game controller", () => {
         expect(gameController.canProceedToNextTurn()).toBe(true)
 
         const nextTurn = gameController.nextTurn();
-        if (isGameState(nextTurn)) {
-            expect(nextTurn.indicators.reputation).toEqual(["Left"]) // Reputation is consistent with the narrative
-            expect(nextTurn.turnNumber).toBe(3)
-            expect(nextTurn.responseHistory.length).toBe(2)
-            expect(nextTurn.responseHistory[0].responses[0].response.id).toEqual("start.goLeft")
-            expect(nextTurn.responseHistory[1].responses[0].response.id).toEqual("left.end")
+        const result = nextTurn.result
+        if (isGameState(result)) {
+            expect(result.indicators.reputation).toEqual(["Left"]) // Reputation is consistent with the narrative
+            expect(result.turnNumber).toBe(3)
+            expect(result.responseHistory.length).toBe(2)
+            expect(result.responseHistory[0].responses[0].response.id).toEqual("start.goLeft")
+            expect(result.responseHistory[1].responses[0].response.id).toEqual("left.end")
         } else {
             fail("Should have returned the game state signaling the end of the game.")
         }

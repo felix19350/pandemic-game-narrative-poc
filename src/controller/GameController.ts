@@ -3,17 +3,20 @@ import { Event } from '@src/model/Events';
 import { Response, ResponseSelectionResult } from '@src/model/Response';
 import cloneDeep from 'lodash/cloneDeep';
 import { Feedback } from '@src/model/Feedback';
+import { NextTurnState } from '@src/model/NextTurnState';
 
 export const isGameState = (nextTurn: Event[] | GameState): nextTurn is GameState => {
     return (nextTurn as any)?.turnNumber !== undefined;
 };
 
 export class GameController {
+    private startDate: Date;
     private gameState: GameState;
     private storyEvents: Event[];
     private eventsToRespond: Event[];
 
-    constructor(storyEvents: Event[]) {
+    constructor(startDate: Date, storyEvents: Event[]) {
+        this.startDate = startDate;
         this.storyEvents = storyEvents;
         this.eventsToRespond = [];
         this.gameState = {
@@ -34,21 +37,23 @@ export class GameController {
      * Advances the game to the next turn. Returns any new events for that turn, or the game state signifying that the game's
      * narrative has concluded, and the player can review his choices.
      */
-    public nextTurn(): Event[] | GameState {
+    public nextTurn(): NextTurnState {
         if (!this.canProceedToNextTurn()) {
             throw new Error(
                 'Cannot proceed to next turn. There are still pending events the player needs to respond to.'
             );
         }
         this.gameState.turnNumber += 1;
+        const updatedDate = new Date(this.startDate.setMonth(this.startDate.getMonth() + 1));
+        this.startDate = updatedDate;
         this.eventsToRespond = this.chooseNextEvents();
 
-        if (this.eventsToRespond.length === 0) {
-            // The story has run its course, game will end and the game state will be returned so the player can review his choices
-            return cloneDeep(this.gameState);
-        } else {
-            return cloneDeep(this.eventsToRespond);
-        }
+        const result = {
+            date: updatedDate,
+            result: this.eventsToRespond.length === 0 ? this.gameState : this.eventsToRespond
+        };
+
+        return cloneDeep(result);
     }
 
     /**
@@ -69,7 +74,7 @@ export class GameController {
         this.eventsToRespond = this.eventsToRespond.filter((evt) => evt.id !== response.eventId);
 
         // Update the game state
-        this.gameState.indicators = result.updatedIndicators;
+        this.gameState.indicators = cloneDeep(result.updatedIndicators);
         this.saveResponseToHistory(response, result);
 
         return result.feedback;
