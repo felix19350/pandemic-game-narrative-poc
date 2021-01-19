@@ -10,9 +10,9 @@
 const emergentFeedbackAssets = {
     publicSupport: {
         high: [
-            `<i class="fas fa-hand-peace"></i>`, 
-            `Finally on the right track <i class="fas fa-subway"></i>`, 
-            `We were already giving this virus too much attention anyway`, 
+            `<i class="fas fa-hand-peace"></i>`,
+            `Finally on the right track <i class="fas fa-subway"></i>`,
+            `We were already giving this virus too much attention anyway`,
             `#people #wellbeing first`
         ],
         low: [
@@ -27,7 +27,7 @@ const emergentFeedbackAssets = {
             `ECONOMY STARTS RECOVERING`,
             `LENDERS START TO SEE RETURNS ON PANDEMIC LOANS`,
             `MORE PEOPLE ARE BUYING HOUSES; INDICATIVE OF FINANCIAL STABILITY`,
-            `CONFIDENCE IN ACHIEVING A STABLE ECONOMY RISES`,
+            `CONFIDENCE IN ACHIEVING A STABLE ECONOMY RISES`
         ],
         low: [
             `CONTINUED COVID-19 MEASURES RISK BIGGEST DEPRESSION YET`,
@@ -43,7 +43,7 @@ const emergentFeedbackAssets = {
             `New cases drop; fewer people ill each day`
         ],
         low: [
-            `COVID-19 cases reach all time high!`, 
+            `COVID-19 cases reach all time high!`,
             `COVID-19 cases rising sharply!`,
             `'I worked 40 hours yesterday': Healthcare workers stressed by new cases`
         ]
