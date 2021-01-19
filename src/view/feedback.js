@@ -7,7 +7,7 @@
 */
 import * as $ from 'jquery';
 
-export function showFeedback(assets, nextTurn) {
+export function showFeedback(assets, onNextTurn) {
     // Show feedback to player
     function addToFeed() {
         const asset = assets.shift();
@@ -25,7 +25,7 @@ export function showFeedback(assets, nextTurn) {
                 btnEle.className = `btn btn-lg btn-continue`;
                 btnEle.innerHTML = `Continue to next month <i class="fas fa-arrow-right"></i>`;
                 btnEle.onclick = function () {
-                    nextTurn(); // Next turn
+                    onNextTurn(); // Next turn
                     $(btnEle).hide(); // Disable btn on click
                 };
                 document.getElementById('media-feed').appendChild(btnEle);

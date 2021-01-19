@@ -3,7 +3,6 @@ import { Event } from '@src/model/Events';
 import { Response, ResponseSelectionResult } from '@src/model/Response';
 import cloneDeep from 'lodash/cloneDeep';
 import { Feedback } from '@src/model/Feedback';
-import { Dictionary } from 'highcharts';
 
 export const isGameState = (nextTurn: Event[] | GameState): nextTurn is GameState => {
     return (nextTurn as any)?.turnNumber !== undefined;
@@ -70,15 +69,7 @@ export class GameController {
         this.eventsToRespond = this.eventsToRespond.filter((evt) => evt.id !== response.eventId);
 
         // Update the game state
-        function updateIndicators(updatedIndicators: Dictionary<string | Array<string>>, indicators: Indicators){
-            for (const [key, value] of Object.entries(updatedIndicators)) {
-                indicators[key] = value;
-            }
-            return indicators;
-        }
-        this.gameState.indicators = updateIndicators(result.updatedIndicators, this.gameState.indicators)
-
-        // Save response history
+        this.gameState.indicators = result.updatedIndicators;
         this.saveResponseToHistory(response, result);
 
         return result.feedback;
