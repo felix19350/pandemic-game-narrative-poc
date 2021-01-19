@@ -85,7 +85,7 @@ export class GameController {
     private chooseNextEvents(): Event[] {
         return this.storyEvents.filter((event) => event.canRun(this.gameState));
     }
-
+    /* To-Do: can use to make end game history */
     private saveResponseToHistory(response: Response, result: ResponseSelectionResult) {
         if (this.gameState.responseHistory.length < this.gameState.turnNumber) {
             this.gameState.responseHistory.push({ responses: [] });
