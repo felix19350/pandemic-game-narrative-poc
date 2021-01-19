@@ -18,7 +18,7 @@ export const StoryEvents = [
                         lockdownEffectiveness: 0,
                         publicSupport: 1,
                         businessSupport: 1,
-                        HealthcareSupport: -1
+                        healthcareSupport: -1
                     }, 
                     feedback: 'Lockdown is ended as the vaccine is deployed.' 
                 })

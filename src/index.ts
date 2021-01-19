@@ -28,7 +28,11 @@ $(window).on('load', () => {
                 feedbackAssets.businessSupport.low[0],
                 feedbackAssets.healthcareSupport.low[0]
             ], 
-            gameController.nextTurn // Button to call nextTurn function
+            function() { // Function for end turn button to call
+                const nextTurn = gameController.nextTurn();
+                console.log(nextTurn)
+                showEvent(nextTurn[0], playerResponse);
+            }
         );
     }
     
