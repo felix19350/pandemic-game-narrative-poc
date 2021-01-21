@@ -55,9 +55,9 @@ export class GameController {
     /**
      * Records the user's response to an event and produces an immediate feedback.
      */
-    public get currentGameState() : GameState {
-        return this.gameState
-    };
+    public get currentGameState(): GameState {
+        return this.gameState;
+    }
 
     public respondToEvent(responseId: String): CompletedEvent {
         const response = this.storyEvents.flatMap((it) => it.responses).find((it) => it.id === responseId);
@@ -77,8 +77,8 @@ export class GameController {
         this.gameState.indicators = result.updatedIndicators;
         this.saveResponseToHistory(response, result);
         //To-Do: Change history to save CompletedEvent objects instead
-        
-        const thisEvent =  this.storyEvents.find((it) => it.id === response.eventId);
+
+        const thisEvent = this.storyEvents.find((it) => it.id === response.eventId);
         return {
             event: thisEvent,
             feedback: result.feedback,

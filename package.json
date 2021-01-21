@@ -6,7 +6,7 @@
     "scripts": {
         "start:dev": "webpack serve --config webpack.config.dev.js",
         "build": "webpack --mode=production --config webpack.config.prod.js",
-        "lint": "prettier --config .prettierrc 'src/**/*.(ts|js)' --write",
+        "lint": "prettier --config .prettierrc 'src/**/*.(ts|js)' '__tests__/**/*.(ts|js)' --write",
         "test": "jest --config=jest.config.ts --runInBand --detectOpenHandles --colors --verbose"
     },
     "repository": {

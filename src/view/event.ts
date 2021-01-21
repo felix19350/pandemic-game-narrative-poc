@@ -12,10 +12,9 @@ const createResponse = (response: Response, onResponse: Function, enabled: Boole
     const btn = document.createElement('BUTTON');
     btn.innerHTML = response.name;
     div.appendChild(btn);
-    
-    // Check if response is applicable
-    if(enabled){ 
 
+    // Check if response is applicable
+    if (enabled) {
         // Enable on-click function
         btn.className = 'btn btn-response';
         btn.onclick = function () {
@@ -23,7 +22,7 @@ const createResponse = (response: Response, onResponse: Function, enabled: Boole
             $('#event-modal').modal('hide');
         };
 
-        // Add labels to describe response effects 
+        // Add labels to describe response effects
         const UL = document.createElement('UL');
         div.appendChild(UL);
         response.label.forEach(function (effect) {
@@ -31,9 +30,7 @@ const createResponse = (response: Response, onResponse: Function, enabled: Boole
             LI.innerHTML = effect;
             UL.appendChild(LI);
         });
-
     } else {
-
         // Disable and give explanation
         btn.disabled = true; // NOTE: BS disable btn utility so not recognised by ts ?
         btn.className = 'btn btn-response-disabled';
@@ -43,7 +40,6 @@ const createResponse = (response: Response, onResponse: Function, enabled: Boole
         LI.style.fontWeight = 'bold';
         LI.innerHTML = 'You cannot select this option because of your reputation';
         UL.appendChild(LI);
-
     }
 };
 

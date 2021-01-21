@@ -11,8 +11,8 @@ export interface Event {
 }
 
 export interface CompletedEvent {
-    event: Event,
-    response: Response,
-    feedback: Feedback,
-    reputation: Reputation[]
+    event: Event;
+    response: Response;
+    feedback: Feedback;
+    reputation: Reputation[];
 }

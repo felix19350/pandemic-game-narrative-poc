@@ -7,7 +7,6 @@ import { StoryEvents } from './assets/StoryEvents';
 import { CompletedEvent } from './model/Events';
 
 $(window).on('load', () => {
-
     // Initialise game engine
     const narrative = StoryEvents;
     const gameController = new GameController(narrative);
@@ -15,22 +14,25 @@ $(window).on('load', () => {
     // Await player response
     const onResponse = (responseId: string) => {
         // Carry out player's response
-        const competedEvent = gameController.respondToEvent(responseId); 
+        const competedEvent = gameController.respondToEvent(responseId);
 
         // Show feedback to player
-        if ( competedEvent.reputation.length > 0 ) {  // Show reputation before feedback to response
-            showReputation(competedEvent.reputation)
-            $('#dismiss-reputation').one('click', function(){ playerFeedback(competedEvent, nextTurn) })
-        } else { // Show feedback to response
+        if (competedEvent.reputation.length > 0) {
+            // Show reputation before feedback to response
+            showReputation(competedEvent.reputation);
+            $('#dismiss-reputation').one('click', function () {
+                playerFeedback(competedEvent, nextTurn);
+            });
+        } else {
+            // Show feedback to response
             playerFeedback(competedEvent, nextTurn);
         }
-
     };
 
-   // Give feedback to player
-    const playerFeedback = (competedEvent: CompletedEvent, onNextTurn: Function) => { 
-        showFeedback(competedEvent.event.name, competedEvent.feedback, onNextTurn) 
-    }
+    // Give feedback to player
+    const playerFeedback = (competedEvent: CompletedEvent, onNextTurn: Function) => {
+        showFeedback(competedEvent.event.name, competedEvent.feedback, onNextTurn);
+    };
 
     // Call next turn
     const nextTurn = () => {
