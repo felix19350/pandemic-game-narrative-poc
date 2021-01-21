@@ -31,6 +31,22 @@ body{
     color: var(--col-secondary);
     text-shadow:rgba(248, 248, 255, 0.5);
 }
+.btn-response-disabled{
+    font-weight: 500;
+    font-size: 1.1rem;
+    background-color: var(--col-dark);
+    color: var(--col-light);
+    opacity: 1 !important;
+    text-shadow:rgba(248, 248, 255, 0.5);
+}
+.btn-response-disabled:hover{
+    font-weight: 500;
+    font-size: 1.1rem;
+    background-color:var(--col-dark);
+    color: var(--col-light);
+    opacity: 1 !important;
+    text-shadow:rgba(248, 248, 255, 0.5);
+}
 .btn-continue{
     font-weight: 500;
     font-size: 1.5rem;
@@ -96,6 +112,10 @@ body{
 /* Event */
 #event-modal{
     background-color: var(--col-highlight);
+    color: var(--col-dark)
+}
+#reputation-modal{
+    background-color: var(--col-primary);
     color: var(--col-dark)
 }
 .modal-content, .modal-header, .modal-body, .modal-footer{

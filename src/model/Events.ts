@@ -1,4 +1,4 @@
-import { GameState } from './GameState';
+import { GameState, Reputation } from './GameState';
 import { Response } from './Response';
 import { Feedback } from './Feedback';
 
@@ -13,5 +13,6 @@ export interface Event {
 export interface CompletedEvent {
     event: Event,
     response: Response,
-    feedback: Feedback
+    feedback: Feedback,
+    reputation: Reputation[]
 }

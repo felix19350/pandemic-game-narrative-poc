@@ -7,7 +7,7 @@ export interface GameState {
 }
 
 export interface Indicators {
-    reputation: string[];
+    reputation: Reputation[];
     publicSupport: number; // negative numbers indicate disapproval, positive numbers approve
     businessSupport: number;
     healthcareSupport: number;
@@ -17,4 +17,11 @@ export interface Indicators {
 
 export interface ResponseHistory {
     responses: { response: Response; result: ResponseSelectionResult }[];
+}
+
+export interface Reputation {
+    id: string;
+    name: string;
+    icon: string;
+    description: string;
 }

@@ -8,6 +8,7 @@
 import * as $ from 'jquery';
 import {Feedback} from '@src/model/Feedback';
 import {generateRandomUsername} from '../assets/SocialMediaUsernames';
+import { Reputation } from '@src/model/GameState';
 
 function showToPlayer(ele: HTMLElement){
     document.getElementById('media-feed').appendChild(ele); // Append to feed
@@ -75,4 +76,12 @@ export function showFeedback(eventNm: string, feedback: Feedback, onNextTurn: Fu
         (fn, i) => 
             setTimeout(fn, i * 500)
     );
+}
+
+export function showReputation(reputation: Reputation[]){
+    const r = reputation[0] // Select reputation from list
+    $('#reputation-title').text(r.name)
+    $('#reputation-icon').html(r.icon)
+    $('#reputation-description').text(r.description)
+    $('#reputation-modal').modal('show')
 }

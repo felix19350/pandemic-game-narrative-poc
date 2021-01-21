@@ -100,6 +100,5 @@ const listOfUsernames = [
 ];
 
 export const generateRandomUsername = () => {
-    console.log(listOfUsernames)
     return(listOfUsernames.pop());
 }

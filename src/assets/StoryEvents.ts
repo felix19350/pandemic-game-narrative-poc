@@ -127,7 +127,7 @@ export const StoryEvents: Event[] = [
                     'Gain public support',
                     'Gain business support',
                     'Lose healthcare support',
-                    'You will gain a reputation'
+                    'You may gain a reputation'
                 ],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
@@ -137,7 +137,12 @@ export const StoryEvents: Event[] = [
                         publicSupport: 1,
                         businessSupport: 1,
                         healthcareSupport: -1,
-                        reputation: ['Flip-flopper']
+                        reputation: [{
+                            id: 'flipflopper',
+                            name: `Flip-flopper`,
+                            icon: `<i class="fas fa-socks"></i>`,
+                            description: `You have gained a reputation as a flip-flopper because you changed your mind on your lockdown polioc.`
+                        }]
                     },
                     feedback: {
                         toResponse: 'Lifted lockdown early',
@@ -180,15 +185,23 @@ export const StoryEvents: Event[] = [
                 id: 'open02casesPeak.continue',
                 eventId: 'open02casesPeak',
                 name: 'We ended lockdown and we will stick to our decision.',
-                label: [`Lose healthcare support`],
+                label: [
+                    `Lose healthcare support`, 
+                    'You may gain a reputation'
+                ],
                 isApplicable: (gameState: GameState) => {
-                    return !gameState.indicators.reputation.includes('Flip-flopper'); // Only available if not flip flopper
+                    return gameState.indicators.reputation == []; // Only available if not flip flopper
                 },
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
                         healthcareSupport: 0,
-                        reputation: ['Stubborn']
+                        reputation: [{
+                            id: 'stubborn',
+                            name: `Stubborn`,
+                            icon: `<i class="fas fa-fire"></i>`,
+                            description: `You have gained a reputation for making a decision and sticking to it... no matter the cost...`
+                        }]
                     },
                     feedback: {
                         toResponse: 'Stuck to the decision to end lockdown.',
@@ -216,7 +229,12 @@ export const StoryEvents: Event[] = [
                         publicSupport: -1,
                         businessSupport: -1,
                         healthcareSupport: -1,
-                        reputation: ['Flip-flopper']
+                        reputation: [{
+                            id: 'flipflopper',
+                            name: `Flip-flopper`,
+                            icon: `<i class="fas fa-socks"></i>`,
+                            description: `You have gained a reputation as a flip-flopper because you changed your mind on your lockdown policy.`
+                        }]
                     },
                     feedback: {
                         toResponse: 'Lockdown re-enforced',
@@ -270,7 +288,12 @@ export const StoryEvents: Event[] = [
                         ...gameState.indicators,
                         publicSupport: -1,
                         healthcareSupport: 1,
-                        reputation: ['Resolved']
+                        reputation: [{
+                            id: 'resolved',
+                            name: `Resolved`,
+                            icon: `<i class="fas fa-shield-virus"></i>`,
+                            description: `You have gained a reputation for being resolved because you refused to compromise on lockdown regardless of the situation.`
+                        }]
                     },
                     feedback: {
                         toResponse: 'No exceptions were made for lockdown.',

@@ -55,6 +55,10 @@ export class GameController {
     /**
      * Records the user's response to an event and produces an immediate feedback.
      */
+    public get currentGameState() : GameState {
+        return this.gameState
+    };
+
     public respondToEvent(responseId: String): CompletedEvent {
         const response = this.storyEvents.flatMap((it) => it.responses).find((it) => it.id === responseId);
         if (!response) {
@@ -78,7 +82,8 @@ export class GameController {
         return {
             event: thisEvent,
             feedback: result.feedback,
-            response: response
+            response: response,
+            reputation: result.updatedIndicators.reputation
         };
     }
 
