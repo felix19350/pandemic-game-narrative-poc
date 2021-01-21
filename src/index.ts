@@ -3,12 +3,9 @@ import 'bootstrap/js/dist/modal';
 import { showFeedback } from './view/feedback';
 import { showEvent } from './view/event';
 import { GameController, isGameState } from './controller/GameController';
-import { compileAssets } from './assets/feedback';
 import { StoryEvents } from './assets/StoryEvents';
 
 $(window).on('load', () => {
-    // Initialise assets
-    const feedbackAssets = compileAssets(); // compile feedback assets into usable HTML elements
 
     // Initialise game engine
     const narrative = StoryEvents;
@@ -16,19 +13,8 @@ $(window).on('load', () => {
 
     // Await player response
     const onResponse = (responseId: string) => {
-        // Carry out player's response
-        const feedback = gameController.respondToEvent(responseId);
-
-        // Show feedback to player
-        showFeedback(
-            [
-                document.createTextNode(feedback), // Specific feedback from event
-                feedbackAssets.publicSupport.low[0], // Examples of emergent feedback
-                feedbackAssets.businessSupport.low[0],
-                feedbackAssets.healthcareSupport.low[0]
-            ],
-            nextTurn // Function for end turn button to call
-        );
+        const competedEvent = gameController.respondToEvent(responseId); // Carry out player's response
+        showFeedback(competedEvent.event.name, competedEvent.feedback, nextTurn); // Show feedback from response
     };
 
     // Call next turn

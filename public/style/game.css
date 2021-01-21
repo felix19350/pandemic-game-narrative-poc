@@ -37,6 +37,14 @@ body{
     background-color: var(--col-primary);
     color: var(--col-light);
     text-shadow:rgba(248, 248, 255, 0.5);
+    margin-bottom: 4rem;
+}
+.btn-continue:Hover{
+    font-weight: 500;
+    font-size: 1.5rem;
+    background-color: var(--col-light);
+    color: var(--col-primary);
+    text-shadow:rgba(248, 248, 255, 0.5);
 }
 *{
     font-family: 'Nunito', sans-serif;
@@ -49,12 +57,25 @@ body{
     max-width: 600px;
     padding: 2rem;
 }
+.feedback-response{
+    color: var(--col-dark);
+    background-color: var(--col-highlight);
+    border-radius: 5px;
+    text-align: center;
+}
+.feedback-response-choice{
+    font-weight: bold;
+}
 .feedback-message{
     padding: 2rem;
     margin: 1rem;
     border: 1px solid rgba(248, 248, 255, 0.5);
     background-color: ghostwhite;
     border-radius: 10px;
+    font-weight: bold;
+}
+.feedback-message-emoji{
+    font-size: 2rem;
 }
 .feedback-news{
     padding: 1rem;

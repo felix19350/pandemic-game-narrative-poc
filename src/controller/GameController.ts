@@ -1,8 +1,9 @@
 import { GameState, Indicators } from '@src/model/GameState';
-import { Event } from '@src/model/Events';
+import { Event, CompletedEvent } from '@src/model/Events';
 import { Response, ResponseSelectionResult } from '@src/model/Response';
 import cloneDeep from 'lodash/cloneDeep';
 import { Feedback } from '@src/model/Feedback';
+import { StoryEvents } from '@src/assets/StoryEvents';
 
 export const isGameState = (nextTurn: Event[] | GameState): nextTurn is GameState => {
     return (nextTurn as any)?.turnNumber !== undefined;
@@ -54,7 +55,7 @@ export class GameController {
     /**
      * Records the user's response to an event and produces an immediate feedback.
      */
-    public respondToEvent(responseId: String): Feedback {
+    public respondToEvent(responseId: String): CompletedEvent {
         const response = this.storyEvents.flatMap((it) => it.responses).find((it) => it.id === responseId);
         if (!response) {
             throw new Error(`Cannot find response with id: ${responseId}`);
@@ -71,8 +72,14 @@ export class GameController {
         // Update the game state
         this.gameState.indicators = result.updatedIndicators;
         this.saveResponseToHistory(response, result);
-
-        return result.feedback;
+        //To-Do: Change history to save CompletedEvent objects instead
+        
+        const thisEvent =  this.storyEvents.find((it) => it.id === response.eventId);
+        return {
+            event: thisEvent,
+            feedback: result.feedback,
+            response: response
+        };
     }
 
     /**
