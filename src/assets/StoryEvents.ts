@@ -25,7 +25,12 @@ export const StoryEvents: Event[] = [
                         businessSupport: 1,
                         healthcareSupport: -1
                     },
-                    feedback: 'Lockdown is ended as the vaccine is deployed.'
+                    feedback: {
+                        toResponse: 'Lockdown is ended as the vaccine is deployed.',
+                        fromPublic:  `Finally on the right track <i class="feedback-message-emoji fas fa-subway"></i>`,
+                        fromBusiness: `CONFIDENCE IN ACHIEVING A STABLE ECONOMY RISES`,
+                        fromHealthcare: `COVID-19 cases rising sharply!`
+                    }
                 })
             },
             {
@@ -36,7 +41,12 @@ export const StoryEvents: Event[] = [
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: gameState.indicators,
-                    feedback: 'Lockdown remains in effect as the vaccine is deployed.'
+                    feedback: {
+                        toResponse: 'Lockdown remains in effect as the vaccine is deployed.',
+                        fromPublic: `<i class="feedback-message-emoji fas fa-meh-rolling-eyes"></i> - me this year`,
+                        fromBusiness:  `CONTINUED COVID-19 MEASURES RISK BIGGEST DEPRESSION YET`,
+                        fromHealthcare: `COVID-19 response gives nurses some much needed and rare downtime as cases drop.`
+                    }
                 })
             }
         ]
@@ -66,7 +76,12 @@ export const StoryEvents: Event[] = [
                         ...gameState.indicators,
                         businessSupport: 1
                     },
-                    feedback: 'Announced a digital golden age'
+                    feedback: {
+                        toResponse: 'Announced a golden age for digital business.',
+                        fromPublic: `<i class="feedback-message-emoji fas fa-grin-squint"></i>`,
+                        fromBusiness: `'DIGITAL SERVICES: OUR ECONOMIC SAVIOUR?'`,
+                        fromHealthcare: `COVID-19 cases reach all time high!`
+                    }
                 })
             },
             {
@@ -82,7 +97,12 @@ export const StoryEvents: Event[] = [
                         businessSupport: -1,
                         healthcareSupport: -1
                     },
-                    feedback: 'Reconsidered lockdown'
+                    feedback: {
+                        toResponse: 'Reconsidered lockdown',
+                        fromPublic: '@Ieader did you just admit your mistake?!',
+                        fromBusiness: ' " INDICISIVE LEADER" CREATES ECONOMIC UNCERTAINTY ',
+                        fromHealthcare: `'I worked 40 hours yesterday': Healthcare workers stressed by new cases`
+                    }
                 })
             }
         ]
@@ -107,7 +127,7 @@ export const StoryEvents: Event[] = [
                     'Gain public support',
                     'Gain business support',
                     'Lose healthcare support',
-                    'You will gain a reputation'
+                    'You may gain a reputation'
                 ],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
@@ -117,9 +137,19 @@ export const StoryEvents: Event[] = [
                         publicSupport: 1,
                         businessSupport: 1,
                         healthcareSupport: -1,
-                        reputation: ['Flip-flopper']
+                        reputation: [{
+                            id: 'flipflopper',
+                            name: `Flip-flopper`,
+                            icon: `<i class="fas fa-socks"></i>`,
+                            description: `You have gained a reputation as a flip-flopper because you changed your mind on your lockdown polioc.`
+                        }]
                     },
-                    feedback: 'Lifted lockdown early'
+                    feedback: {
+                        toResponse: 'Lifted lockdown early',
+                        fromPublic: `#people #wellbeing first <i class="feedback-message-emoji fas fa-hand-peace"></i>`,
+                        fromBusiness: `LENDERS START TO SEE RETURNS ON PANDEMIC LOANS`,
+                        fromHealthcare:  `Is wellbeing more important than health? Socialisation increases COVID-19 risk`
+                    }
                 })
             },
             {
@@ -130,7 +160,12 @@ export const StoryEvents: Event[] = [
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: gameState.indicators,
-                    feedback: 'Sympathised but continued lockdown.'
+                    feedback: {
+                        toResponse: 'Sympathised but continued lockdown.',
+                        fromPublic:  `<i class="feedback-message-emoji fas fa-hand-middle-finger"></i>.`,
+                        fromBusiness: `PANDEMIC TRIGGERS GLOBAL RECESSION`,
+                        fromHealthcare: `COV-SARS-19 cases dip to all time low`
+                    }
                 })
             }
         ]
@@ -150,17 +185,30 @@ export const StoryEvents: Event[] = [
                 id: 'open02casesPeak.continue',
                 eventId: 'open02casesPeak',
                 name: 'We ended lockdown and we will stick to our decision.',
-                label: [`Lose healthcare support`],
+                label: [
+                    `Lose healthcare support`, 
+                    'You may gain a reputation'
+                ],
                 isApplicable: (gameState: GameState) => {
-                    return !gameState.indicators.reputation.includes('Flip-flopper'); // Only available if not flip flopper
+                    return gameState.indicators.reputation == []; // Only available if not flip flopper
                 },
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
                         healthcareSupport: 0,
-                        reputation: ['Stubborn']
+                        reputation: [{
+                            id: 'stubborn',
+                            name: `Stubborn`,
+                            icon: `<i class="fas fa-fire"></i>`,
+                            description: `You have gained a reputation for making a decision and sticking to it... no matter the cost...`
+                        }]
                     },
-                    feedback: 'Stuck to the decision to end lockdown.'
+                    feedback: {
+                        toResponse: 'Stuck to the decision to end lockdown.',
+                        fromPublic: `We were already giving this virus too much attention anyway`,
+                        fromBusiness: `ECONOMY SHOWS SIGNS OF RECOVERY`,
+                        fromHealthcare: 'Cases rising: Every day sets a new record high'
+                    }
                 })
             },
             {
@@ -181,9 +229,19 @@ export const StoryEvents: Event[] = [
                         publicSupport: -1,
                         businessSupport: -1,
                         healthcareSupport: -1,
-                        reputation: ['Flip-flopper']
+                        reputation: [{
+                            id: 'flipflopper',
+                            name: `Flip-flopper`,
+                            icon: `<i class="fas fa-socks"></i>`,
+                            description: `You have gained a reputation as a flip-flopper because you changed your mind on your lockdown policy.`
+                        }]
                     },
-                    feedback: 'Lockdown re-enforced'
+                    feedback: {
+                        toResponse: 'Lockdown re-enforced',
+                        fromPublic: `So sick of this.`,
+                        fromBusiness: '"CONFUSED LOCKDOWN POLICY" MAKES BUSINESS UNPREDICTABLE',
+                        fromHealthcare: 'Number of new cases falls for first time in a month'
+                    }
                 })
             }
         ]
@@ -203,31 +261,46 @@ export const StoryEvents: Event[] = [
                 id: 'lockdown03wellbeing.relax',
                 eventId: 'lockdown03wellbeing',
                 name: 'Relax lockdown for individuals in crisis',
-                label: [`Lockdown becomes less effective`, `Gain public support`, `Gain healthcare support`],
+                label: [`Lockdown becomes less effective`, `Gain public support`],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
                         lockdownEffectiveness: 0.8,
-                        publicSupport: 1,
-                        healthcareSupport: 1
+                        publicSupport: 1
                     },
-                    feedback: 'Relaxed lockdown for individuals in crisis'
+                    feedback: {
+                        toResponse: 'Relaxed lockdown for individuals in crisis',
+                        fromPublic: `2020 is <i class="feedback-message-emoji fas fa-tired"></i>`,
+                        fromBusiness:   `COMPANIES CONTINUE TO REPORT 'UNPROFITABLE CONDITIONS'`,
+                        fromHealthcare: `Health minister: COVID-19 remains a threat but is "under control"`
+                    }
                 })
             },
             {
                 id: 'lockdown03wellbeing.continue',
                 eventId: 'lockdown03wellbeing',
                 name: 'No exceptions. People will take advantage...',
-                label: [`Lose public support`],
+                label: [`Lockdown remains in effect`, `Lose public support`, `Gain healthcare support`],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
                         publicSupport: -1,
-                        reputation: ['Resolved']
+                        healthcareSupport: 1,
+                        reputation: [{
+                            id: 'resolved',
+                            name: `Resolved`,
+                            icon: `<i class="fas fa-shield-virus"></i>`,
+                            description: `You have gained a reputation for being resolved because you refused to compromise on lockdown regardless of the situation.`
+                        }]
                     },
-                    feedback: 'No exceptions were made for lockdown.'
+                    feedback: {
+                        toResponse: 'No exceptions were made for lockdown.',
+                        fromPublic: `<i class="feedback-message-emoji fas fa-flushed"></i>`,
+                        fromBusiness:   `COMPANIES CONTINUE TO REPORT 'UNPROFITABLE CONDITIONS'`,
+                        fromHealthcare: `Everyone is "in crisis" anyway: Cynical response to wellbeing needs may sooner end pandemic`
+                    }
                 })
             }
         ]

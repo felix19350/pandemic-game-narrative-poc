@@ -23,10 +23,7 @@
     <!-- Main game panel -->
     <div class="container-fluid">
         <div class="w-100 d-flex flex-row justify-content-center">
-            <div class='d-flex flex-column' id='media-feed'>
-                <h1 class='col-light'>Welcome to the game</h1>
-                <h5 class='col-light'>Date: 01/2021</h5>
-            </div>
+            <div class='d-flex flex-column' id='media-feed'></div>
         </div>
     </div>
 
@@ -45,12 +42,15 @@
     <!-- Reputation modal -->
     <div class="modal" tabindex="-1" role="dialog" id='reputation-modal' data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog" role="document">
-            <h5>Event:</h5>
+            <h5>Reputation gained:</h5>
             <div class="modal-content align-items-center justify-content-center">
-                <h1 class="modal-header" id='reputation-title'></h1>
-                <h5 class="modal-body" id='reputation-description'></h5>
+                <h1 class="modal-header text-center display-4" id='reputation-title'></h1>
+                <div class="modal-body text-center">
+                    <h1 id='reputation-icon'></h1>
+                    <h3 id='reputation-description'></h3>
+                </div>
                 <div class="modal-footer d-flex flex-column justify-content-start align-items-start">
-                    <button class='mb-4 btn btn-light btn-lg' id='dismiss-splash'>Continue</button>
+                    <button class='mb-4 btn btn-light btn-lg' data-dismiss="modal" id='dismiss-reputation'>Continue</button>
                 </div>
             </div>
         </div>
