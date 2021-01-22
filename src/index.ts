@@ -52,6 +52,8 @@ $(window).on('load', () => {
     };
 
     // Show first turn
-    $('#dismiss-splash').click( () => { nextTurn(); $('#splash').hide(); });
+    $('#dismiss-splash').click(() => {
+        nextTurn();
+        $('#splash').hide();
+    });
 });
-

@@ -51,7 +51,7 @@ export const showEvent = (evt: Event, onResponse: Function, gameState: GameState
     document.getElementById('event-title').innerHTML = evt.name;
     document.getElementById('event-description').innerHTML = evt.description;
 
-    // Add responses to modal   
+    // Add responses to modal
     document.getElementById('event-responses').innerHTML = '';
     evt.responses.forEach((response) => createResponse(response, onResponse, response.isApplicable(gameState)));
 
