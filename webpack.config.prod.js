@@ -19,7 +19,7 @@ module.exports = {
     plugins: [
         // new BundleAnalyzerPlugin(),
         new CopyPlugin({
-            patterns: [{ from: 'public/index.html', to: 'index.html' }, { from: 'public/style/*.css' }]
+            patterns: [{ from: 'public/index.html', to: 'index.html' }, { from: 'public/style/*.css' },  { from: 'public/img/endscreen.png', to:'img/endscreen.png' }]
         })
     ],
     module: {

@@ -56,14 +56,44 @@
         </div>
     </div>
 
+    <!-- Endscreen modal -->
+    <div class="modal" tabindex="-1" role="dialog" id='endscreen' data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <h1 class="modal-header text-center display-4" >Endscreen</h1>
+            <div class="modal-content align-items-center justify-content-center">
+                <div class="modal-body text-center">
+                    <div class='w-100 vh-100 d-flex flex-column justify-content-around align-items-center' style='padding: 20%; position: absolute; top:0; left:0; z-index: 99; background: gold;'>
+                        <div>
+                            <h5 class='text-center'><strong>You will be able to compare your responses to others</strong></h5>
+                            <img src='img/endscreen.png' style='height: 600px; width: auto;'>
+                        </div>
+                        <a href='index.html'><button class='mb-4 btn btn-light btn-lg' style='font-size: 2rem;'>Play again</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Splash screen -->
-    <div id='splash' style='display: none;'>
+    <div id='splash' style='z-index: 99;'>
         <div class='w-100 vh-100 d-flex flex-column justify-content-around align-items-center' style='padding: 20%; position: absolute; top:0; left:0; z-index: 99; background: gold;'>
             <div>
-                <h1 class='display-4 text-center'>Pandemic game</h1>
-                <p class='p-2 mt-4 text-center'> 
-                    Play as the leader of a country - make decisions in response to COVID-19 events
-                </p>
+                <h1 class='pb-3 display-4 text-center'>Pandemic game</h1>
+                <h5 class='text-center'><strong>How to play</strong></h5>
+                <ul style='width: 400px;'>
+                    <li class='p-2'>
+                        You play as the leader of your country
+                    </li>
+                    <li class='p-2'>
+                        Make <strong>decisions</strong> in response to <strong>events</strong> 
+                    </li>
+                    <li class='p-2'>
+                        Your decisions have <strong>consequences</strong>
+                    </li>
+                    <li class='p-2'>
+                        You will have to choose whether to prioritise the <strong>public</strong> (wellbeing), <strong>businesses</strong> (economy) or <strong>healthcare</strong> (COVID-19 outcomes)
+                    </li>
+                </ul>
             </div>
             <button class='mb-4 btn btn-light btn-lg' id='dismiss-splash' style='font-size: 2rem;'>Play</button>
         </div>

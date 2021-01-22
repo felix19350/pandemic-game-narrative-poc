@@ -118,6 +118,10 @@ body{
     background-color: var(--col-primary);
     color: var(--col-dark)
 }
+#endscreen{
+    background-color: var(--col-highlight);
+    color: var(--col-dark)
+}
 .modal-content, .modal-header, .modal-body, .modal-footer{
     border: none;
     background: none;

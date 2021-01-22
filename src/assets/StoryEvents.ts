@@ -189,7 +189,7 @@ export const StoryEvents: Event[] = [
                 name: 'We ended lockdown and we will stick to our decision.',
                 label: [`Lose healthcare support`, 'You may gain a reputation'],
                 isApplicable: (gameState: GameState) => {
-                    return gameState.indicators.reputation == []; // Only available if not flip flopper
+                    return gameState.indicators.reputation.length === 0; // Only available if not flip flopper
                 },
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {

@@ -38,7 +38,7 @@ const createResponse = (response: Response, onResponse: Function, enabled: Boole
         div.appendChild(UL);
         const LI = document.createElement('LI');
         LI.style.fontWeight = 'bold';
-        LI.innerHTML = 'You cannot select this option because of your reputation';
+        LI.innerHTML = `You cannot select this option because of your reputation as a Flip-Flopper <i class="fas fa-socks"></i>`;
         UL.appendChild(LI);
     }
 };
@@ -51,7 +51,7 @@ export const showEvent = (evt: Event, onResponse: Function, gameState: GameState
     document.getElementById('event-title').innerHTML = evt.name;
     document.getElementById('event-description').innerHTML = evt.description;
 
-    // Add responses to modal
+    // Add responses to modal   
     document.getElementById('event-responses').innerHTML = '';
     evt.responses.forEach((response) => createResponse(response, onResponse, response.isApplicable(gameState)));
 

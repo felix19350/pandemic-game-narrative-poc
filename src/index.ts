@@ -41,7 +41,7 @@ $(window).on('load', () => {
 
         if (isGameState(nextTurn)) {
             // TODO: handle game end (actual ending, choices per event)
-            alert('Yay! Done!');
+            $('#endscreen').modal('show');
         } else {
             if (nextTurn.length > 1) {
                 throw new Error('Expecting a single event for now');
@@ -52,5 +52,6 @@ $(window).on('load', () => {
     };
 
     // Show first turn
-    nextTurn();
+    $('#dismiss-splash').click( () => { nextTurn(); $('#splash').hide(); });
 });
+
