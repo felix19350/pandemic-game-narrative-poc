@@ -2,56 +2,37 @@ import { Event } from '@src/model/Events';
 import { GameState } from '@src/model/GameState';
 import { Response } from '@src/model/Response';
 import * as $ from 'jquery';
+import * as Handlebars from 'handlebars';
 
-const createResponse = (response: Response, onResponse: Function, enabled: Boolean) => {
-    // Create container
-    const div = document.createElement('DIV');
-    document.getElementById('event-responses').appendChild(div);
+const createResponse = (response: Response, onResponse: Function, enabled: boolean) => {
+    const html = `
+        <div>
+            <button class='btn btn-response' 
+                {{#if enabled}} id='{{r.id}}' {{else}} disabled {{/if}}>
+                {{r.name}} 
+            </button>
+            <ul class='effect-list'>
+                {{#if enabled}} {{#each r.label}} <li> {{this}} </li> {{/each}}
+                {{else}} You cannot select this option because of your reputation as a Flip-Flopper <i class="fas fa-socks"></i> {{/if}}
+            </ul>
+        </div>
+    `
 
-    // Add response buttons
-    const btn = document.createElement('BUTTON');
-    btn.innerHTML = response.name;
-    div.appendChild(btn);
-
-    // Check if response is applicable
-    if (enabled) {
-        // Enable on-click function
-        btn.className = 'btn btn-response';
-        btn.onclick = function () {
-            onResponse(response.id);
-            $('#event-modal').modal('hide');
-        };
-
-        // Add labels to describe response effects
-        const UL = document.createElement('UL');
-        div.appendChild(UL);
-        response.label.forEach(function (effect) {
-            const LI = document.createElement('LI');
-            LI.innerHTML = effect;
-            UL.appendChild(LI);
-        });
-    } else {
-        // Disable and give explanation
-        btn.disabled = true; // NOTE: BS disable btn utility so not recognised by ts ?
-        btn.className = 'btn btn-response-disabled';
-        const UL = document.createElement('UL');
-        div.appendChild(UL);
-        const LI = document.createElement('LI');
-        LI.style.fontWeight = 'bold';
-        LI.innerHTML = `You cannot select this option because of your reputation as a Flip-Flopper <i class="fas fa-socks"></i>`;
-        UL.appendChild(LI);
-    }
+    // Create button
+    const template = Handlebars.compile(html);
+    document.getElementById('event-responses').insertAdjacentHTML('beforeend', template( { r: response, enabled: enabled } ));
+    if(enabled){ $(`#${response.id}`).click( function () { onResponse(response.id) } )};
 };
 
 /*
     Populate event and show to player
 */
 export const showEvent = (evt: Event, onResponse: Function, gameState: GameState) => {
-    // Write content to modal
+    // Describe event
     document.getElementById('event-title').innerHTML = evt.name;
     document.getElementById('event-description').innerHTML = evt.description;
 
-    // Add responses to modal
+    // Add response buttons
     document.getElementById('event-responses').innerHTML = '';
     evt.responses.forEach((response) => createResponse(response, onResponse, response.isApplicable(gameState)));
 

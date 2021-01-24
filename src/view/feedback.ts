@@ -9,70 +9,53 @@ import * as $ from 'jquery';
 import { Feedback } from '@src/model/Feedback';
 import { generateRandomUsername } from '../assets/SocialMediaUsernames';
 import { Reputation } from '@src/model/GameState';
+import * as Handlebars from 'handlebars';
 
-function showToPlayer(ele: HTMLElement) {
-    document.getElementById('media-feed').appendChild(ele); // Append to feed
+// Templates for feedback items
+const responseToEvent = Handlebars.compile(`
+    <div class='p-2 feedback-response'>
+        <h5> {{eventNm}} </h5>
+        <h2 class='feedback-response-choice'> {{txt}} </h2>
+    </div>
+`);
+const message = Handlebars.compile(`
+    <div class='feedback-message'>
+        <p style='color: #1589FF'> <i class="fas fa-user"></i> ${generateRandomUsername()} </p>
+        <p class='text-center' style='font-weight: bold; font-size: 1.2rem;'> {{{txt}}} </p>
+        <p class='text-right'> ${Math.floor(Math.random() * 100)} <i class="fas fa-heart col-primary"></i> </p>
+    </div>
+`);
+const newsArticle = Handlebars.compile(`
+    <div class='feedback-news'>
+        <p> <em> Financial times </em> <br> <hr> {{txt}} </p>
+    </div>
+`);
+const medicalReport = Handlebars.compile(`
+    <div class='feedback-report'>
+        <p> <em> BMJ </em> <br> <hr> {{txt}} </p>
+    </div>
+`);
+const endTurnButton = Handlebars.compile(`
+    <button class='btn btn-lg btn-continue' id='{{id}}'> Continue to next month <i class="fas fa-arrow-right"> </i> </p>
+`);
+
+// Show feedback item to player
+function displayOnFeed(template: string){
+    const ele = document.createElement('DIV'); // Append to feed
+    ele.innerHTML = template;
+    document.getElementById('media-feed').appendChild(ele);
     $(ele).css('opacity', 0).animate({ opacity: 1 }, 500); // Animations
     $('body, html').animate({ scrollTop: $(document).height() }, 500);
 }
 
-function sendResponse(eventNm: string, txt: Feedback['toResponse']) {
-    const div = document.createElement('DIV');
-    div.className = 'p-2 feedback-response';
-    document.getElementById('media-feed').appendChild(div);
-
-    const name = document.createElement('H5');
-    name.innerHTML = eventNm;
-    div.appendChild(name);
-    const choice = document.createElement('H2');
-    choice.className = 'feedback-response-choice';
-    choice.innerHTML = txt;
-    div.appendChild(choice);
-}
-function sendMessage(txt: Feedback['fromPublic']) {
-    const ele = document.createElement('P');
-    ele.className = 'feedback-message';
-    ele.innerHTML = `
-        <p style='color: #1589FF'><i class="fas fa-user"></i> ${generateRandomUsername()} </p>
-        <p class='text-center' style='font-weight: bold; font-size: 1.2rem;'>${txt} </p>
-        <p class='text-right'>
-            ${Math.floor(Math.random() * 100)} <i class="fas fa-heart col-primary"></i>
-        </p>
-    `;
-    showToPlayer(ele);
-}
-function sendNews(txt: Feedback['fromBusiness']) {
-    const ele = document.createElement('P');
-    ele.className = 'feedback-news';
-    ele.innerHTML = `<em>Financial times</em><br><hr>${txt}`;
-    showToPlayer(ele);
-}
-function sendReport(txt: Feedback['fromHealthcare']) {
-    const ele = document.createElement('P');
-    ele.className = 'feedback-report';
-    ele.innerHTML = `<em>BMJ</em><br><hr>${txt}`;
-    showToPlayer(ele);
-}
-function sendEndTurnBtn(onNextTurn: Function) {
-    // Add button to continue to next month
-    const ele = document.createElement('BUTTON');
-    ele.className = `btn btn-lg btn-continue`;
-    ele.innerHTML = `Continue to next month <i class="fas fa-arrow-right"></i>`;
-    ele.onclick = function () {
-        onNextTurn(); // Next turn
-        $(ele).hide(); // Disable btn on click
-    };
-    showToPlayer(ele);
-}
-
 export function showFeedback(eventNm: string, feedback: Feedback, onNextTurn: Function) {
     [
-        () => sendResponse(eventNm, feedback.toResponse),
-        () => sendMessage(feedback.fromPublic),
-        () => sendNews(feedback.fromBusiness),
-        () => sendReport(feedback.fromHealthcare),
-        () => sendEndTurnBtn(onNextTurn)
-    ].forEach((fn, i) => setTimeout(fn, i * 500));
+        responseToEvent({eventNm: eventNm, txt: feedback.toResponse}),
+        message({txt: feedback.fromPublic }),
+        newsArticle({txt: feedback.fromBusiness}),
+        medicalReport({txt: feedback.fromHealthcare}),
+        endTurnButton({id: `${eventNm}-continue`})
+    ].forEach((template, i) => setTimeout( () => displayOnFeed(template), i * 500));
 }
 
 export function showReputation(reputation: Reputation[]) {
