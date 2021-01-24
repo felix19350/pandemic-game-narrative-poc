@@ -31,7 +31,7 @@ body{
     color: var(--col-secondary);
     text-shadow:rgba(248, 248, 255, 0.5);
 }
-.btn-response-disabled{
+.btn-response:disabled{
     font-weight: 500;
     font-size: 1.1rem;
     background-color: var(--col-dark);

@@ -16,6 +16,9 @@ $(window).on('load', () => {
         // Carry out player's response
         const competedEvent = gameController.respondToEvent(responseId);
 
+        // Hide event
+        $('#event-modal').modal('hide');
+
         // Show feedback to player
         if (competedEvent.reputation.length > 0) {
             // Show reputation before feedback to response
@@ -50,6 +53,12 @@ $(window).on('load', () => {
             showEvent(nextTurn[0], onResponse, gameState);
         }
     };
+
+    // Delegated event handler for generated end turn buttons
+    $( "#media-feed" ).on( "click", "button", function(e: Event) {  
+        nextTurn(); 
+        $(e.target).hide();
+    });
 
     // Show first turn
     $('#dismiss-splash').click(() => {
