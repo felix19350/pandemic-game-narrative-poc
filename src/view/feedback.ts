@@ -7,55 +7,43 @@
 */
 import * as $ from 'jquery';
 import { Feedback } from '@src/model/Feedback';
-import { generateRandomUsername } from '../assets/SocialMediaUsernames';
 import { Reputation } from '@src/model/GameState';
 import * as Handlebars from 'handlebars';
-
-// Templates for feedback items
-const responseToEvent = Handlebars.compile(`
-    <div class='p-2 feedback-response'>
-        <h5> {{eventNm}} </h5>
-        <h2 class='feedback-response-choice'> {{txt}} </h2>
-    </div>
-`);
-const message = Handlebars.compile(`
-    <div class='feedback-message'>
-        <p style='color: #1589FF'> <i class="fas fa-user"></i> ${generateRandomUsername()} </p>
-        <p class='text-center' style='font-weight: bold; font-size: 1.2rem;'> {{{txt}}} </p>
-        <p class='text-right'> ${Math.floor(Math.random() * 100)} <i class="fas fa-heart col-primary"></i> </p>
-    </div>
-`);
-const newsArticle = Handlebars.compile(`
-    <div class='feedback-news'>
-        <p> <em> Financial times </em> <br> <hr> {{txt}} </p>
-    </div>
-`);
-const medicalReport = Handlebars.compile(`
-    <div class='feedback-report'>
-        <p> <em> BMJ </em> <br> <hr> {{txt}} </p>
-    </div>
-`);
-const endTurnButton = Handlebars.compile(`
-    <button class='btn btn-lg btn-continue' id='{{id}}'> Continue to next month <i class="fas fa-arrow-right"> </i> </p>
-`);
+import { responseText, message, news, report, endTurnButton } from '../templates/UserInterface';
 
 // Show feedback item to player
-function displayOnFeed(template: string){
-    const ele = document.createElement('DIV'); // Append to feed
-    ele.innerHTML = template;
+function compile(template: string, values: any) {
+    // Compile template and fill with values
+    const t = Handlebars.compile(template);
+    return t(values);
+}
+function append(it: string) {
+    // Append to feed
+    const ele = document.createElement('DIV');
+    ele.innerHTML = it;
     document.getElementById('media-feed').appendChild(ele);
-    $(ele).css('opacity', 0).animate({ opacity: 1 }, 500); // Animations
+    return ele;
+}
+function animate(ele: HTMLElement) {
+    // Animate entrance into feedback feed
+    $(ele).css('opacity', 0).animate({ opacity: 1 }, 500);
     $('body, html').animate({ scrollTop: $(document).height() }, 500);
+}
+
+function displayOnFeed(template: string, values: any) {
+    const it = compile(template, values);
+    const ele = append(it);
+    animate(ele);
 }
 
 export function showFeedback(eventNm: string, feedback: Feedback, onNextTurn: Function) {
     [
-        responseToEvent({eventNm: eventNm, txt: feedback.toResponse}),
-        message({txt: feedback.fromPublic }),
-        newsArticle({txt: feedback.fromBusiness}),
-        medicalReport({txt: feedback.fromHealthcare}),
-        endTurnButton({id: `${eventNm}-continue`})
-    ].forEach((template, i) => setTimeout( () => displayOnFeed(template), i * 500));
+        { template: responseText, values: { eventNm: eventNm, txt: feedback.toResponse } },
+        { template: message, values: { txt: feedback.fromPublic } },
+        { template: news, values: { txt: feedback.fromBusiness } },
+        { template: report, values: { txt: feedback.fromHealthcare } },
+        { template: endTurnButton, values: { id: `${eventNm}-continue` } }
+    ].forEach((o, i) => setTimeout(() => displayOnFeed(o.template, o.values), i * 500));
 }
 
 export function showReputation(reputation: Reputation[]) {

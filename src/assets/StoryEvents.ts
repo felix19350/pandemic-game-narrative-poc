@@ -15,7 +15,12 @@ export const StoryEvents: Event[] = [
                 id: 'lockdown01vaccine_lift',
                 eventId: 'lockdown01vaccine',
                 name: 'Great! End lockdown',
-                label: [`Lockdown removed`, `Gain public support`, `Gain business support`, `Lose healthcare support`],
+                label: [
+                    `Lockdown removed`,
+                    `Wellbeing will improve`,
+                    `Businesses will be able to operate`,
+                    `COVID-19 cases will rise`
+                ],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
@@ -69,7 +74,7 @@ export const StoryEvents: Event[] = [
                 id: 'open01business_spin',
                 eventId: 'open01business',
                 name: 'Announce digital golden age',
-                label: [`Gain business support`],
+                label: [`Businesses will be able to operate`],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
@@ -88,7 +93,7 @@ export const StoryEvents: Event[] = [
                 id: 'open01business_reconsider',
                 eventId: 'open01business',
                 name: 'Oops... Perhaps we should reconsider lockdown.',
-                label: [`Lose public support`, `Lose business support`, `Lose healthcare support`],
+                label: [`Wellbeing will fall`, `Businesses will struggle`, `COVID-19 cases will rise`],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
@@ -124,9 +129,9 @@ export const StoryEvents: Event[] = [
                 name: 'Lift lockdown early',
                 label: [
                     'Lockdowns removed',
-                    'Gain public support',
-                    'Gain business support',
-                    'Lose healthcare support',
+                    'Wellbeing will improve',
+                    'Businesses will be able to operate',
+                    'COVID-19 cases will rise',
                     'You may gain a reputation'
                 ],
                 isApplicable: (gameState: GameState) => true,
@@ -187,7 +192,7 @@ export const StoryEvents: Event[] = [
                 id: 'open02casesPeak_continue',
                 eventId: 'open02casesPeak',
                 name: 'We ended lockdown and we will stick to our decision.',
-                label: [`Lose healthcare support`, 'You may gain a reputation'],
+                label: [`COVID-19 cases will rise`, 'You may gain a reputation'],
                 isApplicable: (gameState: GameState) => {
                     return gameState.indicators.reputation.length === 0; // Only available if not flip flopper
                 },
@@ -218,9 +223,9 @@ export const StoryEvents: Event[] = [
                 name: 'Lockdown!',
                 label: [
                     `Lockdown enforced`,
-                    `Lose public support`,
-                    `Lose business support`,
-                    `Your may gain a reputation`
+                    `Wellbeing will fall`,
+                    `Businesses will struggle`,
+                    `You may gain a reputation`
                 ],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
@@ -264,7 +269,7 @@ export const StoryEvents: Event[] = [
                 id: 'lockdown03wellbeing_relax',
                 eventId: 'lockdown03wellbeing',
                 name: 'Relax lockdown for individuals in crisis',
-                label: [`Lockdown becomes less effective`, `Gain public support`],
+                label: [`Lockdown becomes less effective`, `Wellbeing will improve`],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
@@ -284,7 +289,7 @@ export const StoryEvents: Event[] = [
                 id: 'lockdown03wellbeing_continue',
                 eventId: 'lockdown03wellbeing',
                 name: 'No exceptions. People will take advantage...',
-                label: [`Lockdown remains in effect`, `Lose public support`, `Gain healthcare support`],
+                label: [`Lockdown remains in effect`, `Wellbeing will fall`, `COVID-19 cases will fall`],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {

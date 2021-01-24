@@ -55,8 +55,8 @@ $(window).on('load', () => {
     };
 
     // Delegated event handler for generated end turn buttons
-    $( "#media-feed" ).on( "click", "button", function(e: Event) {  
-        nextTurn(); 
+    $('#media-feed').on('click', 'button', function (e: Event) {
+        nextTurn();
         $(e.target).hide();
     });
 
