@@ -4,7 +4,6 @@ import { FakeNegativeBinomial } from './Probabilities';
 import {
     ContainmentPolicy,
     Indicators,
-    InGameEvent,
     NextTurnState,
     PlayerActions,
     Scenario,
@@ -130,17 +129,12 @@ export class Simulator {
             })
         );
 
-        // Add any new random events that will trigger on the next turn at this point in time
-        // These will be in effect in the next turn
-        this.currentTurn.nextInGameEvents = this.pickNextGameEvents();
-
         // Check if victory conditions are met.
         const victoryCondition = this.isVictorious();
         if (victoryCondition) {
             return this.computeVictory(victoryCondition);
         } else {
             return this.clone({
-                newInGameEvents: this.currentTurn.nextInGameEvents,
                 lastTurnIndicators: history,
                 latestIndicators: latestIndicators
             });
@@ -235,10 +229,8 @@ export class Simulator {
             },
             playerActions: {
                 capabilityImprovements: [],
-                containmentPolicies: [],
-                inGameEventChoices: []
-            },
-            nextInGameEvents: []
+                containmentPolicies: []
+            }
         };
     }
 
@@ -294,23 +286,6 @@ export class Simulator {
         return containmentPoliciesOfTurn.filter(
             (containmentPolicy) => previousPolicies.indexOf(containmentPolicy.name) == -1
         );
-    }
-
-    private pickNextGameEvents(): InGameEvent[] {
-        const result: InGameEvent[] = [];
-        const state = this.mutableState();
-        const eventHistory = this.timeline
-            .reduce((evts, current) => {
-                return evts.concat(current.nextInGameEvents);
-            }, [])
-            .map((it) => it.name);
-        this.scenario.availableInGameEvents.map((it) => {
-            const happensOnceAndHasNotHappened = it.happensOnce && eventHistory.indexOf(it.name) != -1;
-            if ((happensOnceAndHasNotHappened || !it.happensOnce) && it.canActivate(state)) {
-                result.push(it);
-            }
-        });
-        return result;
     }
 
     private clone<T>(obj: T): T {

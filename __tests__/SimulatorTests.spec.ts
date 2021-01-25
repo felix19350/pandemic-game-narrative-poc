@@ -4,7 +4,6 @@ import {
     ContainmentPolicy,
     isNextTurn,
     NextTurnState,
-    RecordedInGameEventChoice,
     Scenario,
     SimulatorState,
     VictoryCondition,
@@ -69,14 +68,12 @@ export const TestScenario: Scenario = {
     time_lumping: false,
     initialContainmentPolicies: [CloseSchools, CloseTransit],
     initialCapabilityImprovements: [],
-    availableInGameEvents: [],
     victoryConditions: [TimeVictory]
 };
 
 const emptyPlayerAction = {
     containmentPolicies: [] as ContainmentPolicy[],
-    capabilityImprovements: [] as CapabilityImprovements[],
-    inGameEventChoices: [] as RecordedInGameEventChoice[]
+    capabilityImprovements: [] as CapabilityImprovements[]
 };
 
 describe('The operation of the Simulator', () => {
@@ -103,7 +100,6 @@ describe('The operation of the Simulator', () => {
             // Then the pandemic runs its course
             const latestIndicators = nextTurn.lastTurnIndicators[nextTurn.lastTurnIndicators.length - 1];
             if (isNextTurn(nextTurn)) {
-                expect(nextTurn.newInGameEvents.length).toBe(0);
                 expect(latestIndicators.days).toBe(daysPerturn);
                 expect(latestIndicators.totalCost).toBeGreaterThan(0);
                 expect(latestIndicators.numInfected).toBeGreaterThan(TestScenario.initialNumInfected);
@@ -169,8 +165,7 @@ describe('The operation of the Simulator', () => {
             const spyRecurringEffect = jest.spyOn(actionUnderTest, 'recurringEffect');
             simulator.nextTurn({
                 containmentPolicies: [actionUnderTest as ContainmentPolicy],
-                capabilityImprovements: [],
-                inGameEventChoices: []
+                capabilityImprovements: []
             });
             // Then its immediate effect is called
             expect(spyImmediateEffect).toHaveBeenCalled();
@@ -188,8 +183,7 @@ describe('The operation of the Simulator', () => {
             // When a new player action is added in a turn
             simulator.nextTurn({
                 containmentPolicies: [CloseTransit],
-                capabilityImprovements: [],
-                inGameEventChoices: []
+                capabilityImprovements: []
             });
 
             // And it is active in the next turn as well
@@ -198,8 +192,7 @@ describe('The operation of the Simulator', () => {
             const spyRecurringEffect = jest.spyOn(actionUnderTest, 'recurringEffect');
             simulator.nextTurn({
                 containmentPolicies: [actionUnderTest],
-                capabilityImprovements: [],
-                inGameEventChoices: []
+                capabilityImprovements: []
             });
             // Then its immediate effect is called
             expect(spyRecurringEffect).toHaveBeenCalled();
@@ -238,8 +231,7 @@ describe('The operation of the Simulator', () => {
             for (let i = 0; i < 10; i++) {
                 simulator.nextTurn({
                     containmentPolicies: [CloseTransit],
-                    capabilityImprovements: [],
-                    inGameEventChoices: []
+                    capabilityImprovements: []
                 });
             }
             // When it is reset
@@ -262,8 +254,7 @@ describe('The operation of the Simulator', () => {
                 simulator.nextTurn(
                     {
                         containmentPolicies: [CloseTransit],
-                        capabilityImprovements: [],
-                        inGameEventChoices: []
+                        capabilityImprovements: []
                     },
                     daysPerTurn
                 );
@@ -289,8 +280,7 @@ describe('The operation of the Simulator', () => {
             for (let i = 0; i < 10; i++) {
                 simulator.nextTurn({
                     containmentPolicies: [CloseTransit],
-                    capabilityImprovements: [],
-                    inGameEventChoices: []
+                    capabilityImprovements: []
                 });
             }
             // And it is reset
@@ -301,8 +291,7 @@ describe('The operation of the Simulator', () => {
             for (let i = 0; i < 6; i++) {
                 resetSimulator.nextTurn({
                     containmentPolicies: [CloseSchools],
-                    capabilityImprovements: [],
-                    inGameEventChoices: []
+                    capabilityImprovements: []
                 });
             }
             // And the histories difer

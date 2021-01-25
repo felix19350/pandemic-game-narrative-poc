@@ -23,7 +23,6 @@ export interface Scenario {
     time_lumping: boolean;
     initialContainmentPolicies: ContainmentPolicy[];
     initialCapabilityImprovements: CapabilityImprovements[];
-    availableInGameEvents: InGameEvent[];
     victoryConditions: VictoryCondition[];
 }
 
@@ -31,30 +30,6 @@ export interface VictoryCondition {
     name: string;
     description: string;
     isMet(simulatorState: SimulatorState): boolean;
-}
-
-/**
- * Represents an in game event.
- */
-export interface InGameEvent {
-    name: string;
-    description: string;
-    happensOnce: boolean;
-    cssClass: string;
-    canActivate: (context: SimulatorState) => boolean;
-    choices: EventChoice[];
-}
-
-export interface EventChoice {
-    name: string;
-    description: string;
-    immediateEffect: (context: SimulatorState) => SimulatorState;
-    recurringEffect: (context: SimulatorState) => SimulatorState;
-}
-
-export interface RecordedInGameEventChoice {
-    inGameEventName: string;
-    choice: EventChoice;
 }
 
 /**
@@ -104,7 +79,6 @@ export interface CapabilityImprovements {
 export interface PlayerActions {
     containmentPolicies: ContainmentPolicy[];
     capabilityImprovements: CapabilityImprovements[];
-    inGameEventChoices: RecordedInGameEventChoice[];
 }
 
 export interface TurnHistoryEntry {
@@ -112,7 +86,6 @@ export interface TurnHistoryEntry {
         containmentPolicies: ContainmentPolicy[];
         capabilityImprovements: CapabilityImprovements[];
     };
-    nextInGameEvents: InGameEvent[];
     playerActions: PlayerActions;
 }
 
@@ -132,7 +105,6 @@ export interface VictoryState {
 export interface NextTurnState {
     latestIndicators: Indicators;
     lastTurnIndicators: Indicators[];
-    newInGameEvents: InGameEvent[];
 }
 
 /**
@@ -140,5 +112,5 @@ export interface NextTurnState {
  */
 
 export const isNextTurn = (nextTurn: NextTurnState | VictoryState): nextTurn is NextTurnState => {
-    return (nextTurn as any)?.newInGameEvents !== undefined;
+    return (nextTurn as any)?.score === undefined;
 };
