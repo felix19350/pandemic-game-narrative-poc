@@ -3,10 +3,23 @@ import { GameState } from '@src/model/GameState';
 import { Response } from '@src/model/Response';
 import * as $ from 'jquery';
 import * as Handlebars from 'handlebars';
-import { responseButton } from '../templates/UserInterface';
 
 const createResponse = (response: Response, onResponse: Function, enabled: boolean) => {
-    const template = Handlebars.compile(responseButton);
+    const html = `
+        <div>
+            <button class='btn btn-response' 
+                {{#if enabled}} id='{{r.id}}' {{else}} disabled {{/if}}>
+                {{r.name}} 
+            </button>
+            <ul class='effect-list'>
+                {{#if enabled}} {{#each r.label}} <li> {{this}} </li> {{/each}}
+                {{else}} You cannot select this option because of your reputation as a Flip-Flopper <i class="fas fa-socks"></i> {{/if}}
+            </ul>
+        </div>
+    `;
+
+    // Create button
+    const template = Handlebars.compile(html);
     document
         .getElementById('event-responses')
         .insertAdjacentHTML('beforeend', template({ r: response, enabled: enabled }));
