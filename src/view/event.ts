@@ -16,12 +16,18 @@ const createResponse = (response: Response, onResponse: Function, enabled: boole
                 {{else}} You cannot select this option because of your reputation as a Flip-Flopper <i class="fas fa-socks"></i> {{/if}}
             </ul>
         </div>
-    `
+    `;
 
     // Create button
     const template = Handlebars.compile(html);
-    document.getElementById('event-responses').insertAdjacentHTML('beforeend', template( { r: response, enabled: enabled } ));
-    if(enabled){ $(`#${response.id}`).click( function () { onResponse(response.id) } )};
+    document
+        .getElementById('event-responses')
+        .insertAdjacentHTML('beforeend', template({ r: response, enabled: enabled }));
+    if (enabled) {
+        $(`#${response.id}`).click(function () {
+            onResponse(response.id);
+        });
+    }
 };
 
 /*

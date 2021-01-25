@@ -40,7 +40,7 @@ const endTurnButton = Handlebars.compile(`
 `);
 
 // Show feedback item to player
-function displayOnFeed(template: string){
+function displayOnFeed(template: string) {
     const ele = document.createElement('DIV'); // Append to feed
     ele.innerHTML = template;
     document.getElementById('media-feed').appendChild(ele);
@@ -50,12 +50,12 @@ function displayOnFeed(template: string){
 
 export function showFeedback(eventNm: string, feedback: Feedback, onNextTurn: Function) {
     [
-        responseToEvent({eventNm: eventNm, txt: feedback.toResponse}),
-        message({txt: feedback.fromPublic }),
-        newsArticle({txt: feedback.fromBusiness}),
-        medicalReport({txt: feedback.fromHealthcare}),
-        endTurnButton({id: `${eventNm}-continue`})
-    ].forEach((template, i) => setTimeout( () => displayOnFeed(template), i * 500));
+        responseToEvent({ eventNm: eventNm, txt: feedback.toResponse }),
+        message({ txt: feedback.fromPublic }),
+        newsArticle({ txt: feedback.fromBusiness }),
+        medicalReport({ txt: feedback.fromHealthcare }),
+        endTurnButton({ id: `${eventNm}-continue` })
+    ].forEach((template, i) => setTimeout(() => displayOnFeed(template), i * 500));
 }
 
 export function showReputation(reputation: Reputation[]) {
