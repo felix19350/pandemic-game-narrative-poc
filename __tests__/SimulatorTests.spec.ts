@@ -2,23 +2,10 @@ import { Simulator } from '@src/simulator/Simulator';
 import {
     CapabilityImprovements,
     ContainmentPolicy,
-    isNextTurn,
     NextTurnState,
     Scenario,
-    SimulatorState,
-    VictoryCondition,
-    VictoryState
+    SimulatorState
 } from '@src/simulator/SimulatorModel';
-
-export const TimeVictory: VictoryCondition = {
-    name: 'Time victory',
-    description: 'You managed to survice one year!',
-    isMet: (simulatorState: SimulatorState) => {
-        return simulatorState.history.length > 0
-            ? simulatorState.history[simulatorState.history.length - 1].days >= 365
-            : false;
-    }
-};
 
 export const CloseTransit: ContainmentPolicy = {
     id: 'transport',
@@ -67,8 +54,7 @@ export const TestScenario: Scenario = {
     mortality: 0.01,
     time_lumping: false,
     initialContainmentPolicies: [CloseSchools, CloseTransit],
-    initialCapabilityImprovements: [],
-    victoryConditions: [TimeVictory]
+    initialCapabilityImprovements: []
 };
 
 const emptyPlayerAction = {
@@ -99,13 +85,9 @@ describe('The operation of the Simulator', () => {
 
             // Then the pandemic runs its course
             const latestMetrics = nextTurn.lastTurnMetrics[nextTurn.lastTurnMetrics.length - 1];
-            if (isNextTurn(nextTurn)) {
-                expect(latestMetrics.days).toBe(daysPerturn);
-                expect(latestMetrics.totalCost).toBeGreaterThan(0);
-                expect(latestMetrics.numInfected).toBeGreaterThan(TestScenario.initialNumInfected);
-            } else {
-                fail('Unexpected next turn response');
-            }
+            expect(latestMetrics.days).toBe(daysPerturn);
+            expect(latestMetrics.totalCost).toBeGreaterThan(0);
+            expect(latestMetrics.numInfected).toBeGreaterThan(TestScenario.initialNumInfected);
         });
 
         it('Starts counting dead after the first few turns', () => {
@@ -114,45 +96,16 @@ describe('The operation of the Simulator', () => {
 
             // When some turns have elapsed
             const minTurns = 25; // Give it a few more turns because of randomness
-            let nextTurn: NextTurnState | VictoryState;
+            let nextTurn: NextTurnState;
             for (let i = 0; i < minTurns; i++) {
                 nextTurn = simulator.nextTurn(emptyPlayerAction);
             }
 
             // Then we expect some deaths
-            if (isNextTurn(nextTurn)) {
-                expect(nextTurn.latestMetrics.numDead).toBeGreaterThan(0);
-            } else {
-                fail('The game should not end at 5 turns in.');
-            }
+            expect(nextTurn.latestMetrics.numDead).toBeGreaterThan(0);
 
             // And the history has the expected number of turns
             expect(simulator.state().history.length).toBe(minTurns + 1);
-        });
-
-        it('With a time based victory condition the game ends after that game period has elapsed', () => {
-            // Given a simulator instance
-            const daysPerturn = 10;
-            const simulator = new Simulator(TestScenario);
-
-            // When the expected number of turns passes
-            let days = 0;
-            let totalDays = 365;
-            let nextTurn: NextTurnState | VictoryState;
-            while (days <= totalDays) {
-                nextTurn = simulator.nextTurn(emptyPlayerAction, daysPerturn);
-                if (isNextTurn(nextTurn)) {
-                    days = nextTurn.latestMetrics.days;
-                } else {
-                    break;
-                }
-            }
-
-            if (isNextTurn(nextTurn)) {
-                fail('Should have triggered victory condition');
-            } else {
-                expect(nextTurn.victoryCondition.name).toEqual(TimeVictory.name);
-            }
         });
 
         it('Calls the immediate effect of a player action in the first turn it appears', () => {

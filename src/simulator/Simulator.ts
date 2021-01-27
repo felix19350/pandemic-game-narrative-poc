@@ -9,8 +9,6 @@ import {
     Scenario,
     SimulatorState,
     TimelineEntry,
-    VictoryCondition,
-    VictoryState,
     WorldState
 } from './SimulatorModel';
 
@@ -81,7 +79,7 @@ export class Simulator {
      * Processes the next turn by computing the effects of player actions, random events and the natural
      * progression of the epidemic.
      */
-    nextTurn(playerActions: PlayerActions, daysToAdvance: number = 1): NextTurnState | VictoryState {
+    nextTurn(playerActions: PlayerActions, daysToAdvance: number = 1): NextTurnState {
         // Store player previous player turn
         let stateAtTurnEnd = this.clone(this.currentTurn);
         // Reset the baseline R for the turn
@@ -129,36 +127,9 @@ export class Simulator {
             })
         );
 
-        // Check if victory conditions are met.
-        const victoryCondition = this.isVictorious();
-        if (victoryCondition) {
-            return this.computeVictory(victoryCondition);
-        } else {
-            return this.clone({
-                lastTurnMetrics: history,
-                latestMetrics: latestMetrics
-            });
-        }
-    }
-
-    private isVictorious(): VictoryCondition | undefined {
-        return this.scenario.victoryConditions.find((it) =>
-            it.isMet({
-                scenario: this.scenario,
-                currentTurn: this.currentTurn,
-                timeline: this.timeline,
-                history: this.mutableHistory()
-            })
-        );
-    }
-
-    private computeVictory(victoryCondition: VictoryCondition): VictoryState {
         return this.clone({
-            lastTurnMetrics: this.timeline[this.timeline.length - 1].history,
-            score: this.mutableHistory().reduce((prev, current) => {
-                return prev + current.totalCost;
-            }, 0),
-            victoryCondition: victoryCondition
+            lastTurnMetrics: history,
+            latestMetrics: latestMetrics
         });
     }
 

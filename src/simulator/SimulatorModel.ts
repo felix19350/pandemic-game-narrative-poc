@@ -23,13 +23,6 @@ export interface Scenario {
     time_lumping: boolean;
     initialContainmentPolicies: ContainmentPolicy[];
     initialCapabilityImprovements: CapabilityImprovements[];
-    victoryConditions: VictoryCondition[];
-}
-
-export interface VictoryCondition {
-    name: string;
-    description: string;
-    isMet(simulatorState: SimulatorState): boolean;
 }
 
 /**
@@ -93,12 +86,6 @@ export type WorldState = { metrics: SimulatorMetrics } & TurnHistoryEntry;
 
 export type TimelineEntry = { history: SimulatorMetrics[] } & TurnHistoryEntry;
 
-export interface VictoryState {
-    lastTurnMetrics: SimulatorMetrics[];
-    victoryCondition: VictoryCondition;
-    score: number;
-}
-
 /**
  * Models the updated state of the world at the start of a new turn
  */
@@ -106,11 +93,3 @@ export interface NextTurnState {
     latestMetrics: SimulatorMetrics;
     lastTurnMetrics: SimulatorMetrics[];
 }
-
-/**
- * Models the state where the game ends due to a victory condition being met
- */
-
-export const isNextTurn = (nextTurn: NextTurnState | VictoryState): nextTurn is NextTurnState => {
-    return (nextTurn as any)?.score === undefined;
-};
