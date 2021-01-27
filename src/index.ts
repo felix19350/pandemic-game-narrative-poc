@@ -5,8 +5,10 @@ import { showEvent } from './view/event';
 import { GameController, isGameState } from './controller/GameController';
 import { StoryEvents } from './assets/StoryEvents';
 import { CompletedEvent } from './model/Events';
+import { createStoryTree } from './view/tree';
 
 $(window).on('load', () => {
+
     // Initialise game engine
     const narrative = StoryEvents;
     const gameController = new GameController(narrative);
@@ -59,10 +61,17 @@ $(window).on('load', () => {
         nextTurn();
         $(e.target).hide();
     });
+    $('#show-tree').click( function () {
+        $('#tree').modal('show');
+        createStoryTree();
+    });
 
     // Show first turn
     $('#dismiss-splash').click(() => {
         nextTurn();
         $('#splash').hide();
     });
+
+    //DEV: HIDE SPLASH
+    $('#splash').hide(); nextTurn();
 });
