@@ -1,8 +1,7 @@
 export interface SimulatorState {
     scenario: Scenario;
-    currentTurn: TurnHistoryEntry;
-    timeline: TimelineEntry[];
     history: SimulatorMetrics[];
+    currentTurn: TurnHistoryEntry;
 }
 
 export interface Scenario {
@@ -13,8 +12,8 @@ export interface Scenario {
     initialDeathCosts: number;
     importedCasesPerDay: number;
     r0: number;
-    runUpPeriod: SimulatorMetrics[];
     hospitalCapacity: number;
+    runUpPeriod: SimulatorMetrics[];
     gdpPerDay: number;
     power: number;
     distr_family: string;
@@ -83,13 +82,3 @@ export interface TurnHistoryEntry {
 }
 
 export type WorldState = { metrics: SimulatorMetrics } & TurnHistoryEntry;
-
-export type TimelineEntry = { history: SimulatorMetrics[] } & TurnHistoryEntry;
-
-/**
- * Models the updated state of the world at the start of a new turn
- */
-export interface NextTurnState {
-    latestMetrics: SimulatorMetrics;
-    lastTurnMetrics: SimulatorMetrics[];
-}

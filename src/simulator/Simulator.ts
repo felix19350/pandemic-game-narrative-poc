@@ -4,11 +4,9 @@ import { FakeNegativeBinomial } from './Probabilities';
 import {
     ContainmentPolicy,
     SimulatorMetrics,
-    NextTurnState,
     PlayerActions,
     Scenario,
     SimulatorState,
-    TimelineEntry,
     WorldState
 } from './SimulatorModel';
 
@@ -16,37 +14,13 @@ export class Simulator {
     private scenario: Scenario;
     private scaleFactor: number;
     private currentTurn: WorldState;
-    private timeline: TimelineEntry[];
+    private history: SimulatorMetrics[];
 
     constructor(scenario: Scenario) {
         this.scenario = scenario;
         this.scaleFactor = scenario.gdpPerDay * 0.35;
         this.currentTurn = this.computeInitialWorldState();
-        this.timeline = [];
-    }
-
-    reset(turn: number = 0): Simulator {
-        const newSimulator = new Simulator(this.scenario);
-        const baseline = turn - 1;
-        if (baseline > 0 && this.timeline.length >= baseline) {
-            const targetTurn = this.timeline[baseline - 1];
-            newSimulator.timeline = this.clone(this.timeline.slice(0, baseline));
-
-            const history = newSimulator.mutableHistory();
-            newSimulator.currentTurn = this.clone({
-                ...targetTurn,
-                metrics: history[history.length - 1]
-            });
-        } else {
-            newSimulator.timeline = [];
-            newSimulator.currentTurn = this.computeInitialWorldState();
-        }
-
-        return newSimulator;
-    }
-
-    lastTurn(): number {
-        return this.timeline.length;
+        this.history = [].concat(this.scenario.runUpPeriod);
     }
 
     /**
@@ -55,9 +29,8 @@ export class Simulator {
     private mutableState(): SimulatorState {
         return {
             scenario: this.scenario,
-            currentTurn: this.currentTurn,
-            timeline: this.timeline,
-            history: this.mutableHistory()
+            history: this.history,
+            currentTurn: this.currentTurn
         };
     }
 
@@ -66,20 +39,11 @@ export class Simulator {
         return this.clone(this.mutableState());
     }
 
-    history(): SimulatorMetrics[] {
-        return this.clone(this.mutableHistory());
-    }
-
-    private mutableHistory(): SimulatorMetrics[] {
-        const playthroughHistory = this.timeline.length === 0 ? [] : this.timeline.flatMap((it) => it.history);
-        return this.scenario.runUpPeriod.concat(playthroughHistory);
-    }
-
     /**
      * Processes the next turn by computing the effects of player actions, random events and the natural
      * progression of the epidemic.
      */
-    nextTurn(playerActions: PlayerActions, daysToAdvance: number = 1): NextTurnState {
+    nextTurn(playerActions: PlayerActions, daysToAdvance: number = 1): SimulatorMetrics {
         // Store player previous player turn
         let stateAtTurnEnd = this.clone(this.currentTurn);
         // Reset the baseline R for the turn
@@ -105,14 +69,12 @@ export class Simulator {
         let latestMetrics;
         let metricsAtTurnStart = this.currentTurn.metrics;
         // The initial state is added on the first play
-        let history = this.timeline.length === 0 ? [this.currentTurn.metrics] : [];
-        let complete_history = this.mutableHistory().concat(history);
+
+        const turnR = stateAtTurnEnd.metrics.r;
         for (let i = 0; i < daysToAdvance; i++) {
-            latestMetrics = this.computeNextPandemicDay(stateAtTurnEnd, metricsAtTurnStart, complete_history);
+            latestMetrics = this.computeNextPandemicDay(turnR, metricsAtTurnStart);
             metricsAtTurnStart = latestMetrics;
-            // Add the last indicators to the world timeline.
-            history.push(this.clone(latestMetrics));
-            complete_history = this.mutableHistory().concat(history);
+            this.history.push(latestMetrics);
         }
 
         // Update the next turn's indicators
@@ -120,53 +82,41 @@ export class Simulator {
 
         // Advance the current turn to match the state at turn end.
         this.currentTurn = stateAtTurnEnd;
-        this.timeline.push(
-            this.clone({
-                ...stateAtTurnEnd,
-                history: history
-            })
-        );
 
-        return this.clone({
-            lastTurnMetrics: history,
-            latestMetrics: latestMetrics
-        });
+        return this.clone(latestMetrics);
     }
 
-    private computeNextPandemicDay(
-        candidateState: WorldState,
-        lastResult: SimulatorMetrics,
-        history: SimulatorMetrics[]
-    ): SimulatorMetrics {
-        let actionR = candidateState.metrics.r;
-        const prevCases = lastResult.numInfected;
+    private computeNextPandemicDay(turnR: number, previousDayMetrics: SimulatorMetrics): SimulatorMetrics {
+        const prevCases = previousDayMetrics.numInfected;
         // Don't allow cases to exceed hospital capacity
-        const hospitalCapacity = lastResult.hospitalCapacity;
+        const hospitalCapacity = previousDayMetrics.hospitalCapacity;
         const lockdownRatio = hospitalCapacity / prevCases;
-        const cappedActionR = prevCases * actionR >= hospitalCapacity ? lockdownRatio : actionR;
-        actionR = cappedActionR;
+        const cappedActionR = prevCases * turnR >= hospitalCapacity ? lockdownRatio : turnR;
+        turnR = cappedActionR;
 
         // Compute next state
-        let new_num_infected = this.generateNewCasesFromDistribution(prevCases, actionR);
+        let new_num_infected = this.generateNewCasesFromDistribution(prevCases, turnR);
         new_num_infected = Math.max(Math.floor(new_num_infected), 0);
         new_num_infected = Math.min(new_num_infected, this.scenario.totalPopulation);
         // Deaths from infections started 20 days ago
 
+        const history = this.history;
         const lag = 20;
         const long_enough = history.length >= lag;
         const mortality = this.scenario.mortality;
         const new_deaths_lagging = long_enough ? history[history.length - lag].numInfected * mortality : 0;
-        const currentDay = lastResult.days + 1;
+        const currentDay = previousDayMetrics.days + 1;
         const deathCosts = this.computeDeathCost(new_deaths_lagging);
-        const economicCosts = this.computeEconomicCosts(actionR);
+        const economicCosts = this.computeEconomicCosts(turnR);
         const medicalCosts = this.computeHospitalizationCosts(new_num_infected);
+
         return {
             days: currentDay,
             numDead: new_deaths_lagging,
             numInfected: new_num_infected,
             totalPopulation: this.scenario.totalPopulation,
             hospitalCapacity: this.scenario.hospitalCapacity,
-            r: candidateState.metrics.r,
+            r: turnR,
             importedCasesPerDay: this.scenario.importedCasesPerDay,
             deathCosts: deathCosts,
             economicCosts: economicCosts,

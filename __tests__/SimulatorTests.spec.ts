@@ -1,11 +1,5 @@
 import { Simulator } from '@src/simulator/Simulator';
-import {
-    CapabilityImprovements,
-    ContainmentPolicy,
-    NextTurnState,
-    Scenario,
-    SimulatorState
-} from '@src/simulator/SimulatorModel';
+import { CapabilityImprovements, ContainmentPolicy, Scenario, SimulatorMetrics } from '@src/simulator/SimulatorModel';
 
 export const CloseTransit: ContainmentPolicy = {
     id: 'transport',
@@ -69,7 +63,6 @@ describe('The operation of the Simulator', () => {
             const s0 = simulator.state();
             expect(s0.scenario).toEqual(TestScenario);
             expect(s0.history.length).toBe(TestScenario.runUpPeriod.length);
-            expect(s0.timeline.length).toBe(0);
         });
     });
 
@@ -84,10 +77,9 @@ describe('The operation of the Simulator', () => {
             const nextTurn = simulator.nextTurn(emptyPlayerAction, daysPerturn);
 
             // Then the pandemic runs its course
-            const latestMetrics = nextTurn.lastTurnMetrics[nextTurn.lastTurnMetrics.length - 1];
-            expect(latestMetrics.days).toBe(daysPerturn);
-            expect(latestMetrics.totalCost).toBeGreaterThan(0);
-            expect(latestMetrics.numInfected).toBeGreaterThan(TestScenario.initialNumInfected);
+            expect(nextTurn.days).toBe(daysPerturn);
+            expect(nextTurn.totalCost).toBeGreaterThan(0);
+            expect(nextTurn.numInfected).toBeGreaterThan(TestScenario.initialNumInfected);
         });
 
         it('Starts counting dead after the first few turns', () => {
@@ -96,16 +88,16 @@ describe('The operation of the Simulator', () => {
 
             // When some turns have elapsed
             const minTurns = 25; // Give it a few more turns because of randomness
-            let nextTurn: NextTurnState;
+            let nextTurn: SimulatorMetrics;
             for (let i = 0; i < minTurns; i++) {
                 nextTurn = simulator.nextTurn(emptyPlayerAction);
             }
 
             // Then we expect some deaths
-            expect(nextTurn.latestMetrics.numDead).toBeGreaterThan(0);
+            expect(nextTurn.numDead).toBeGreaterThan(0);
 
             // And the history has the expected number of turns
-            expect(simulator.state().history.length).toBe(minTurns + 1);
+            expect(simulator.state().history.length).toBe(minTurns);
         });
 
         it('Calls the immediate effect of a player action in the first turn it appears', () => {
@@ -168,99 +160,7 @@ describe('The operation of the Simulator', () => {
 
             // Then the history has the correct number of results
             const currentState = simulator.state();
-            expect(currentState.history.length).toEqual(daysPerturn * numTurns + 1); // The initial metrics are appended on the first turn
-
-            // And the turn history has no gaps and spans the correct number of items
-            expect(currentState.timeline.length).toEqual(10);
-        });
-    });
-
-    describe('The restart process', () => {
-        it('Can be restarted, back to the initial state', () => {
-            // Given a simulator instance
-            const simulator = new Simulator(TestScenario);
-
-            // And it has been running for a few turns
-            for (let i = 0; i < 10; i++) {
-                simulator.nextTurn({
-                    containmentPolicies: [CloseTransit],
-                    capabilityImprovements: []
-                });
-            }
-            // When it is reset
-            const resetSimulator = simulator.reset();
-
-            // Then the new simulator instance is at the first turn
-            const resetState = resetSimulator.state();
-            expect(resetState.history.length).toBe(simulator.state().scenario.runUpPeriod.length);
-            expect(resetState.scenario).toEqual(simulator.state().scenario);
-            expect(resetState.timeline.length).toBe(0);
-        });
-
-        it('Can be restarted, back to a previous point in time', () => {
-            // Given a simulator instance
-            const simulator = new Simulator(TestScenario);
-            const daysPerTurn = 10;
-
-            // And it has been running for a few turns
-            for (let i = 0; i < 10; i++) {
-                simulator.nextTurn(
-                    {
-                        containmentPolicies: [CloseTransit],
-                        capabilityImprovements: []
-                    },
-                    daysPerTurn
-                );
-            }
-            // When it is reset
-            const targetTurn = 5;
-            const resetSimulator = simulator.reset(targetTurn);
-
-            // Then the new simulator instance is at the first turn
-            const resetState = resetSimulator.state();
-            // We are now at turn 5, with 4 turns in the player action history
-            expect(resetState.timeline.length).toBe(targetTurn - 1);
-
-            // And the last item in the history is the last item of the previous turn prior to the reset
-            expect(resetState.history.length).toBe((targetTurn - 1) * daysPerTurn + 1);
-        });
-
-        it('Operates normally after being restored to a previous point in time', () => {
-            // Given a simulator instance
-            const simulator = new Simulator(TestScenario);
-
-            // And it has been running for a few turns
-            for (let i = 0; i < 10; i++) {
-                simulator.nextTurn({
-                    containmentPolicies: [CloseTransit],
-                    capabilityImprovements: []
-                });
-            }
-            // And it is reset
-            expect(simulator.state().history.length).toBe(11);
-            const resetSimulator = simulator.reset(5);
-
-            // Then the reset simulator works normally
-            for (let i = 0; i < 6; i++) {
-                resetSimulator.nextTurn({
-                    containmentPolicies: [CloseSchools],
-                    capabilityImprovements: []
-                });
-            }
-            // And the histories difer
-            const resetState = resetSimulator.state();
-            const originalState = simulator.state();
-
-            expect(resetState.history.length).toBe(11);
-            expect(resetState.history.length).toEqual(originalState.history.length);
-
-            const newPolicyHistory = resetState.timeline
-                .map((it) => it.playerActions.containmentPolicies.map((p) => p.name).join(','))
-                .join('|');
-            const originalPolicyHistory = originalState.timeline
-                .map((it) => it.playerActions.containmentPolicies.map((p) => p.name).join(','))
-                .join('|');
-            expect(newPolicyHistory).not.toEqual(originalPolicyHistory);
+            expect(currentState.history.length).toEqual(daysPerturn * numTurns); // The initial metrics are appended on the first turn
         });
     });
 });
