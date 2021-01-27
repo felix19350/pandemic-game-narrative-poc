@@ -5,8 +5,10 @@ import { showEvent } from './view/event';
 import { GameController, isGameState } from './controller/GameController';
 import { StoryEvents } from './assets/StoryEvents';
 import { CompletedEvent } from './model/Events';
+import { showEndScreen } from './view/endgame';
 
 $(window).on('load', () => {
+
     // Initialise game engine
     const narrative = StoryEvents;
     const gameController = new GameController(narrative);
@@ -43,8 +45,7 @@ $(window).on('load', () => {
         const gameState = gameController.currentGameState;
 
         if (isGameState(nextTurn)) {
-            // TODO: handle game end (actual ending, choices per event)
-            $('#endscreen').modal('show');
+            showEndScreen(nextTurn);
         } else {
             if (nextTurn.length > 1) {
                 throw new Error('Expecting a single event for now');
@@ -65,4 +66,7 @@ $(window).on('load', () => {
         nextTurn();
         $('#splash').hide();
     });
+
+    //DEV: HIDE SPLASH
+    $('#splash').hide(); nextTurn();
 });

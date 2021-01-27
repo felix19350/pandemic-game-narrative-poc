@@ -62,7 +62,14 @@
         "webpack-dev-server": "^3.1.14"
     },
     "dependencies": {
+        "@types/d3": "^6.3.0",
+        "@types/d3-selection": "^2.0.0",
         "bootstrap": "^4.6.0",
+        "d3": "^6.5.0",
+        "d3-zoom": "^2.0.0",
+        "d3plus-text": "^0.10.1",
+        "dagre": "^0.8.5",
+        "dagre-d3": "^0.6.4",
         "handlebars": "^4.7.6",
         "jquery": "^3.5.1",
         "lodash.clonedeep": "^4.5.0",
