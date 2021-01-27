@@ -122,6 +122,9 @@ body{
     background-color: var(--col-highlight);
     color: var(--col-dark)
 }
+#tree{
+    background-color: var(--col-highlight);
+}
 .modal-content, .modal-header, .modal-body, .modal-footer{
     border: none;
     background: none;

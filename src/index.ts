@@ -5,8 +5,7 @@ import { showEvent } from './view/event';
 import { GameController, isGameState } from './controller/GameController';
 import { StoryEvents } from './assets/StoryEvents';
 import { CompletedEvent } from './model/Events';
-import { createStoryTree } from './view/tree';
-import { responseButton } from './templates/UserInterface';
+import { showEndScreen } from './view/endgame';
 
 $(window).on('load', () => {
 
@@ -46,27 +45,7 @@ $(window).on('load', () => {
         const gameState = gameController.currentGameState;
 
         if (isGameState(nextTurn)) {
-
-            console.log(gameState)
-            console.log(gameState.responseHistory)
-            console.log(gameState.responseHistory[0])
-            console.log(gameState.responseHistory[0].responses)
-            console.log(gameState.responseHistory[0].responses[0])
-            console.log(gameState.responseHistory[0].responses[0].response)
-            console.log(gameState.responseHistory[0].responses[0].response.id)
-            const choices = [
-                gameState.responseHistory[0].responses[0].response.eventId,
-                gameState.responseHistory[1].responses[0].response.eventId,
-                gameState.responseHistory[2].responses[0].response.eventId
-            ]
-
-            // TODO: handle game end (actual ending, choices per event)
-            $('#endscreen').modal('show');
-            $('#show-tree').click( function() {
-                console.log(choices)
-                $('#tree').modal('show');
-                createStoryTree(choices);
-            });
+            showEndScreen(nextTurn);
         } else {
             if (nextTurn.length > 1) {
                 throw new Error('Expecting a single event for now');
