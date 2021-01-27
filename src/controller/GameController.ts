@@ -1,9 +1,7 @@
-import { GameState, Indicators } from '@src/model/GameState';
+import { GameState } from '@src/model/GameState';
 import { Event, CompletedEvent } from '@src/model/Events';
 import { Response, ResponseSelectionResult } from '@src/model/Response';
 import cloneDeep from 'lodash/cloneDeep';
-import { Feedback } from '@src/model/Feedback';
-import { StoryEvents } from '@src/assets/StoryEvents';
 
 export const isGameState = (nextTurn: Event[] | GameState): nextTurn is GameState => {
     return (nextTurn as any)?.turnNumber !== undefined;

@@ -2,7 +2,7 @@ export interface SimulatorState {
     scenario: Scenario;
     currentTurn: TurnHistoryEntry;
     timeline: TimelineEntry[];
-    history: Indicators[];
+    history: SimulatorMetrics[];
 }
 
 export interface Scenario {
@@ -13,7 +13,7 @@ export interface Scenario {
     initialDeathCosts: number;
     importedCasesPerDay: number;
     r0: number;
-    runUpPeriod: Indicators[];
+    runUpPeriod: SimulatorMetrics[];
     hospitalCapacity: number;
     gdpPerDay: number;
     power: number;
@@ -35,7 +35,7 @@ export interface VictoryCondition {
 /**
  * Represents the state of the simulation on a given turn.
  */
-export interface Indicators {
+export interface SimulatorMetrics {
     days: number;
     totalPopulation: number;
     numInfected: number;
@@ -60,8 +60,8 @@ export interface ContainmentPolicy {
     name: string;
     activeLabel: string;
     inactiveLabel: string;
-    immediateEffect: (context: WorldState) => Indicators;
-    recurringEffect: (context: WorldState) => Indicators;
+    immediateEffect: (context: WorldState) => SimulatorMetrics;
+    recurringEffect: (context: WorldState) => SimulatorMetrics;
 }
 
 /**
@@ -69,8 +69,8 @@ export interface ContainmentPolicy {
  */
 export interface CapabilityImprovements {
     name: string;
-    immediateEffect: (context: WorldState) => Indicators;
-    recurringEffect: (context: WorldState) => Indicators;
+    immediateEffect: (context: WorldState) => SimulatorMetrics;
+    recurringEffect: (context: WorldState) => SimulatorMetrics;
 }
 
 /**
@@ -89,12 +89,12 @@ export interface TurnHistoryEntry {
     playerActions: PlayerActions;
 }
 
-export type WorldState = { indicators: Indicators } & TurnHistoryEntry;
+export type WorldState = { metrics: SimulatorMetrics } & TurnHistoryEntry;
 
-export type TimelineEntry = { history: Indicators[] } & TurnHistoryEntry;
+export type TimelineEntry = { history: SimulatorMetrics[] } & TurnHistoryEntry;
 
 export interface VictoryState {
-    lastTurnIndicators: Indicators[];
+    lastTurnMetrics: SimulatorMetrics[];
     victoryCondition: VictoryCondition;
     score: number;
 }
@@ -103,8 +103,8 @@ export interface VictoryState {
  * Models the updated state of the world at the start of a new turn
  */
 export interface NextTurnState {
-    latestIndicators: Indicators;
-    lastTurnIndicators: Indicators[];
+    latestMetrics: SimulatorMetrics;
+    lastTurnMetrics: SimulatorMetrics[];
 }
 
 /**

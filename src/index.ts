@@ -8,7 +8,6 @@ import { CompletedEvent } from './model/Events';
 import { showEndScreen } from './view/endgame';
 
 $(window).on('load', () => {
-
     // Initialise game engine
     const narrative = StoryEvents;
     const gameController = new GameController(narrative);
@@ -68,5 +67,6 @@ $(window).on('load', () => {
     });
 
     //DEV: HIDE SPLASH
-    $('#splash').hide(); nextTurn();
+    $('#splash').hide();
+    nextTurn();
 });

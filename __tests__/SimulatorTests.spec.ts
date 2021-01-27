@@ -27,9 +27,9 @@ export const CloseTransit: ContainmentPolicy = {
     requirements: [],
     activeLabel: 'Closed',
     inactiveLabel: 'Open',
-    immediateEffect: (context) => context.indicators,
+    immediateEffect: (context) => context.metrics,
     recurringEffect: (context) => {
-        const updatedWorldState = { ...context.indicators };
+        const updatedWorldState = { ...context.metrics };
         updatedWorldState.r = Math.max(updatedWorldState.r - 0.03, 0);
         return updatedWorldState;
     }
@@ -42,9 +42,9 @@ export const CloseSchools: ContainmentPolicy = {
     requirements: [],
     activeLabel: 'Closed',
     inactiveLabel: 'Open',
-    immediateEffect: (context) => context.indicators,
+    immediateEffect: (context) => context.metrics,
     recurringEffect: (context) => {
-        const updatedWorldState = { ...context.indicators };
+        const updatedWorldState = { ...context.metrics };
         updatedWorldState.r = Math.max(updatedWorldState.r - 0.03, 0);
         return updatedWorldState;
     }
@@ -98,11 +98,11 @@ describe('The operation of the Simulator', () => {
             const nextTurn = simulator.nextTurn(emptyPlayerAction, daysPerturn);
 
             // Then the pandemic runs its course
-            const latestIndicators = nextTurn.lastTurnIndicators[nextTurn.lastTurnIndicators.length - 1];
+            const latestMetrics = nextTurn.lastTurnMetrics[nextTurn.lastTurnMetrics.length - 1];
             if (isNextTurn(nextTurn)) {
-                expect(latestIndicators.days).toBe(daysPerturn);
-                expect(latestIndicators.totalCost).toBeGreaterThan(0);
-                expect(latestIndicators.numInfected).toBeGreaterThan(TestScenario.initialNumInfected);
+                expect(latestMetrics.days).toBe(daysPerturn);
+                expect(latestMetrics.totalCost).toBeGreaterThan(0);
+                expect(latestMetrics.numInfected).toBeGreaterThan(TestScenario.initialNumInfected);
             } else {
                 fail('Unexpected next turn response');
             }
@@ -121,7 +121,7 @@ describe('The operation of the Simulator', () => {
 
             // Then we expect some deaths
             if (isNextTurn(nextTurn)) {
-                expect(nextTurn.latestIndicators.numDead).toBeGreaterThan(0);
+                expect(nextTurn.latestMetrics.numDead).toBeGreaterThan(0);
             } else {
                 fail('The game should not end at 5 turns in.');
             }
@@ -142,7 +142,7 @@ describe('The operation of the Simulator', () => {
             while (days <= totalDays) {
                 nextTurn = simulator.nextTurn(emptyPlayerAction, daysPerturn);
                 if (isNextTurn(nextTurn)) {
-                    days = nextTurn.latestIndicators.days;
+                    days = nextTurn.latestMetrics.days;
                 } else {
                     break;
                 }
@@ -215,7 +215,7 @@ describe('The operation of the Simulator', () => {
 
             // Then the history has the correct number of results
             const currentState = simulator.state();
-            expect(currentState.history.length).toEqual(daysPerturn * numTurns + 1); // The initial indicators are appended on the first turn
+            expect(currentState.history.length).toEqual(daysPerturn * numTurns + 1); // The initial metrics are appended on the first turn
 
             // And the turn history has no gaps and spans the correct number of items
             expect(currentState.timeline.length).toEqual(10);

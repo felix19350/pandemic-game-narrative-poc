@@ -3,7 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { FakeNegativeBinomial } from './Probabilities';
 import {
     ContainmentPolicy,
-    Indicators,
+    SimulatorMetrics,
     NextTurnState,
     PlayerActions,
     Scenario,
@@ -37,7 +37,7 @@ export class Simulator {
             const history = newSimulator.mutableHistory();
             newSimulator.currentTurn = this.clone({
                 ...targetTurn,
-                indicators: history[history.length - 1]
+                metrics: history[history.length - 1]
             });
         } else {
             newSimulator.timeline = [];
@@ -68,11 +68,11 @@ export class Simulator {
         return this.clone(this.mutableState());
     }
 
-    history(): Indicators[] {
+    history(): SimulatorMetrics[] {
         return this.clone(this.mutableHistory());
     }
 
-    private mutableHistory(): Indicators[] {
+    private mutableHistory(): SimulatorMetrics[] {
         const playthroughHistory = this.timeline.length === 0 ? [] : this.timeline.flatMap((it) => it.history);
         return this.scenario.runUpPeriod.concat(playthroughHistory);
     }
@@ -85,40 +85,40 @@ export class Simulator {
         // Store player previous player turn
         let stateAtTurnEnd = this.clone(this.currentTurn);
         // Reset the baseline R for the turn
-        stateAtTurnEnd.indicators.r = this.scenario.r0;
+        stateAtTurnEnd.metrics.r = this.scenario.r0;
 
         // Factor in any new player actions.
         const newContainmentPolicies: ContainmentPolicy[] = this.findNewContainmentPolicies(
             playerActions.containmentPolicies
         );
         for (const containmentPolicy of newContainmentPolicies) {
-            stateAtTurnEnd.indicators = containmentPolicy.immediateEffect(stateAtTurnEnd);
+            stateAtTurnEnd.metrics = containmentPolicy.immediateEffect(stateAtTurnEnd);
         }
 
         // Factor in the recurring effects of existing player actions.
         for (const containmentPolicy of playerActions.containmentPolicies) {
-            stateAtTurnEnd.indicators = containmentPolicy.recurringEffect(stateAtTurnEnd);
+            stateAtTurnEnd.metrics = containmentPolicy.recurringEffect(stateAtTurnEnd);
         }
 
         // Add the new containment policies to the history of player actions
         stateAtTurnEnd.playerActions.containmentPolicies = playerActions.containmentPolicies;
 
         // Advance world timeline the desired number of days
-        let latestIndicators;
-        let indicatorsAtTurnStart = this.currentTurn.indicators;
+        let latestMetrics;
+        let metricsAtTurnStart = this.currentTurn.metrics;
         // The initial state is added on the first play
-        let history = this.timeline.length === 0 ? [this.currentTurn.indicators] : [];
+        let history = this.timeline.length === 0 ? [this.currentTurn.metrics] : [];
         let complete_history = this.mutableHistory().concat(history);
         for (let i = 0; i < daysToAdvance; i++) {
-            latestIndicators = this.computeNextPandemicDay(stateAtTurnEnd, indicatorsAtTurnStart, complete_history);
-            indicatorsAtTurnStart = latestIndicators;
+            latestMetrics = this.computeNextPandemicDay(stateAtTurnEnd, metricsAtTurnStart, complete_history);
+            metricsAtTurnStart = latestMetrics;
             // Add the last indicators to the world timeline.
-            history.push(this.clone(latestIndicators));
+            history.push(this.clone(latestMetrics));
             complete_history = this.mutableHistory().concat(history);
         }
 
         // Update the next turn's indicators
-        stateAtTurnEnd.indicators = latestIndicators;
+        stateAtTurnEnd.metrics = latestMetrics;
 
         // Advance the current turn to match the state at turn end.
         this.currentTurn = stateAtTurnEnd;
@@ -135,8 +135,8 @@ export class Simulator {
             return this.computeVictory(victoryCondition);
         } else {
             return this.clone({
-                lastTurnIndicators: history,
-                latestIndicators: latestIndicators
+                lastTurnMetrics: history,
+                latestMetrics: latestMetrics
             });
         }
     }
@@ -154,7 +154,7 @@ export class Simulator {
 
     private computeVictory(victoryCondition: VictoryCondition): VictoryState {
         return this.clone({
-            lastTurnIndicators: this.timeline[this.timeline.length - 1].history,
+            lastTurnMetrics: this.timeline[this.timeline.length - 1].history,
             score: this.mutableHistory().reduce((prev, current) => {
                 return prev + current.totalCost;
             }, 0),
@@ -164,10 +164,10 @@ export class Simulator {
 
     private computeNextPandemicDay(
         candidateState: WorldState,
-        lastResult: Indicators,
-        history: Indicators[]
-    ): Indicators {
-        let actionR = candidateState.indicators.r;
+        lastResult: SimulatorMetrics,
+        history: SimulatorMetrics[]
+    ): SimulatorMetrics {
+        let actionR = candidateState.metrics.r;
         const prevCases = lastResult.numInfected;
         // Don't allow cases to exceed hospital capacity
         const hospitalCapacity = lastResult.hospitalCapacity;
@@ -195,7 +195,7 @@ export class Simulator {
             numInfected: new_num_infected,
             totalPopulation: this.scenario.totalPopulation,
             hospitalCapacity: this.scenario.hospitalCapacity,
-            r: candidateState.indicators.r,
+            r: candidateState.metrics.r,
             importedCasesPerDay: this.scenario.importedCasesPerDay,
             deathCosts: deathCosts,
             economicCosts: economicCosts,
@@ -214,7 +214,7 @@ export class Simulator {
                 capabilityImprovements: this.scenario.initialCapabilityImprovements,
                 containmentPolicies: this.scenario.initialContainmentPolicies
             },
-            indicators: {
+            metrics: {
                 days: 0,
                 numDead: 0,
                 numInfected: this.scenario.initialNumInfected,
@@ -272,7 +272,7 @@ export class Simulator {
             Math.floor(jStat.normal.sample(new_num_infected_mean, new_num_infected_variance ** 0.5))
         );
 
-        return new_num_infected + this.currentTurn.indicators.importedCasesPerDay; // remove stochasticity; was: return new_num_infected;
+        return new_num_infected + this.currentTurn.metrics.importedCasesPerDay; // remove stochasticity; was: return new_num_infected;
     }
 
     private generateNewCases(numInfected: number, r: number) {
