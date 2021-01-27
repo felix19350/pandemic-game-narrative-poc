@@ -6,7 +6,7 @@ import 'd3-zoom';
 import {StoryEvents} from '../assets/StoryEvents'
 import { Event } from '@src/model/Events';
 
-export const createStoryTree = () => {
+export const createStoryTree = (choices) => {
 
 
 // Create a new directed graph 
@@ -31,10 +31,10 @@ g.nodes().forEach(function(v) {
     node.height = 50;
     node.style = 'fill: white;';
 });
-g.node('lockdown01vaccine').style = 'fill: dodgerblue';
-g.node('lockdown02fatigue').style = 'fill: dodgerblue';
-g.node('lockdown03wellbeing').style = 'fill: dodgerblue';
-g.node('END4').style = 'fill: dodgerblue';
+
+choices.forEach(it => {
+    g.node(it).style = 'fill: dodgerblue';
+});
 
 // Add edges to the graph.
 g.setEdge('START', 'lockdown01vaccine')
