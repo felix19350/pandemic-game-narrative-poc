@@ -89,6 +89,10 @@ export const simpleBinaryChoiceNarrative: Event[] = [
                         fromPublic: 'left',
                         fromBusiness: 'left',
                         fromHealthcare: 'left'
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             },
@@ -115,6 +119,10 @@ export const simpleBinaryChoiceNarrative: Event[] = [
                         fromPublic: 'right',
                         fromBusiness: 'right',
                         fromHealthcare: 'right'
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             }
@@ -148,6 +156,10 @@ export const simpleBinaryChoiceNarrative: Event[] = [
                         fromPublic: 'done left',
                         fromBusiness: 'done left',
                         fromHealthcare: 'done left'
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             }
@@ -181,6 +193,10 @@ export const simpleBinaryChoiceNarrative: Event[] = [
                         fromPublic: 'done right',
                         fromBusiness: 'done right',
                         fromHealthcare: 'done right'
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             }

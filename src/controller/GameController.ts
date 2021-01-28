@@ -80,6 +80,12 @@ export class GameController {
             throw new Error('Response is not applicable');
         }
         const result = response.onSelect(this.gameState);
+        this.playerActionsForTurn.capabilityImprovements = this.playerActionsForTurn.capabilityImprovements.concat(
+            result.playerActions.capabilityImprovements
+        );
+        this.playerActionsForTurn.containmentPolicies = this.playerActionsForTurn.containmentPolicies.concat(
+            result.playerActions.containmentPolicies
+        );
 
         // retain all events that are not the one that the current response pertains to
         this.eventsToRespond = this.eventsToRespond.filter((evt) => evt.id !== response.eventId);

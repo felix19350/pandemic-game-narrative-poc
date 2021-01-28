@@ -1,3 +1,4 @@
+import { PlayerActions } from '@src/simulator/SimulatorModel';
 import { Feedback } from './Feedback';
 import { GameState, Indicators } from './GameState';
 
@@ -13,4 +14,5 @@ export interface Response {
 export interface ResponseSelectionResult {
     updatedIndicators: Indicators;
     feedback: Feedback;
+    playerActions: PlayerActions;
 }
