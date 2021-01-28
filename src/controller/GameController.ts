@@ -2,17 +2,28 @@ import { GameState } from '@src/model/GameState';
 import { Event, CompletedEvent } from '@src/model/Events';
 import { Response, ResponseSelectionResult } from '@src/model/Response';
 import cloneDeep from 'lodash/cloneDeep';
+import { Simulator } from '../simulator/Simulator';
+import { PlayerActions, Scenario } from '@src/simulator/SimulatorModel';
 
 export const isGameState = (nextTurn: Event[] | GameState): nextTurn is GameState => {
     return (nextTurn as any)?.turnNumber !== undefined;
+};
+
+const emptyAction: PlayerActions = {
+    containmentPolicies: [],
+    capabilityImprovements: []
 };
 
 export class GameController {
     private gameState: GameState;
     private storyEvents: Event[];
     private eventsToRespond: Event[];
+    private simulator: Simulator;
+    private playerActionsForTurn: PlayerActions;
 
-    constructor(storyEvents: Event[]) {
+    constructor(scenario: Scenario, storyEvents: Event[]) {
+        this.simulator = new Simulator(scenario);
+        this.playerActionsForTurn = cloneDeep(emptyAction);
         this.storyEvents = storyEvents;
         this.eventsToRespond = [];
         this.gameState = {
@@ -40,6 +51,8 @@ export class GameController {
             );
         }
         this.gameState.turnNumber += 1;
+        this.simulator.nextTurn(this.playerActionsForTurn, 30); //TODO: discuss if we want to advance the simulator after each event response.
+        this.playerActionsForTurn = cloneDeep(emptyAction);
         this.eventsToRespond = this.chooseNextEvents();
 
         if (this.eventsToRespond.length === 0) {
