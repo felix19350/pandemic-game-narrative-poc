@@ -35,6 +35,10 @@ export const StoryEvents: Event[] = [
                         fromPublic: `Finally on the right track <i class='feedback-message-emoji fas fa-subway'></i>`,
                         fromBusiness: `CONFIDENCE IN ACHIEVING A STABLE ECONOMY RISES`,
                         fromHealthcare: `COVID-19 cases rising sharply!`
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             },
@@ -51,6 +55,10 @@ export const StoryEvents: Event[] = [
                         fromPublic: `<i class='feedback-message-emoji fas fa-meh-rolling-eyes'></i> - me this year`,
                         fromBusiness: `CONTINUED COVID-19 MEASURES RISK BIGGEST DEPRESSION YET`,
                         fromHealthcare: `COVID-19 response gives nurses some much needed and rare downtime as cases drop.`
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             }
@@ -86,6 +94,10 @@ export const StoryEvents: Event[] = [
                         fromPublic: `<i class='feedback-message-emoji fas fa-grin-squint'></i>`,
                         fromBusiness: `'DIGITAL SERVICES: OUR ECONOMIC SAVIOUR?'`,
                         fromHealthcare: `COVID-19 cases reach all time high!`
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             },
@@ -107,6 +119,10 @@ export const StoryEvents: Event[] = [
                         fromPublic: '@Ieader did you just admit your mistake?!',
                         fromBusiness: ' "INDICISIVE LEADER" CREATES ECONOMIC UNCERTAINTY ',
                         fromHealthcare: `'I worked 40 hours yesterday': Healthcare workers stressed by new cases`
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             }
@@ -156,6 +172,10 @@ export const StoryEvents: Event[] = [
                         fromPublic: `#people #wellbeing first <i class='feedback-message-emoji fas fa-hand-peace'></i>`,
                         fromBusiness: `LENDERS START TO SEE RETURNS ON PANDEMIC LOANS`,
                         fromHealthcare: `Is wellbeing more important than health? Socialisation increases COVID-19 risk`
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             },
@@ -172,6 +192,10 @@ export const StoryEvents: Event[] = [
                         fromPublic: `<i class='feedback-message-emoji fas fa-hand-middle-finger'></i>.`,
                         fromBusiness: `PANDEMIC TRIGGERS GLOBAL RECESSION`,
                         fromHealthcare: `COV-SARS-19 cases dip to all time low`
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             }
@@ -214,6 +238,10 @@ export const StoryEvents: Event[] = [
                         fromPublic: `We were already giving this virus too much attention anyway`,
                         fromBusiness: `ECONOMY SHOWS SIGNS OF RECOVERY`,
                         fromHealthcare: 'Cases rising: Every day sets a new record high'
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             },
@@ -249,6 +277,10 @@ export const StoryEvents: Event[] = [
                         fromPublic: `So sick of this.`,
                         fromBusiness: '"CONFUSED LOCKDOWN POLICY" MAKES BUSINESS UNPREDICTABLE',
                         fromHealthcare: 'Number of new cases falls for first time in a month'
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             }
@@ -282,6 +314,10 @@ export const StoryEvents: Event[] = [
                         fromPublic: `2020 is <i class='feedback-message-emoji fas fa-tired'></i>`,
                         fromBusiness: `COMPANIES CONTINUE TO REPORT 'UNPROFITABLE CONDITIONS'`,
                         fromHealthcare: `Health minister: COVID-19 remains a threat but is 'under control'`
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             },
@@ -310,6 +346,10 @@ export const StoryEvents: Event[] = [
                         fromPublic: `<i class='feedback-message-emoji fas fa-flushed'></i>`,
                         fromBusiness: `COMPANIES CONTINUE TO REPORT 'UNPROFITABLE CONDITIONS'`,
                         fromHealthcare: `Everyone is 'in crisis' anyway: Cynical response to wellbeing needs may sooner end pandemic`
+                    },
+                    playerActions: {
+                        containmentPolicies: [],
+                        capabilityImprovements: []
                     }
                 })
             }

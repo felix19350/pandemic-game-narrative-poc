@@ -6,12 +6,12 @@ import { GameController, isGameState } from './controller/GameController';
 import { StoryEvents } from './assets/StoryEvents';
 import { CompletedEvent } from './model/Events';
 import { showEndScreen } from './view/endgame';
+import { US } from './scenarios/US';
 
 $(window).on('load', () => {
-
     // Initialise game engine
     const narrative = StoryEvents;
-    const gameController = new GameController(narrative);
+    const gameController = new GameController(US, narrative);
 
     // Await player response
     const onResponse = (responseId: string) => {
@@ -68,5 +68,6 @@ $(window).on('load', () => {
     });
 
     //DEV: HIDE SPLASH
-    $('#splash').hide(); nextTurn();
+    $('#splash').hide();
+    nextTurn();
 });
