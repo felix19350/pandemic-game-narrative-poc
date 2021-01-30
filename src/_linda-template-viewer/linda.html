@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Stylesheets -->
+        <!-- 
+            Bootstrap 
+            ========
+            Components and designs from:
+            https://getbootstrap.com/docs/4.5/getting-started/introduction/
+        -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <!-- 
+            Custom css styling
+            ==================
+            copyOf_game.css
+        -->
+        <link rel="stylesheet" href="copyOf_game.css">
+
+    <!-- 
+        Google fonts 
+        ============
+        Add any additional fonts here 
+        (then to use on an element specify style='family-name: FONTNAMEHERE' in HTML or CSS sheet above)
+    -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Controls to toggle between different views in game -->
+    <div style='position:absolute; top:0; left:0; z-index: 99;'>
+        <button onclick="$('#splash').toggle()">splash</button>
+        <button data-toggle="modal" data-target="#event-modal">event</button>
+        <button data-toggle="modal" data-target="#reputation-modal">reputation</button>
+        <button data-toggle="modal" data-target="#endscreen" disabled>endscreen</button>
+        <button data-toggle="modal" data-target="#tree" disabled>tree</button>
+    </div>
+
+    <!-- Different screens used in the game are displayed below -->
+
+    <!-- Feedback social feed -->
+    <div class="container-fluid">
+        <div class="w-100 d-flex flex-row justify-content-center">
+            <div class='d-flex flex-column' id='media-feed'></div>
+        </div>
+    </div>
+
+    <!-- Event modal -->
+    <div class="modal" tabindex="-1" role="dialog" id='event-modal' data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h5>Event:</h5>
+            <div class="modal-content align-items-center justify-content-center">
+                <h1 class="modal-header" id='event-title'></h1>
+                <h5 class="modal-body" id='event-description'></h5>
+                <div class="modal-footer d-flex flex-column justify-content-start align-items-start" id='event-responses'></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reputation modal -->
+    <div class="modal" tabindex="-1" role="dialog" id='reputation-modal' data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h5>Reputation gained:</h5>
+            <div class="modal-content align-items-center justify-content-center">
+                <h1 class="modal-header text-center display-4" id='reputation-title'></h1>
+                <div class="modal-body text-center">
+                    <h1 id='reputation-icon'></h1>
+                    <h3 id='reputation-description'></h3>
+                </div>
+                <div class="modal-footer d-flex flex-column justify-content-start align-items-start">
+                    <button class='mb-4 btn btn-light btn-lg' data-dismiss="modal" id='dismiss-reputation'>Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Endscreen modal -->
+    <div id='endscreen' class="modal" tabindex="-1" role="dialog" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <h1 class="modal-header text-center display-4" >Endscreen</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-content align-items-center justify-content-center">
+                <div class="modal-body text-center">
+                    <div class='w-100 vh-100 d-flex flex-column justify-content-around align-items-center' style='padding: 20%; position: absolute; top:0; left:0; background: gold;'>
+                        <div>
+                            <h5 class='text-center'><strong>You can compare your responses to others</strong></h5>
+                            <button id='show-tree' class='mb-4 btn btn-light btn-lg' style='font-size: 2rem;' data-dismiss="modal">Show decision tree</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission tree -->
+    <div id='tree' class="modal" tabindex="-1" role="dialog" data-keyboard="false">
+        <div class="modal-dialog modal-xl w-100" style='height: 90%; background: gold;'>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-content w-100 h-100">
+                <div id='tree-div' class='w-100 h-100'></div>
+                <h1 class='display-4' style='position: absolute; top:10; left:10;'>Your story</h1>
+                <a href='index.html'><button class='btn btn-lg btn-success' style='position: absolute; bottom:10; right:10;' data-dismiss="modal" >Play again</button></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Splash screen -->
+    <div id='splash' style='z-index: 2;'>
+        <div class='w-100 vh-100 d-flex flex-column justify-content-around align-items-center' style='padding: 20%; position: absolute; top:0; left:0; background: gold;'>
+            <div>
+                <h1 class='pb-3 display-4 text-center'>Pandemic game</h1>
+                <h5 class='text-center'><strong>How to play</strong></h5>
+                <ul style='width: 400px;'>
+                    <li class='p-2'>
+                        You play as the leader of your country
+                    </li>
+                    <li class='p-2'>
+                        Make <strong>decisions</strong> in response to <strong>events</strong> 
+                    </li>
+                    <li class='p-2'>
+                        Your decisions have <strong>consequences</strong>
+                    </li>
+                    <li class='p-2'>
+                        You will have to choose whether to prioritise the <strong>public</strong> (wellbeing), <strong>businesses</strong> (economy) or <strong>healthcare</strong> (COVID-19 outcomes)
+                    </li>
+                </ul>
+            </div>
+            <button class='mb-4 btn btn-light btn-lg' id='dismiss-splash' style='font-size: 2rem;'>Play</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script type='text/javascript' src="templates.js"></script>     
+    <script type='text/javascript' src="linda.js"></script>
+</body>
+
+</html>
