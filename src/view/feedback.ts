@@ -21,8 +21,11 @@ function displayOnFeed(template: HTMLElement) {
 }
 
 export function showFeedback(eventNm: string, feedback: Feedback, onNextTurn: Function) {
-    [
-        compile(responseText, { eventNm: eventNm, txt: feedback.toResponse }),
+    // Example support data
+    const examplePublicSupportPollData = {support: 55, dontKnow: 5, oppose: 40, summary: 'The public supported that!'};
+
+    [ // Compile feedback items and show to player on social feed
+        compile(responseText, { eventNm: eventNm, txt: feedback.toResponse, poll: examplePublicSupportPollData}),
         compile(message, { txt: feedback.fromPublic }),
         compile(news, { txt: feedback.fromBusiness }),
         compile(report, { txt: feedback.fromHealthcare }),
