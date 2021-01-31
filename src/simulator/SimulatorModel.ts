@@ -22,6 +22,8 @@ export interface Scenario {
     time_lumping: boolean;
     initialContainmentPolicies: ContainmentPolicy[];
     initialCapabilityImprovements: CapabilityImprovements[];
+    dailyIncreaseInImmunity: number;
+    baseImmunity: number;
 }
 
 /**
@@ -39,6 +41,8 @@ export interface SimulatorMetrics {
     economicCosts: number;
     deathCosts: number;
     totalCost: number;
+    baseImmunity: number;
+    dailyIncreaseInImmunity: number;
 }
 
 /**

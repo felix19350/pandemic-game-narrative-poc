@@ -1,11 +1,9 @@
 $(window).on('load', () => {
-
     // Import HTML templates from templates.js
     const templates = [responseText, message, news, report, endTurnButton];
 
     // MAKE SOCIAL FEED
     templates.forEach(function (template) {
-
         // Optional: Add text into editable template (see how this is done with buttons below)
         // var addText = Handlebars.compile(template);
         // addText = addText({ eventNm: 'exampleName', txt: 'exampleText', id: 'exampleID' });
@@ -22,7 +20,7 @@ $(window).on('load', () => {
     $('#reputation-description').text('You were given the reputation of flip flopper');
 
     // MAKE EVENT SCREEN
-    
+
     // a - Add text
     document.getElementById('event-title').innerHTML = 'event name';
     document.getElementById('event-description').innerHTML = 'event description';
@@ -54,7 +52,4 @@ $(window).on('load', () => {
         enabled: false // if disabled shows as disabled
     });
     document.getElementById('event-responses').appendChild(div);
-
 });
-
-

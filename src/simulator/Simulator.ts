@@ -20,7 +20,7 @@ export class Simulator {
         this.scenario = scenario;
         this.scaleFactor = scenario.gdpPerDay * 0.35;
         this.currentTurn = this.computeInitialWorldState();
-        this.history = [].concat(this.scenario.runUpPeriod);
+        this.history = [];
     }
 
     /**
@@ -46,6 +46,7 @@ export class Simulator {
     nextTurn(playerActions: PlayerActions, daysToAdvance: number = 1): SimulatorMetrics {
         // Store player previous player turn
         let stateAtTurnEnd = this.clone(this.currentTurn);
+
         // Reset the baseline R for the turn
         stateAtTurnEnd.metrics.r = this.scenario.r0;
 
@@ -61,7 +62,7 @@ export class Simulator {
         for (const containmentPolicy of playerActions.containmentPolicies) {
             stateAtTurnEnd.metrics = containmentPolicy.recurringEffect(stateAtTurnEnd);
         }
-
+        
         // Add the new containment policies to the history of player actions
         stateAtTurnEnd.playerActions.containmentPolicies = playerActions.containmentPolicies;
 
@@ -70,6 +71,7 @@ export class Simulator {
         let metricsAtTurnStart = this.currentTurn.metrics;
         // The initial state is added on the first play
 
+        console.log(stateAtTurnEnd.metrics.r)
         const turnR = stateAtTurnEnd.metrics.r;
         for (let i = 0; i < daysToAdvance; i++) {
             latestMetrics = this.computeNextPandemicDay(turnR, metricsAtTurnStart);
@@ -88,14 +90,13 @@ export class Simulator {
 
     private computeNextPandemicDay(turnR: number, previousDayMetrics: SimulatorMetrics): SimulatorMetrics {
         const prevCases = previousDayMetrics.numInfected;
-        // Don't allow cases to exceed hospital capacity
-        const hospitalCapacity = previousDayMetrics.hospitalCapacity;
-        const lockdownRatio = hospitalCapacity / prevCases;
-        const cappedActionR = prevCases * turnR >= hospitalCapacity ? lockdownRatio : turnR;
-        turnR = cappedActionR;
+
+        // Calculate immunity
+        const currentDay = previousDayMetrics.days + 1;
+        const immunity = this.scenario.baseImmunity + ( this.scenario.dailyIncreaseInImmunity * currentDay )
 
         // Compute next state
-        let new_num_infected = this.generateNewCasesFromDistribution(prevCases, turnR);
+        let new_num_infected = this.generateNewCasesFromDistribution(prevCases, turnR, immunity);
         new_num_infected = Math.max(Math.floor(new_num_infected), 0);
         new_num_infected = Math.min(new_num_infected, this.scenario.totalPopulation);
         // Deaths from infections started 20 days ago
@@ -105,10 +106,11 @@ export class Simulator {
         const long_enough = history.length >= lag;
         const mortality = this.scenario.mortality;
         const new_deaths_lagging = long_enough ? history[history.length - lag].numInfected * mortality : 0;
-        const currentDay = previousDayMetrics.days + 1;
         const deathCosts = this.computeDeathCost(new_deaths_lagging);
         const economicCosts = this.computeEconomicCosts(turnR);
         const medicalCosts = this.computeHospitalizationCosts(new_num_infected);
+        const increaseInDailyNewCases = new_num_infected - prevCases;
+        console.log('increaseInDailyNewCases', increaseInDailyNewCases)
 
         return {
             days: currentDay,
@@ -121,7 +123,9 @@ export class Simulator {
             deathCosts: deathCosts,
             economicCosts: economicCosts,
             medicalCosts: medicalCosts,
-            totalCost: deathCosts + economicCosts + medicalCosts
+            totalCost: deathCosts + economicCosts + medicalCosts,
+            baseImmunity: this.scenario.baseImmunity,
+            dailyIncreaseInImmunity: this.scenario.dailyIncreaseInImmunity
         };
     }
 
@@ -146,7 +150,9 @@ export class Simulator {
                 deathCosts: deathCosts,
                 economicCosts: economicCosts,
                 medicalCosts: medicalCosts,
-                totalCost: deathCosts + economicCosts + medicalCosts
+                totalCost: deathCosts + economicCosts + medicalCosts,
+                baseImmunity: this.scenario.baseImmunity,
+                dailyIncreaseInImmunity: this.scenario.dailyIncreaseInImmunity
             },
             playerActions: {
                 capabilityImprovements: [],
@@ -178,8 +184,8 @@ export class Simulator {
         return (this.scaleFactor * (growthRateOriginal - growthRateNew)) / growthRateOriginal;
     }
 
-    private generateNewCasesFromDistribution(num_infected: number, action_r: number) {
-        const lam = this.generateNewCases(num_infected, action_r);
+    private generateNewCasesFromDistribution(num_infected: number, action_r: number, immunity: number) {
+        const lam = this.generateNewCases(num_infected, action_r, immunity);
         const r_single_chain = 0.17; // 50.0;
         const lam_single_chain = 1.0 * action_r;
         const p_single_chain = lam_single_chain / (r_single_chain + lam_single_chain);
@@ -196,8 +202,8 @@ export class Simulator {
         return new_num_infected + this.currentTurn.metrics.importedCasesPerDay; // remove stochasticity; was: return new_num_infected;
     }
 
-    private generateNewCases(numInfected: number, r: number) {
-        const fractionSusceptible = 1; // immune population?
+    private generateNewCases(numInfected: number, r: number, immunity: number) {
+        const fractionSusceptible = Math.max(1 - immunity, 0);
         const expectedNewCases = numInfected * r * fractionSusceptible; // + this.currentTurn.indicators.importedCasesPerDay;
         return expectedNewCases;
     }

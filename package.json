@@ -71,10 +71,11 @@
         "dagre": "^0.8.5",
         "dagre-d3": "^0.6.4",
         "handlebars": "^4.7.6",
+        "highcharts": "^8.2.2",
         "jquery": "^3.5.1",
+        "jstat": "^1.9.4",
         "lodash.clonedeep": "^4.5.0",
         "node": "^15.4.0",
-        "jstat": "^1.9.4",
         "popper.js": "^1.16.1"
     }
 }

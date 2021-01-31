@@ -20,6 +20,8 @@
 
 <body>
 
+    <div id='chart' style='z-index: 99'></div>
+
     <!-- Feedback social feed -->
     <div class="container-fluid">
         <div class="w-100 d-flex flex-row justify-content-center">
@@ -32,9 +34,15 @@
         <div class="modal-dialog" role="document">
             <h5>Event:</h5>
             <div class="modal-content align-items-center justify-content-center">
-                <h1 class="modal-header" id='event-title'></h1>
-                <h5 class="modal-body" id='event-description'></h5>
-                <div class="modal-footer d-flex flex-column justify-content-start align-items-start" id='event-responses'></div>
+                <h1 class="modal-header" id='event-title'>
+                    {{title}}
+                </h1>
+                <h5 class="modal-body" id='event-description'>
+                    {{description}}
+                </h5>
+                <div class="modal-footer d-flex flex-column justify-content-start align-items-start" id='event-responses'>
+                    {{responses}}
+                </div>
             </div>
         </div>
     </div>
@@ -44,10 +52,16 @@
         <div class="modal-dialog" role="document">
             <h5>Reputation gained:</h5>
             <div class="modal-content align-items-center justify-content-center">
-                <h1 class="modal-header text-center display-4" id='reputation-title'></h1>
+                <h1 class="modal-header text-center display-4" id='reputation-title'> 
+                    {{title}} 
+                </h1>
                 <div class="modal-body text-center">
-                    <h1 id='reputation-icon'></h1>
-                    <h3 id='reputation-description'></h3>
+                    <h1 id='reputation-icon'> 
+                        {{icon}} 
+                    </h1>
+                    <h3 id='reputation-description'> 
+                        {{description}} 
+                    </h3>
                 </div>
                 <div class="modal-footer d-flex flex-column justify-content-start align-items-start">
                     <button class='mb-4 btn btn-light btn-lg' data-dismiss="modal" id='dismiss-reputation'>Continue</button>
@@ -63,6 +77,9 @@
             <div class="modal-content align-items-center justify-content-center">
                 <div class="modal-body text-center">
                     <div class='w-100 vh-100 d-flex flex-column justify-content-around align-items-center' style='padding: 20%; position: absolute; top:0; left:0; background: gold;'>
+                        <h5> 
+                            {{stats}} 
+                        </h5>
                         <div>
                             <h5 class='text-center'><strong>You can compare your responses to others</strong></h5>
                             <button id='show-tree' class='mb-4 btn btn-light btn-lg' style='font-size: 2rem;' data-dismiss="modal">Show decision tree</button>

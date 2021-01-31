@@ -2,16 +2,17 @@ import * as $ from 'jquery';
 import 'bootstrap/js/dist/modal';
 import { showFeedback, showReputation } from './view/feedback';
 import { showEvent } from './view/event';
-import { GameController, isGameState } from './controller/GameController';
+import { GameController } from './controller/GameController';
 import { StoryEvents } from './assets/StoryEvents';
 import { CompletedEvent } from './model/Events';
 import { showEndScreen } from './view/endgame';
-import { US } from './scenarios/US';
+import { UK } from './scenarios/UK';
 
 $(window).on('load', () => {
+
     // Initialise game engine
     const narrative = StoryEvents;
-    const gameController = new GameController(US, narrative);
+    const gameController = new GameController(UK, narrative);
 
     // Await player response
     const onResponse = (responseId: string) => {
@@ -36,22 +37,22 @@ $(window).on('load', () => {
 
     // Give feedback to player
     const playerFeedback = (competedEvent: CompletedEvent, onNextTurn: Function) => {
-        showFeedback(competedEvent.event.name, competedEvent.feedback, onNextTurn);
+        showFeedback({
+            name: competedEvent.event.name, 
+            feedback: competedEvent.feedback,
+            simulator: competedEvent.simulator,
+            onNextTurn: onNextTurn
+        });
     };
 
     // Call next turn
     const nextTurn = () => {
         const nextTurn = gameController.nextTurn();
-        const gameState = gameController.currentGameState;
-
-        if (isGameState(nextTurn)) {
-            showEndScreen(nextTurn);
+        
+        if (nextTurn.endgame) {
+            showEndScreen(nextTurn.gameState);
         } else {
-            if (nextTurn.length > 1) {
-                throw new Error('Expecting a single event for now');
-                alert('Error, check console');
-            }
-            showEvent(nextTurn[0], onResponse, gameState);
+            showEvent(nextTurn.nextEvent, onResponse, nextTurn.gameState);
         }
     };
 
