@@ -1,5 +1,6 @@
 import { GameState } from '../model/GameState';
 import { Event } from '../model/Events';
+import { lockdown, openBusinesses, lockdownWithExceptions } from '../simulator/PlayerActions';
 
 export const StoryEvents: Event[] = [
     {
@@ -14,11 +15,10 @@ export const StoryEvents: Event[] = [
             {
                 id: 'lockdown01vaccine_lift',
                 eventId: 'lockdown01vaccine',
-                name: 'Great! End lockdown',
+                name: `Great! Let's slowly open back up`,
                 label: [
-                    `Lockdown removed`,
+                    `Businesses will re-open`,
                     `Wellbeing will improve`,
-                    `Businesses will be able to operate`,
                     `COVID-19 cases will rise`
                 ],
                 isApplicable: (gameState: GameState) => true,
@@ -31,13 +31,13 @@ export const StoryEvents: Event[] = [
                         healthcareSupport: -1
                     },
                     feedback: {
-                        toResponse: 'Lockdown is ended as the vaccine is deployed.',
+                        toResponse: 'Businesses open again as the vaccine is deployed.',
                         fromPublic: `Finally on the right track <i class='feedback-message-emoji fas fa-subway'></i>`,
                         fromBusiness: `CONFIDENCE IN ACHIEVING A STABLE ECONOMY RISES`,
                         fromHealthcare: `COVID-19 cases rising sharply!`
                     },
                     playerActions: {
-                        containmentPolicies: [],
+                        containmentPolicies: [openBusinesses],
                         capabilityImprovements: []
                     }
                 })
@@ -57,7 +57,7 @@ export const StoryEvents: Event[] = [
                         fromHealthcare: `COVID-19 response gives nurses some much needed and rare downtime as cases drop.`
                     },
                     playerActions: {
-                        containmentPolicies: [],
+                        containmentPolicies: [lockdown],
                         capabilityImprovements: []
                     }
                 })
@@ -96,7 +96,7 @@ export const StoryEvents: Event[] = [
                         fromHealthcare: `COVID-19 cases reach all time high!`
                     },
                     playerActions: {
-                        containmentPolicies: [],
+                        containmentPolicies: [openBusinesses],
                         capabilityImprovements: []
                     }
                 })
@@ -121,7 +121,7 @@ export const StoryEvents: Event[] = [
                         fromHealthcare: `'I worked 40 hours yesterday': Healthcare workers stressed by new cases`
                     },
                     playerActions: {
-                        containmentPolicies: [],
+                        containmentPolicies: [openBusinesses],
                         capabilityImprovements: []
                     }
                 })
@@ -174,7 +174,7 @@ export const StoryEvents: Event[] = [
                         fromHealthcare: `Is wellbeing more important than health? Socialisation increases COVID-19 risk`
                     },
                     playerActions: {
-                        containmentPolicies: [],
+                        containmentPolicies: [openBusinesses],
                         capabilityImprovements: []
                     }
                 })
@@ -194,7 +194,7 @@ export const StoryEvents: Event[] = [
                         fromHealthcare: `COV-SARS-19 cases dip to all time low`
                     },
                     playerActions: {
-                        containmentPolicies: [],
+                        containmentPolicies: [lockdown],
                         capabilityImprovements: []
                     }
                 })
@@ -207,7 +207,8 @@ export const StoryEvents: Event[] = [
         description: `
             The number of COVID-19 cases has reached an all time high.
             Some news reports claim that this was because the lockdown was lifted, others blame lockdown fatigue- or that the vaccination has made people less worried about socialising.
-        `,
+            as ended so cases should reduce. 
+            `,
         canRun: (gameState: GameState) => {
             return gameState.turnNumber === 3 && gameState.indicators.lockdownEffectiveness === 0;
         },
@@ -240,7 +241,7 @@ export const StoryEvents: Event[] = [
                         fromHealthcare: 'Cases rising: Every day sets a new record high'
                     },
                     playerActions: {
-                        containmentPolicies: [],
+                        containmentPolicies: [openBusinesses],
                         capabilityImprovements: []
                     }
                 })
@@ -279,7 +280,7 @@ export const StoryEvents: Event[] = [
                         fromHealthcare: 'Number of new cases falls for first time in a month'
                     },
                     playerActions: {
-                        containmentPolicies: [],
+                        containmentPolicies: [lockdown],
                         capabilityImprovements: []
                     }
                 })
@@ -292,6 +293,7 @@ export const StoryEvents: Event[] = [
         description: `
             There are increasing reports that this extended period of lockdown is having negative consequences on people's wellbeing and mental health.
             Some charities and non-government organisations have started advocating for lockdown restrictions to be relaxed for individuals in crisis.
+            as ended so cases should reduce. 
         `,
         canRun: (gameState: GameState) => {
             return gameState.turnNumber === 3 && gameState.indicators.lockdownEffectiveness > 0;
@@ -316,7 +318,7 @@ export const StoryEvents: Event[] = [
                         fromHealthcare: `Health minister: COVID-19 remains a threat but is 'under control'`
                     },
                     playerActions: {
-                        containmentPolicies: [],
+                        containmentPolicies: [lockdownWithExceptions],
                         capabilityImprovements: []
                     }
                 })
@@ -348,7 +350,7 @@ export const StoryEvents: Event[] = [
                         fromHealthcare: `Everyone is 'in crisis' anyway: Cynical response to wellbeing needs may sooner end pandemic`
                     },
                     playerActions: {
-                        containmentPolicies: [],
+                        containmentPolicies: [lockdown],
                         capabilityImprovements: []
                     }
                 })
