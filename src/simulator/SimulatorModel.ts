@@ -6,6 +6,7 @@ export interface SimulatorState {
 
 export interface Scenario {
     totalPopulation: number;
+    initialNumDead: number,
     initialNumInfected: number;
     initialMedicalCosts: number;
     initialEconomicCosts: number;
@@ -24,6 +25,7 @@ export interface Scenario {
     initialCapabilityImprovements: CapabilityImprovements[];
     dailyIncreaseInImmunity: number;
     baseImmunity: number;
+    initialPublicSupport: number;
 }
 
 /**
@@ -43,6 +45,8 @@ export interface SimulatorMetrics {
     totalCost: number;
     baseImmunity: number;
     dailyIncreaseInImmunity: number;
+    dailyChangeInCases: number;
+    publicSupport: number;
 }
 
 /**

@@ -4,7 +4,7 @@ import { showFeedback, showReputation } from './view/feedback';
 import { showEvent } from './view/event';
 import { GameController } from './controller/GameController';
 import { StoryEvents } from './assets/StoryEvents';
-import { CompletedEvent } from './model/Events';
+import { EndOfTurnSummary } from './model/Events';
 import { showEndScreen } from './view/endgame';
 import { UK } from './scenarios/UK';
 
@@ -17,32 +17,28 @@ $(window).on('load', () => {
     // Await player response
     const onResponse = (responseId: string) => {
         // Carry out player's response
-        const competedEvent = gameController.respondToEvent(responseId);
+        const endOfTurnSummary: EndOfTurnSummary = gameController.respondToEvent(responseId);
 
         // Hide event
         $('#event-modal').modal('hide');
 
-        // Show feedback to player
-        if (competedEvent.reputation.length > 0) {
-            // Show reputation before feedback to response
-            showReputation(competedEvent.reputation);
+        // Show a reputation or just feedback
+        if (endOfTurnSummary.history.thisMonth.indicators.reputation.length > 0) {
+            // Show reputation then feedback
+            showReputation(endOfTurnSummary.history.thisMonth.indicators.reputation);
             $('#dismiss-reputation').one('click', function () {
-                playerFeedback(competedEvent, nextTurn);
-            });
+                playerFeedback(endOfTurnSummary, nextTurn);
+            }); // TO-DO: Make it so that this doesn't continually trigger after getting a reputation
         } else {
             // Show feedback to response
-            playerFeedback(competedEvent, nextTurn);
+            playerFeedback(endOfTurnSummary, nextTurn);
         }
     };
 
     // Give feedback to player
-    const playerFeedback = (competedEvent: CompletedEvent, onNextTurn: Function) => {
-        showFeedback({
-            name: competedEvent.event.name, 
-            feedback: competedEvent.feedback,
-            simulator: competedEvent.simulator,
-            onNextTurn: onNextTurn
-        });
+    const playerFeedback = (endOfTurnSummary: EndOfTurnSummary, onNextTurn: Function) => {
+        console.log(endOfTurnSummary)
+        showFeedback(endOfTurnSummary, onNextTurn);
     };
 
     // Call next turn

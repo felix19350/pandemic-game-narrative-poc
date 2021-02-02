@@ -21,11 +21,9 @@ export class GameController {
             turnNumber: 0,
             indicators: {
                 reputation: [],
-                publicSupport: 0, // negative numbers indicate disapproval, positive numbers approve
-                businessSupport: 0,
-                healthcareSupport: 0,
-                lockdownEffectiveness: 1, // 0 = lockdown lifted, 1 = lockdown in effect, 0.8 = lockdown in effect but less effective
-                vaccineEffectiveness: 1
+                support: 50,
+                poll: {support: null, oppose: null}, // negative numbers indicate disapproval, positive numbers approve
+                containmentPolicies: []
             },
             responseHistory: []
         };
@@ -48,7 +46,7 @@ export class GameController {
 
         this.gameState.turnNumber += 1;
         this.eventsToRespond = this.chooseNextEvents();
-
+        
         if (this.eventsToRespond.length === 0) {
             // The story has run its course, game will end and the game state will be returned so the player can review his choices
             return {
@@ -73,7 +71,7 @@ export class GameController {
         return this.gameState;
     }
 
-    public respondToEvent(responseId: String): CompletedEvent {
+    public respondToEvent(responseId: String): EndOfTurnSummary {
         const response = this.storyEvents.flatMap((it) => it.responses).find((it) => it.id === responseId);
         if (!response) {
             throw new Error(`Cannot find response with id: ${responseId}`);
@@ -92,18 +90,36 @@ export class GameController {
 
         // retain all events that are not the one that the current response pertains to
         this.eventsToRespond = this.eventsToRespond.filter((evt) => evt.id !== response.eventId);
-
+        
         // Update the game state
         this.gameState.indicators = result.updatedIndicators;
+        this.gameState.indicators.containmentPolicies = result.playerActions.containmentPolicies;
+        this.gameState.indicators.support = Math.min(100, Math.max(0, 50 - result.updatedIndicators.poll.support)); // Calculate support
+
+        // Save response to history
         this.saveResponseToHistory(response, result);
-        this.simulator.nextTurn(this.playerActionsForTurn, 30); // Advance simulator
-        
+
+        // Advance simulator
+        const nx = this.simulator.nextTurn(this.playerActionsForTurn, 30, this.gameState.indicators.support); 
+
         return {
-            event: thisEvent,
-            feedback: result.feedback,
-            simulator: cloneDeep(this.simulator),
-            response: response,
-            reputation: result.updatedIndicators.reputation
+            event: cloneDeep(thisEvent),
+            response: cloneDeep(response),
+            history: {
+                thisMonth: {
+                    simulator: cloneDeep(nx.history.slice(Math.max(nx.history.length - 30, 0))),
+                    indicators: cloneDeep(this.gameState.indicators),
+                    feedback: cloneDeep(result.feedback)
+                },
+                lastMonth: {
+                    simulator: cloneDeep(nx.history.slice(Math.max(nx.history.length - 60, 30))),
+                    indicators: null // TO-DO: Add history for public support indicator
+                },
+                allTime: {
+                    simulator: cloneDeep(nx.history),
+                    indicators: null
+                },
+            }
         };
     }
 

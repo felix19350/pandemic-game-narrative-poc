@@ -25,10 +25,7 @@ export const StoryEvents: Event[] = [
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
-                        lockdownEffectiveness: 0,
-                        publicSupport: 1,
-                        businessSupport: 1,
-                        healthcareSupport: -1
+                        poll: {support: 26, oppose: 69}
                     },
                     feedback: {
                         toResponse: 'Businesses open again as the vaccine is deployed.',
@@ -49,7 +46,10 @@ export const StoryEvents: Event[] = [
                 label: [`Lockdown continues`],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
-                    updatedIndicators: gameState.indicators,
+                    updatedIndicators: {
+                        ...gameState.indicators,
+                        poll: {support: 69, oppose: 26}
+                    },
                     feedback: {
                         toResponse: 'Lockdown remains in effect as the vaccine is deployed.',
                         fromPublic: `<i class='feedback-message-emoji fas fa-meh-rolling-eyes'></i> - me this year`,
@@ -87,7 +87,7 @@ export const StoryEvents: Event[] = [
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
-                        businessSupport: 1
+                        poll: {support: 50, oppose: 50}
                     },
                     feedback: {
                         toResponse: 'Announced a golden age for digital business.',
@@ -110,9 +110,7 @@ export const StoryEvents: Event[] = [
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
-                        publicSupport: -1,
-                        businessSupport: -1,
-                        healthcareSupport: -1
+                        poll: {support: 50, oppose: 50}
                     },
                     feedback: {
                         toResponse: 'Reconsidered lockdown',
@@ -154,10 +152,7 @@ export const StoryEvents: Event[] = [
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
-                        lockdownEffectiveness: 0,
-                        publicSupport: 1,
-                        businessSupport: 1,
-                        healthcareSupport: -1,
+                        poll: {support: 11, oppose: 85},
                         reputation: [
                             {
                                 id: 'flipflopper',
@@ -186,7 +181,10 @@ export const StoryEvents: Event[] = [
                 label: ['Lockdown continues'],
                 isApplicable: (gameState: GameState) => true,
                 onSelect: (gameState: GameState) => ({
-                    updatedIndicators: gameState.indicators,
+                    updatedIndicators: {
+                        ...gameState.indicators,
+                        poll: {support: 85, oppose: 11}
+                    },
                     feedback: {
                         toResponse: 'Sympathised but continued lockdown.',
                         fromPublic: `<i class='feedback-message-emoji fas fa-hand-middle-finger'></i>.`,
@@ -224,7 +222,7 @@ export const StoryEvents: Event[] = [
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
-                        healthcareSupport: 0,
+                        poll: {support: 55, oppose: 45}, // People like decisiveness
                         reputation: [
                             {
                                 id: 'stubborn',
@@ -260,10 +258,7 @@ export const StoryEvents: Event[] = [
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
-                        lockdownEffectiveness: 1,
-                        publicSupport: -1,
-                        businessSupport: -1,
-                        healthcareSupport: -1,
+                        poll: {support: 40, oppose: 60},
                         reputation: [
                             {
                                 id: 'flipflopper',
@@ -308,8 +303,7 @@ export const StoryEvents: Event[] = [
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
-                        lockdownEffectiveness: 0.8,
-                        publicSupport: 1
+                        poll: {support: 84, oppose: 12}
                     },
                     feedback: {
                         toResponse: 'Relaxed lockdown for individuals in crisis',
@@ -332,8 +326,7 @@ export const StoryEvents: Event[] = [
                 onSelect: (gameState: GameState) => ({
                     updatedIndicators: {
                         ...gameState.indicators,
-                        publicSupport: -1,
-                        healthcareSupport: 1,
+                        poll: {support: 12, oppose: 84},
                         reputation: [
                             {
                                 id: 'resolved',

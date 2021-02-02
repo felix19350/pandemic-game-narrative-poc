@@ -109,6 +109,12 @@ body{
     border-radius: 1px;
 }
 
+.highcharts-background{
+    background: none;
+    background-color: none;
+    fill: none;
+}
+
 /* Event */
 #event-modal{
     background-color: var(--col-highlight);

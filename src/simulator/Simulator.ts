@@ -43,7 +43,10 @@ export class Simulator {
      * Processes the next turn by computing the effects of player actions, random events and the natural
      * progression of the epidemic.
      */
-    nextTurn(playerActions: PlayerActions, daysToAdvance: number = 1): SimulatorMetrics {
+    nextTurn(playerActions: PlayerActions, daysToAdvance: number = 1, publicSupport: number): {
+        worldState: WorldState;
+        history: SimulatorMetrics[];
+    } {
         // Store player previous player turn
         let stateAtTurnEnd = this.clone(this.currentTurn);
 
@@ -71,7 +74,9 @@ export class Simulator {
         let metricsAtTurnStart = this.currentTurn.metrics;
         // The initial state is added on the first play
 
-        console.log(stateAtTurnEnd.metrics.r)
+        // Add public support
+        metricsAtTurnStart.publicSupport = publicSupport;
+
         const turnR = stateAtTurnEnd.metrics.r;
         for (let i = 0; i < daysToAdvance; i++) {
             latestMetrics = this.computeNextPandemicDay(turnR, metricsAtTurnStart);
@@ -85,7 +90,10 @@ export class Simulator {
         // Advance the current turn to match the state at turn end.
         this.currentTurn = stateAtTurnEnd;
 
-        return this.clone(latestMetrics);
+        return {
+            worldState: cloneDeep(this.currentTurn),
+            history: cloneDeep(this.history)
+        }
     }
 
     private computeNextPandemicDay(turnR: number, previousDayMetrics: SimulatorMetrics): SimulatorMetrics {
@@ -110,7 +118,6 @@ export class Simulator {
         const economicCosts = this.computeEconomicCosts(turnR);
         const medicalCosts = this.computeHospitalizationCosts(new_num_infected);
         const increaseInDailyNewCases = new_num_infected - prevCases;
-        console.log('increaseInDailyNewCases', increaseInDailyNewCases)
 
         return {
             days: currentDay,
@@ -125,7 +132,9 @@ export class Simulator {
             medicalCosts: medicalCosts,
             totalCost: deathCosts + economicCosts + medicalCosts,
             baseImmunity: this.scenario.baseImmunity,
-            dailyIncreaseInImmunity: this.scenario.dailyIncreaseInImmunity
+            dailyIncreaseInImmunity: this.scenario.dailyIncreaseInImmunity,
+            dailyChangeInCases: increaseInDailyNewCases,
+            publicSupport: previousDayMetrics.publicSupport,
         };
     }
 
@@ -141,7 +150,7 @@ export class Simulator {
             },
             metrics: {
                 days: 0,
-                numDead: 0,
+                numDead: this.scenario.initialNumDead,
                 numInfected: this.scenario.initialNumInfected,
                 totalPopulation: this.scenario.totalPopulation,
                 hospitalCapacity: this.scenario.hospitalCapacity,
@@ -152,7 +161,9 @@ export class Simulator {
                 medicalCosts: medicalCosts,
                 totalCost: deathCosts + economicCosts + medicalCosts,
                 baseImmunity: this.scenario.baseImmunity,
-                dailyIncreaseInImmunity: this.scenario.dailyIncreaseInImmunity
+                dailyIncreaseInImmunity: this.scenario.dailyIncreaseInImmunity,
+                dailyChangeInCases: 0,
+                publicSupport: this.scenario.initialPublicSupport
             },
             playerActions: {
                 capabilityImprovements: [],
@@ -170,12 +181,11 @@ export class Simulator {
         const hospitalization_rate = 0.1; // 10% of those infected will require hospitalization
         const num_hospitalizations = numInfected * hospitalization_rate;
         const cost_per_hospitalization = 50000; // $50,000 per hospital visit -- average amount billed to insurance (can dig up this reference if needed; it was on this order of magnitude)
-
         return num_hospitalizations * cost_per_hospitalization;
     }
 
     private computeEconomicCosts(r: number): number {
-        if (r >= this.scenario.r0) {
+        if (r >= this.scenario.r0) { // TO-DO Investigate what happens now I raised r to 3.4
             return 0;
         }
         const daysTilDoubling = 10;

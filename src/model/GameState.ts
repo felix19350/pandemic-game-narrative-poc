@@ -1,4 +1,5 @@
 import { Response, ResponseSelectionResult } from './Response';
+import {ContainmentPolicy, SimulatorMetrics} from '../simulator/SimulatorModel';
 
 export interface GameState {
     turnNumber: number;
@@ -8,11 +9,9 @@ export interface GameState {
 
 export interface Indicators {
     reputation: Reputation[];
-    publicSupport: number; // negative numbers indicate disapproval, positive numbers approve
-    businessSupport: number;
-    healthcareSupport: number;
-    lockdownEffectiveness: number; // 0 = lockdown lifted, 1 = lockdown in effect, 0.8 = lockdown in effect but less effective
-    vaccineEffectiveness: number;
+    support: number;
+    poll: {support: number, oppose: number}; // negative numbers indicate disapproval, positive numbers approve
+    containmentPolicies: ContainmentPolicy[];
 }
 
 export interface ResponseHistory {

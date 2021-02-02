@@ -4,3 +4,11 @@ export interface Feedback {
     fromBusiness: string;
     fromHealthcare: string;
 }
+
+export interface CollectionOfFeedback{
+    id: string;
+    name: string;
+    template: HTMLElement;
+    hasGraph: Boolean;
+    dataForGraph: number[];
+}

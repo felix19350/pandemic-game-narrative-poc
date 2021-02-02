@@ -4,6 +4,7 @@ export const GDP_Uk = 2.8e12; // 2.8 trillion UK gdp source: https://www.google.
 
 export const UK: Scenario = {
     totalPopulation: 66650000, // 66 million people UK population source: https://www.google.com/search?sxsrf=ALeKk01y7DAKcHDVprTj0dCWJ3VpMfO7_Q%3A1612101308264&ei=vLYWYKLZD6CDhbIP38q82Ag&q=uk+population&oq=uk+population&gs_lcp=CgZwc3ktYWIQAzIFCAAQsQMyCAgAELEDEIMBMgUIABCRAjICCAAyCAgAELEDEIMBMgYIABAHEB4yAggAMgIIADICCAAyAggAOgQIABBHOggIABAHEAoQHjoICAAQCBAHEB46BAgjECc6CwgAELEDEIMBEJECOggIABCxAxCRAjoHCAAQsQMQQ1COFVjjHGC-HWgAcAN4AIABU4gBhwSSAQE3mAEAoAEBqgEHZ3dzLXdpesgBCMABAQ&sclient=psy-ab&ved=0ahUKEwiip8iuqcbuAhWgQUEAHV8lD4sQ4dUDCA0&uact=5
+    initialNumDead: 107000, // 107k deaths so far source: https://github.com/CSSEGISandData/COVID-19
     initialNumInfected: 53285, // New daily cases Jan 1st for UK, source: https://github.com/CSSEGISandData/COVID-19
     initialMedicalCosts: 1252215000,
     initialEconomicCosts: 10576809135,
@@ -24,6 +25,7 @@ export const UK: Scenario = {
     initialContainmentPolicies: [],
     initialCapabilityImprovements: [],
     baseImmunity: 0.1086,
+    initialPublicSupport: 50,
     dailyIncreaseInImmunity: 0.0022
     /* Calculation for effectiveVaccinations:
         
