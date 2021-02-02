@@ -87,6 +87,7 @@ export class GameController {
 
         // Containment policies
         this.playerActionsForTurn.containmentPolicies = result.playerActions.containmentPolicies;
+        this.gameState.indicators.containmentPolicies = result.playerActions.containmentPolicies;
 
         // retain all events that are not the one that the current response pertains to
         this.eventsToRespond = this.eventsToRespond.filter((evt) => evt.id !== response.eventId);
@@ -131,6 +132,9 @@ export class GameController {
     }
 
     private chooseNextEvents(): Event[] {
+        console.log(this.gameState)
+        console.log(this.storyEvents)
+        console.log(this.storyEvents[1].canRun(this.gameState))
         return this.storyEvents.filter((event) => event.canRun(this.gameState));
     }
     /* To-Do: can use to make end game history */

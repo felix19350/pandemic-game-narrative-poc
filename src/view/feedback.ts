@@ -12,12 +12,20 @@ import { compile } from '../templates/export';
 import { responseText, message, news, report, endTurnButton } from '../templates/feedback';
 import { EndOfTurnSummary } from '@src/model/Events';
 import { createGraph } from './charts';
+import { lockdown } from '@src/simulator/PlayerActions';
 
 // Show feedback item to player
 function displayOnFeed(template: HTMLElement) {
     document.getElementById('media-feed').appendChild(template);
-    $(template).css('opacity', 0).animate({ opacity: 1 }, 500); // Animations
-    $('body, html').animate({ scrollTop: $(document).height() }, 500);
+    $('body, html').animate({ scrollTop: $(document).height() }, 500); // Animations
+    $(template).css('opacity', 0).animate({ opacity: 1 }, 500); 
+}
+
+function animate(id: string, data){
+    console.log(data)
+    for(const [key, value] of Object.entries(data)){
+        $(`#${id}-${key}`).delay(500).animate(value, 500);
+    }
 }
 
 export function showFeedback(endOfTurnSummary: EndOfTurnSummary, onNextTurn: Function){
@@ -41,6 +49,7 @@ export function showFeedback(endOfTurnSummary: EndOfTurnSummary, onNextTurn: Fun
             id: `${thisEvent.id}-summ`, 
             name: 'Summary of player response',
             template: compile(responseText, { 
+                id: `${thisEvent.id}-summ`,
                 name: thisEvent.name, 
                 txt: responseFeedback.toResponse,
                 isRising: (( 50 - support) < 0 ),
@@ -51,7 +60,13 @@ export function showFeedback(endOfTurnSummary: EndOfTurnSummary, onNextTurn: Fun
                 }
             }),
             hasGraph: false,
-            dataForGraph: [],
+            dataForGraph: null,
+            hasAnimation: true,
+            dataForAnimation: {
+                support: {width: `${support}%`},
+                dontKnow: {width: `${100 - endOfTurnSummary.history.thisMonth.indicators.poll.oppose - support}%`},
+                oppose: {width: `${endOfTurnSummary.history.thisMonth.indicators.poll.oppose}%`}
+            }
         },
         {
             id: `${thisEvent.id}-msg`, 
@@ -64,6 +79,8 @@ export function showFeedback(endOfTurnSummary: EndOfTurnSummary, onNextTurn: Fun
             }),
             hasGraph: true,
             dataForGraph: [50, support],
+            hasAnimation: false,
+            dataForAnimation: null
         },
         {
             id: `${thisEvent.id}-news`, 
@@ -77,7 +94,9 @@ export function showFeedback(endOfTurnSummary: EndOfTurnSummary, onNextTurn: Fun
                 }
             }),
             hasGraph: false,
-            dataForGraph: [],
+            dataForGraph: null,
+            hasAnimation: false,
+            dataForAnimation: null
         },
         {
             id: `${thisEvent.id}-report`, 
@@ -89,14 +108,18 @@ export function showFeedback(endOfTurnSummary: EndOfTurnSummary, onNextTurn: Fun
                 isRising: ( monthlyChangeInCases >= 0)
             }),
             hasGraph: false,
-            dataForGraph: [],
+            dataForGraph: null,
+            hasAnimation: false,
+            dataForAnimation: null
         },
         {
             id: `${thisEvent.id}-continue`, 
             name: 'End turn button',
             template: compile(endTurnButton, { id: `${thisEvent.id}-continue` }),
             hasGraph: false,
-            dataForGraph: [],
+            dataForGraph: null,
+            hasAnimation: false,
+            dataForAnimation: null
         }   
     ]
     
@@ -104,7 +127,8 @@ export function showFeedback(endOfTurnSummary: EndOfTurnSummary, onNextTurn: Fun
         function() {
             displayOnFeed(it.template);
             if(it.hasGraph){ createGraph(it.dataForGraph, it.id) };
-        }, i * 1900
+            if(it.hasAnimation){ animate(it.id, it.dataForAnimation) };
+        }, i * 500
     ));
 
 }

@@ -12,14 +12,14 @@ export const responseText = `
             {{/if}} 
         </h5>
     </div>
-    <div class='w-100 p-2 d-flex flex-row justify-content-around' style='font-weight: 500;'>
-        <span style='width: {{data.support}}%; background-color: lightgreen; height: 20px; text-align: center; border-radius: 5px 0 0 5px'> 
+    <div class='w-100 p-2 d-flex flex-row' style='font-weight: 500;'>
+        <span id='{{id}}-support' style='width: 50%; background-color: lightgreen; height: 20px; text-align: center; border-radius: 5px 0 0 5px'> 
             <i class="fas fa-thumbs-up"></i> {{data.support}}%
         </span>
-        <span style='width: {{data.dontKnow}}%; max-width: {{data.dontKnow}}%; background-color: lightgrey; height: 20px; text-align: center; overflow: visible;'> 
+        <span id='{{id}}-dontKnow' style='width: 0%; background-color: lightgrey; height: 20px; text-align: center; overflow: visible;'> 
            {{data.dontKnow}}%
         </span>
-        <span style='width: {{data.oppose}}%; background-color: coral; height: 20px; text-align: center; border-radius: 0 5px 5px 0'> 
+        <span id='{{id}}-oppose' style='width: 50%; background-color: coral; height: 20px; text-align: center; border-radius: 0 5px 5px 0'> 
             <i class="fas fa-thumbs-down"></i> {{data.oppose}}%
         </span>
     </div>

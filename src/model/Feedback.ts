@@ -11,4 +11,6 @@ export interface CollectionOfFeedback{
     template: HTMLElement;
     hasGraph: Boolean;
     dataForGraph: number[];
+    hasAnimation: Boolean;
+    dataForAnimation: any;
 }

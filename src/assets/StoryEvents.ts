@@ -74,7 +74,7 @@ export const StoryEvents: Event[] = [
         `,
         canRun: (gameState: GameState) => {
             return (
-                gameState.turnNumber === 2 && gameState.indicators.lockdownEffectiveness === 0 // when lockdown not active
+                gameState.turnNumber === 2 && gameState.indicators.containmentPolicies === [openBusinesses] // when lockdown not active
             );
         },
         responses: [
@@ -134,7 +134,9 @@ export const StoryEvents: Event[] = [
             There are increasing reports that people are less willing to obey lockdown rules.
         `,
         canRun: (gameState: GameState) => {
-            return gameState.turnNumber === 2 && gameState.indicators.lockdownEffectiveness > 0;
+            return (
+                gameState.turnNumber === 2 && gameState.indicators.containmentPolicies === [lockdown]
+            );
         },
         responses: [
             {
@@ -208,7 +210,7 @@ export const StoryEvents: Event[] = [
             as ended so cases should reduce. 
             `,
         canRun: (gameState: GameState) => {
-            return gameState.turnNumber === 3 && gameState.indicators.lockdownEffectiveness === 0;
+            return gameState.turnNumber === 3 && gameState.indicators.containmentPolicies === [openBusinesses]
         },
         responses: [
             {
@@ -291,7 +293,7 @@ export const StoryEvents: Event[] = [
             as ended so cases should reduce. 
         `,
         canRun: (gameState: GameState) => {
-            return gameState.turnNumber === 3 && gameState.indicators.lockdownEffectiveness > 0;
+            return gameState.turnNumber === 3 && gameState.indicators.containmentPolicies === [lockdown]
         },
         responses: [
             {
