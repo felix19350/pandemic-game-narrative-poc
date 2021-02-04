@@ -5,12 +5,13 @@ import { GameState } from '@src/model/GameState';
 // Show end screen components
 
 export const showEndScreen = (gameState: GameState) => {
+
+    console.log(gameState)
     // Get player choices
-    const choices = [
-        gameState.responseHistory[0].responses[0].response.eventId,
-        gameState.responseHistory[1].responses[0].response.eventId,
-        gameState.responseHistory[2].responses[0].response.eventId
-    ];
+    const choices: string[] = [];
+    gameState.responseHistory.forEach(e => {
+        choices.push(e.responses[0].response.eventId)
+    });
 
     // Show endings
     $('#endscreen').modal('show');

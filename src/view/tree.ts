@@ -15,44 +15,44 @@ export const createStoryTree = (choices: string[]) => {
     }); // Default to assigning a new object as a label for each new edge.
 
     // Add nodes to the graph
-    g.setNode('START', { label: 'START', width: 100 });
     StoryEvents.forEach(function (i: Event) {
         g.setNode(i.id, { label: i.name, width: 20 + i.name.length * 7 });
     });
-    g.setNode('END1', { label: 'Ending: Lockdown ended permanently', width: 300 });
-    g.setNode('END2', { label: 'Ending: Lockdown lifted but then re-enforced', width: 350 });
-    g.setNode('END3', { label: 'Ending: Lockdown remained in effect but concessions were made', width: 500 });
-    g.setNode('END4', { label: 'Ending: Lockdown remained in effect throughout', width: 450 });
+    g.setNode('END1', { label: 'Lockdown ended', width: 120 });
+    g.setNode('END2', { label: 'Flip-flopped', width: 120 });
+    g.setNode('END3', { label: 'Some concessions', width: 120 });
+    g.setNode('END4', { label: 'Lockdown remained', width: 120 });
 
     g.nodes().forEach(function (v) {
         var node = g.node(v);
         // Round the corners of the nodes
         node.rx = node.ry = 5;
         node.height = 50;
-        node.style = 'fill: white;';
+        node.class = 'tree-node';
     });
 
     choices.forEach((it) => {
-        g.node(it).style = 'fill: dodgerblue';
+        g.node(it).class = 'tree-node-complete';
     });
 
     // Add edges to the graph.
-    g.setEdge('START', 'lockdown01vaccine');
-    g.setEdge('lockdown01vaccine', 'open01business', { label: 'lockdown01vaccine_lift' });
-    g.setEdge('lockdown01vaccine', 'lockdown02fatigue', { label: 'lockdown01vaccine_continue' });
-    g.setEdge('open01business', 'open02casesPeak', { label: 'open01business_spin' });
-    g.setEdge('open01business', 'open02casesPeak', { label: 'open01business_reconsider' });
-    g.setEdge('lockdown02fatigue', 'open02casesPeak', { label: 'lockdown02fatigue_lift' });
-    g.setEdge('lockdown02fatigue', 'lockdown03wellbeing', { label: 'lockdown02fatigue_continue' });
-    g.setEdge('open02casesPeak', 'END1', { label: 'open02casesPeak_continue' });
-    g.setEdge('open02casesPeak', 'END2', { label: 'open02casesPeak_lift' });
-    g.setEdge('lockdown03wellbeing', 'END3', { label: 'lockdown03wellbeing_relax' });
-    g.setEdge('lockdown03wellbeing', 'END4', { label: 'lockdown03wellbeing_continue' });
+    g.setEdge('lockdown01vaccine', 'open01business', { label: '<p class="tree-edge-label">Lifted lockdown <span class="badge badge-info">40%</span></p>', labelType: "html", lineInterpolate: "basis"});
+    g.setEdge('lockdown01vaccine', 'lockdown02fatigue', { label: '<p class="tree-edge-label">Remained <span class="badge badge-info"> 60%</span></p>', labelType: "html", lineInterpolate: "basis" });
+    g.setEdge('open01business', 'open02casesPeak', { label: '<p class="tree-edge-label">Spin <span class="badge badge-info"> 20%' , labelType: "html", lineInterpolate: "basis"});
+    g.setEdge('open01business', 'open02casesPeak', { label: '<p class="tree-edge-label">Reconsidered <span class="badge badge-info"> 80%</span></p>', labelType: "html", lineInterpolate: "basis" });
+    g.setEdge('lockdown02fatigue', 'open02casesPeak', { label: '<p class="tree-edge-label">Lifted <span class="badge badge-info"> 30%</span></p>' , labelType: "html", lineInterpolate: "basis"});
+    g.setEdge('lockdown02fatigue', 'lockdown03wellbeing', { label: '<p class="tree-edge-label">Remained <span class="badge badge-info"> 70%</span></p>' , labelType: "html", lineInterpolate: "basis"});
+    g.setEdge('open02casesPeak', 'END1', { label: '<p class="tree-edge-label">Remained <span class="badge badge-info"> 60%</span></p>' , labelType: "html", lineInterpolate: "basis"});
+    g.setEdge('open02casesPeak', 'END2', { label: '<p class="tree-edge-label">Lifted <span class="badge badge-info"> 40%</span></p>', labelType: "html", lineInterpolate: "basis" });
+    g.setEdge('lockdown03wellbeing', 'END3', { label: '<p class="tree-edge-label">Concessions <span class="badge badge-info"> 20%</span></p>' , labelType: "html", lineInterpolate: "basis"});
+    g.setEdge('lockdown03wellbeing', 'END4', { label: '<p class="tree-edge-label">Remained <span class="badge badge-info"> 80%</span></p>', labelType: "html", lineInterpolate: "basis" });
 
     g.edges().forEach(function (v) {
         var edge = g.edge(v);
         edge.style = 'stroke: black; fill: none;';
     });
+
+    //g.graph().rankDir = 'LR'; Layout left ot right instead of top to down
 
     // Render graph
     var svg = d3
