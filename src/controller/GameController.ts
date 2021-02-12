@@ -76,7 +76,6 @@ export class GameController {
         if (!response) {
             throw new Error(`Cannot find response with id: ${responseId}`);
         }
-
         if (!response.isApplicable(this.gameState)) {
             throw new Error('Response is not applicable');
         }
@@ -84,11 +83,7 @@ export class GameController {
 
         // Get this current event being responded to
         const thisEvent = this.storyEvents.find((it) => it.id === response.eventId);
-
-        // Containment policies
-        this.playerActionsForTurn.containmentPolicies = result.playerActions.containmentPolicies;
-        this.gameState.indicators.containmentPolicies = result.playerActions.containmentPolicies;
-
+        
         // retain all events that are not the one that the current response pertains to
         this.eventsToRespond = this.eventsToRespond.filter((evt) => evt.id !== response.eventId);
         
@@ -96,6 +91,7 @@ export class GameController {
         this.gameState.indicators = result.updatedIndicators;
         this.gameState.indicators.containmentPolicies = result.playerActions.containmentPolicies;
         this.gameState.indicators.support = Math.min(100, Math.max(0, 50 - result.updatedIndicators.poll.support)); // Calculate support
+        this.playerActionsForTurn.containmentPolicies = result.playerActions.containmentPolicies;
 
         // Save response to history
         this.saveResponseToHistory(response, result);

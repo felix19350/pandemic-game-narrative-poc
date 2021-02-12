@@ -130,6 +130,7 @@ body{
 }
 #tree{
     background-color: var(--col-highlight);
+    color: #ffd700;
 }
 .modal-content, .modal-header, .modal-body, .modal-footer{
     border: none;

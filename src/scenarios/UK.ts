@@ -1,6 +1,6 @@
 import { Scenario } from '@src/simulator/SimulatorModel';
 
-export const GDP_Uk = 2.8e12; // 2.8 trillion UK gdp source: https://www.google.com/search?sxsrf=ALeKk01S5_HLcnpJFgfGjmYjN2t1XLmflw%3A1612101247616&ei=f7YWYPudJfGEhbIPyM-I4AE&q=uk+gdp&oq=uk+gdp&gs_lcp=CgZwc3ktYWIQAzIECCMQJzIICAAQsQMQkQIyBAgAEEMyAggAMgQIABBDMgQIABBDMgUIABCxAzIECAAQQzICCAAyAggAOgcIABBHELADOgQIABBHUIkHWNkHYMUIaAFwAngAgAFwiAFwkgEDMC4xmAEAoAEBqgEHZ3dzLXdpesgBCMABAQ&sclient=psy-ab&ved=0ahUKEwi72dKRqcbuAhVxQkEAHcgnAhwQ4dUDCA0&uact=5
+export const GDP_Uk = 2.8e13; // 2.8 trillion UK gdp source: https://www.google.com/search?sxsrf=ALeKk01S5_HLcnpJFgfGjmYjN2t1XLmflw%3A1612101247616&ei=f7YWYPudJfGEhbIPyM-I4AE&q=uk+gdp&oq=uk+gdp&gs_lcp=CgZwc3ktYWIQAzIECCMQJzIICAAQsQMQkQIyBAgAEEMyAggAMgQIABBDMgQIABBDMgUIABCxAzIECAAQQzICCAAyAggAOgcIABBHELADOgQIABBHUIkHWNkHYMUIaAFwAngAgAFwiAFwkgEDMC4xmAEAoAEBqgEHZ3dzLXdpesgBCMABAQ&sclient=psy-ab&ved=0ahUKEwi72dKRqcbuAhVxQkEAHcgnAhwQ4dUDCA0&uact=5
 
 export const UK: Scenario = {
     totalPopulation: 66650000, // 66 million people UK population source: https://www.google.com/search?sxsrf=ALeKk01y7DAKcHDVprTj0dCWJ3VpMfO7_Q%3A1612101308264&ei=vLYWYKLZD6CDhbIP38q82Ag&q=uk+population&oq=uk+population&gs_lcp=CgZwc3ktYWIQAzIFCAAQsQMyCAgAELEDEIMBMgUIABCRAjICCAAyCAgAELEDEIMBMgYIABAHEB4yAggAMgIIADICCAAyAggAOgQIABBHOggIABAHEAoQHjoICAAQCBAHEB46BAgjECc6CwgAELEDEIMBEJECOggIABCxAxCRAjoHCAAQsQMQQ1COFVjjHGC-HWgAcAN4AIABU4gBhwSSAQE3mAEAoAEBqgEHZ3dzLXdpesgBCMABAQ&sclient=psy-ab&ved=0ahUKEwiip8iuqcbuAhWgQUEAHV8lD4sQ4dUDCA0&uact=5
